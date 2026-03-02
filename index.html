@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TheGeneric modern landing page" />
+  <title>TheGeneric v0.26.1.0</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0a0c12;
+      --bg-soft: #151a24;
+      --panel: rgba(17, 21, 31, 0.78);
+      --text: #f3f5fa;
+      --muted: #c8cde0;
+      --stroke: rgba(255,255,255,0.14);
+      --accent: #ff2c3f;
+      --accent-soft: #ff5b6a;
+      --hero-glow: radial-gradient(circle at 50% 40%, rgba(255,44,63,0.36), rgba(255,44,63,0.06) 45%, transparent 80%);
+      --wave-1: #101420;
+      --wave-2: #2a2f3f;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f7ff;
+      --bg-soft: #eef1fb;
+      --panel: rgba(255, 255, 255, 0.76);
+      --text: #1a1f2f;
+      --muted: #41485d;
+      --stroke: rgba(22, 27, 45, 0.2);
+      --accent: #d5102a;
+      --accent-soft: #f64259;
+      --hero-glow: radial-gradient(circle at 50% 40%, rgba(213,16,42,0.22), rgba(213,16,42,0.05) 42%, transparent 82%);
+      --wave-1: #dde3f3;
+      --wave-2: #c6d0ea;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100%;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
+    }
+
+    body {
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(1200px 500px at 50% 105%, rgba(255,44,63,0.22), transparent 75%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 45%);
+    }
+
+    .taskbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .taskbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 18px;
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--accent) 70%, white 30%);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.05), 0 10px 28px rgba(255,44,63,0.25);
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent-soft) 70%, white 30%), transparent 52%),
+        linear-gradient(145deg, color-mix(in srgb, var(--accent) 85%, #14060a), #19070f 62%, #080910);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+      pointer-events: none;
+    }
+
+    .brand-name { font-weight: 700; letter-spacing: 0.2px; }
+
+    .nav {
+      display: inline-flex;
+      gap: 20px;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav a { color: var(--muted); text-decoration: none; transition: 180ms ease; }
+    .nav a:hover { color: var(--text); }
+
+    .divider { opacity: 0.45; }
+
+    .theme-btn {
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 11px;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      font-size: 1rem;
+      pointer-events: auto;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .theme-btn:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 65%, var(--stroke));
+    }
+
+    .hero {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 72px 20px 30px;
+    }
+
+    .wave-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .wave-top,
+    .wave-bottom {
+      position: absolute;
+      left: -12%;
+      width: 124%;
+      border-radius: 42% 58% 65% 35% / 42% 42% 58% 58%;
+      filter: blur(0.2px);
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    .wave-top {
+      top: -280px;
+      height: 430px;
+      background: linear-gradient(180deg, rgba(17, 255, 117, 0.06) 0%, rgba(0,0,0,0) 90%), var(--wave-1);
+    }
+
+    .wave-bottom {
+      bottom: -260px;
+      height: 380px;
+      background: var(--wave-2);
+      animation-duration: 20s;
+      animation-direction: alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translateX(-2%) translateY(0) scale(1); }
+      to { transform: translateX(2%) translateY(8px) scale(1.03); }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2rem, 5vw, 4.3rem);
+      line-height: 0.95;
+      letter-spacing: -1.5px;
+      text-wrap: balance;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.65;
+    }
+
+    .version {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--stroke);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--panel);
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 30px;
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+      min-height: 360px;
+      padding: 28px;
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -30% -10% auto;
+      height: 86%;
+      background: var(--hero-glow);
+      z-index: -1;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    .card-title { font-size: 1.4rem; margin: 0; }
+    .card-copy { color: var(--muted); margin: 12px 0 26px; }
+
+    .feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 13px;
+    }
+
+    .feature-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 70%, transparent);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .feature-list strong { color: var(--text); }
+
+    main section { max-width: 1180px; margin: 30px auto 0; padding: 0 20px; }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .tile {
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      background: var(--panel);
+      padding: 18px;
+      min-height: 128px;
+      transition: transform 200ms ease;
+    }
+
+    .tile:hover { transform: translateY(-4px); }
+
+    footer {
+      margin-top: 42px;
+      padding: 28px 20px;
+      border-top: 1px solid var(--stroke);
+      text-align: center;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--bg-soft) 76%, transparent);
+    }
+
+    @media (max-width: 940px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-card { min-height: auto; }
+      .tiles { grid-template-columns: 1fr; }
+      .taskbar-inner { min-height: 68px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="taskbar" aria-label="Taskbar">
+    <div class="taskbar-inner">
+      <a href="#home" class="brand" aria-label="TheGeneric home">
+        <span class="brand-icon" aria-hidden="true">TG</span>
+        <span class="brand-name">TheGeneric</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <span class="divider">|</span>
+        <a href="#signin">Sign In</a>
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark and light mode">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="wave-wrap" aria-hidden="true">
+      <div class="wave-top"></div>
+      <div class="wave-bottom"></div>
+    </div>
+
+    <div class="hero-grid">
+      <article class="hero-copy">
+        <h1>TheGeneric<br />Modern Portal</h1>
+        <p>
+          A smooth, animated, and responsive experience inspired by your reference layout.
+          Crafted with a dark-and-red visual identity and adaptive system-theme support.
+        </p>
+        <span class="version">Version 0.26.1.0</span>
+      </article>
+
+      <aside class="hero-card" aria-label="Quick highlights">
+        <h2 class="card-title">Built for all devices</h2>
+        <p class="card-copy">Fluid animations, polished depth, and modern surfaces built into one compact page.</p>
+        <ul class="feature-list">
+          <li><strong>Theme-aware</strong> <span>Auto-detects system preference on first load</span></li>
+          <li><strong>Single-script page</strong> <span>All structure, style, and logic in one <code>index.html</code></span></li>
+          <li><strong>Clean interactions</strong> <span>Text selection and icon dragging disabled</span></li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+  <section id="features" aria-label="More sections">
+    <div class="tiles">
+      <article class="tile"><h3>Home</h3><p>Core landing space with modern motion and gradients.</p></article>
+      <article class="tile" id="about"><h3>About</h3><p>Dark-red theme language inspired by the provided references.</p></article>
+      <article class="tile" id="signin"><h3>Sign In</h3><p>Ready placeholder for account workflows and secure access.</p></article>
+    </div>
+  </section>
+
+  <footer>
+    2026 TheGeneric. Do Not Distribute!
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+      themeBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    const saved = localStorage.getItem('thegeneric-theme');
+    if (saved === 'light' || saved === 'dark') {
+      applyTheme(saved);
+    } else {
+      applyTheme(media.matches ? 'dark' : 'light');
+    }
+
+    media.addEventListener('change', (event) => {
+      if (!localStorage.getItem('thegeneric-theme')) {
+        applyTheme(event.matches ? 'dark' : 'light');
+      }
+    });
+
+    themeBtn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('thegeneric-theme', next);
+    });
+
+    document.addEventListener('dragstart', (event) => event.preventDefault());
+  </script>
+</body>
+</html>
