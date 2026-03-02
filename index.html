@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TheGeneric modern landing page" />
+  <title>TheGeneric v0.26.1.10</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0a0c12;
+      --bg-soft: #151a24;
+      --panel: rgba(17, 21, 31, 0.78);
+      --text: #f3f5fa;
+      --muted: #c8cde0;
+      --stroke: rgba(255,255,255,0.14);
+      --accent: #ff2c3f;
+      --accent-soft: #ff5b6a;
+      --purple: #8c5bff;
+      --purple-soft: #b18cff;
+      --hero-glow: radial-gradient(circle at 50% 40%, rgba(255,44,63,0.36), rgba(255,44,63,0.06) 45%, transparent 80%);
+      --wave-1: #101420;
+      --wave-2: #2a2f3f;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f7ff;
+      --bg-soft: #eef1fb;
+      --panel: rgba(255, 255, 255, 0.76);
+      --text: #1a1f2f;
+      --muted: #41485d;
+      --stroke: rgba(22, 27, 45, 0.2);
+      --accent: #d5102a;
+      --accent-soft: #f64259;
+      --purple: #6f4be8;
+      --purple-soft: #9a78ff;
+      --hero-glow: radial-gradient(circle at 50% 40%, rgba(213,16,42,0.22), rgba(213,16,42,0.05) 42%, transparent 82%);
+      --wave-1: #dde3f3;
+      --wave-2: #c6d0ea;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100%;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
+    body {
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(1200px 500px at 50% 105%, rgba(255,44,63,0.22), transparent 75%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 45%);
+    }
+
+    .taskbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background: color-mix(in srgb, var(--bg) 80%, transparent);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .taskbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      gap: 18px;
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--accent) 70%, white 30%);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.05), 0 10px 28px rgba(255,44,63,0.25);
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent-soft) 70%, white 30%), transparent 52%),
+        linear-gradient(145deg, color-mix(in srgb, var(--accent) 85%, #14060a), #19070f 62%, #080910);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+      pointer-events: none;
+    }
+
+    .brand-name { font-weight: 700; letter-spacing: 0.2px; }
+
+    .nav {
+      display: inline-flex;
+      gap: 20px;
+      align-items: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav a { color: var(--muted); text-decoration: none; transition: 180ms ease; }
+    .nav a:hover { color: var(--text); }
+
+    .divider { opacity: 0.45; }
+
+    .theme-btn {
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 11px;
+      width: 42px;
+      height: 42px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
+      transition: transform 180ms ease, border-color 180ms ease;
+    }
+
+    .theme-btn:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 65%, var(--stroke));
+    }
+
+    .hero {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 72px 20px 24px;
+    }
+
+    .wave-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .wave-top,
+    .wave-bottom {
+      position: absolute;
+      left: -12%;
+      width: 124%;
+      border-radius: 42% 58% 65% 35% / 42% 42% 58% 58%;
+      filter: blur(0.2px);
+      animation: drift 18s ease-in-out infinite alternate;
+      background-size: 200% 200%;
+    }
+
+    .wave-top {
+      top: -280px;
+      height: 430px;
+      background-image: linear-gradient(180deg, rgba(17, 255, 117, 0.06) 0%, rgba(0,0,0,0) 90%), linear-gradient(120deg, var(--wave-1), color-mix(in srgb, var(--wave-2) 60%, var(--accent-soft)));
+      animation: drift 18s ease-in-out infinite alternate, moveGradient 14s linear infinite;
+    }
+
+    .wave-bottom {
+      bottom: -260px;
+      height: 380px;
+      background-image: linear-gradient(120deg, var(--wave-2), color-mix(in srgb, var(--wave-1) 60%, var(--purple)));
+      animation: drift 20s ease-in-out infinite alternate-reverse, moveGradient 18s linear infinite reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translateX(-2%) translateY(0) scale(1); }
+      to { transform: translateX(2%) translateY(8px) scale(1.03); }
+    }
+
+    @keyframes moveGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .hero-copy h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2rem, 5vw, 4.3rem);
+      line-height: 0.95;
+      letter-spacing: -1.5px;
+      text-wrap: balance;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.65;
+    }
+
+    .version {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--stroke);
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--panel);
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 30px;
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+      min-height: 360px;
+      padding: 28px;
+      isolation: isolate;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -30% -10% auto;
+      height: 86%;
+      background: var(--hero-glow);
+      z-index: -1;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    .card-title { font-size: 1.4rem; margin: 0; }
+    .card-copy { color: var(--muted); margin: 12px 0 26px; }
+
+    .feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 13px;
+    }
+
+    .feature-list li {
+      padding: 12px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 70%, transparent);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .feature-list strong { color: var(--text); }
+
+    section {
+      max-width: 1180px;
+      margin: 30px auto 0;
+      padding: 0 20px;
+    }
+
+    .oranai {
+      margin-top: 18px;
+    }
+
+    .oranai-shell {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 22px;
+      border: 1px solid color-mix(in srgb, var(--purple) 45%, var(--stroke));
+      border-radius: 24px;
+      padding: 20px;
+      background:
+        linear-gradient(115deg, color-mix(in srgb, var(--panel) 80%, transparent), color-mix(in srgb, var(--purple) 25%, transparent), color-mix(in srgb, var(--panel) 70%, transparent));
+      background-size: 220% 220%;
+      animation: moveGradient 16s ease infinite;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .oranai-shell::before {
+      content: "";
+      position: absolute;
+      inset: auto -22% -30% -22%;
+      height: 58%;
+      background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--purple-soft) 40%, transparent), transparent 70%);
+      animation: pulse 5s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .oranai-preview {
+      border: 1px solid color-mix(in srgb, var(--purple) 55%, var(--stroke));
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--bg) 78%, var(--purple) 22%);
+      padding: 14px;
+      box-shadow: 0 16px 42px rgba(70, 40, 120, 0.28);
+      min-height: 260px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .preview-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .preview-body {
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 12px;
+      min-height: 170px;
+    }
+
+    .mini-sidebar,
+    .mini-chat,
+    .mini-popup {
+      border: 1px solid color-mix(in srgb, var(--purple) 35%, var(--stroke));
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--panel) 82%, transparent);
+    }
+
+    .mini-sidebar {
+      padding: 10px 8px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .mini-sidebar span {
+      display: block;
+      height: 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--purple-soft) 55%, var(--panel));
+      opacity: 0.75;
+    }
+
+    .mini-chat {
+      padding: 12px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      position: relative;
+    }
+
+    .mini-message {
+      height: 11px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--muted) 35%, transparent);
+      width: 82%;
+    }
+
+    .mini-message.short { width: 58%; }
+
+    .mini-popup {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      width: 58%;
+      padding: 9px;
+      background: color-mix(in srgb, var(--purple) 24%, var(--panel));
+      display: grid;
+      gap: 6px;
+    }
+
+    .mini-popup span {
+      height: 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--purple-soft) 65%, var(--panel));
+    }
+
+    .oranai-copy h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.3vw, 2rem);
+      line-height: 1.2;
+    }
+
+    .oranai-copy p {
+      color: var(--muted);
+      margin: 12px 0 14px;
+      line-height: 1.6;
+    }
+
+    .oranai-points {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .oranai-points li {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: color-mix(in srgb, var(--panel) 75%, transparent);
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .oranai-points .material-symbols-outlined {
+      color: var(--purple-soft);
+      font-size: 1.2rem;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tile {
+      border: 1px solid var(--stroke);
+      border-radius: 16px;
+      background: var(--panel);
+      padding: 14px;
+      min-height: 102px;
+      transition: transform 200ms ease;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .tile .material-symbols-outlined {
+      color: color-mix(in srgb, var(--accent) 80%, var(--text));
+      font-size: 1.25rem;
+    }
+
+    .tile h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .tile p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .tile:hover { transform: translateY(-4px); }
+
+    footer {
+      margin-top: 42px;
+      padding: 28px 20px;
+      border-top: 1px solid var(--stroke);
+      text-align: center;
+      color: var(--muted);
+      background: color-mix(in srgb, var(--bg-soft) 76%, transparent);
+    }
+
+    @media (max-width: 940px) {
+      .hero-grid,
+      .oranai-shell,
+      .preview-body { grid-template-columns: 1fr; }
+      .hero-card { min-height: auto; }
+      .tiles { grid-template-columns: 1fr; }
+      .taskbar-inner { min-height: 68px; }
+      .mini-popup { position: static; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="taskbar" aria-label="Taskbar">
+    <div class="taskbar-inner">
+      <a href="#home" class="brand" aria-label="TheGeneric home">
+        <span class="brand-icon" aria-hidden="true">TG</span>
+        <span class="brand-name">TheGeneric</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <span class="divider">|</span>
+        <a href="#signin">Sign In</a>
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark and light mode">
+          <span class="material-symbols-outlined" id="themeIcon" aria-hidden="true">dark_mode</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="wave-wrap" aria-hidden="true">
+      <div class="wave-top"></div>
+      <div class="wave-bottom"></div>
+    </div>
+
+    <div class="hero-grid">
+      <article class="hero-copy">
+        <h1>TheGeneric<br />Modern Portal</h1>
+        <p>
+          A smooth, animated, and responsive experience inspired by your reference layout.
+          Crafted with a dark-and-red visual identity and adaptive system-theme support.
+        </p>
+        <span class="version">Version 0.26.1.10</span>
+        <p style="margin-top:14px;"><a href="oranai.html" style="display:inline-flex;gap:8px;align-items:center;text-decoration:none;border:1px solid var(--stroke);padding:10px 14px;border-radius:999px;background:var(--panel);color:var(--text);font-weight:600;"><span class="material-symbols-outlined" aria-hidden="true">smart_toy</span> Open OranAI</a></p>
+      </article>
+
+      <aside class="hero-card" aria-label="Quick highlights">
+        <h2 class="card-title">Built for all devices</h2>
+        <p class="card-copy">Fluid animations, polished depth, and modern surfaces built into one compact page.</p>
+        <ul class="feature-list">
+          <li><strong>Theme-aware</strong> <span>Auto-detects system preference on first load</span></li>
+          <li><strong>Single-script page</strong> <span>All structure, style, and logic in one <code>index.html</code></span></li>
+          <li><strong>Clean interactions</strong> <span>Text selection and icon dragging disabled</span></li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+  <section class="oranai" id="oranai" aria-label="Introducing OranAI">
+    <div class="oranai-shell">
+      <article class="oranai-preview" aria-label="OranAI UI preview">
+        <div class="preview-topbar">
+          <span><span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span> OranAI Preview</span>
+          <span>Next-Gen Interface</span>
+        </div>
+        <div class="preview-body">
+          <aside class="mini-sidebar" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </aside>
+          <div class="mini-chat" aria-hidden="true">
+            <div class="mini-message"></div>
+            <div class="mini-message short"></div>
+            <div class="mini-message"></div>
+            <div class="mini-popup">
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="oranai-copy">
+        <h2>Introducing Our Next Generation of Technology: OranAI · ver-0.26.0301</h2>
+        <p>
+          OranAI is TheGeneric's upcoming intelligence layer designed for full-theme orchestration:
+          adaptive sidebars, contextual popup UI flows, and smooth interface guidance that feels native
+          across the entire platform.
+        </p>
+        <ul class="oranai-points">
+          <li><span class="material-symbols-outlined" aria-hidden="true">view_sidebar</span> Unified sidebar states synchronized with page context.</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">chat_bubble</span> Live message preview pipeline for AI-assisted responses.</li>
+          <li><span class="material-symbols-outlined" aria-hidden="true">web_traffic</span> Popup UI routing concept integrated with global theme behavior.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="features" aria-label="More sections">
+    <div class="tiles">
+      <article class="tile"><span class="material-symbols-outlined" aria-hidden="true">home</span><h3>Home</h3><p>Core landing space with modern motion and gradients.</p></article>
+      <article class="tile" id="about"><span class="material-symbols-outlined" aria-hidden="true">info</span><h3>About</h3><p>Dark-red theme language inspired by the provided references.</p></article>
+      <article class="tile" id="signin"><span class="material-symbols-outlined" aria-hidden="true">login</span><h3>Sign In</h3><p>Ready placeholder for account workflows and secure access.</p></article>
+    </div>
+  </section>
+
+  <footer>
+    2026 TheGeneric. Do Not Distribute!
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      themeIcon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+      themeBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+
+    const saved = localStorage.getItem('thegeneric-theme');
+    if (saved === 'light' || saved === 'dark') {
+      applyTheme(saved);
+    } else {
+      applyTheme(media.matches ? 'dark' : 'light');
+    }
+
+    media.addEventListener('change', (event) => {
+      if (!localStorage.getItem('thegeneric-theme')) {
+        applyTheme(event.matches ? 'dark' : 'light');
+      }
+    });
+
+    themeBtn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('thegeneric-theme', next);
+    });
+
+    document.addEventListener('dragstart', (event) => event.preventDefault());
+  </script>
+</body>
+</html>
