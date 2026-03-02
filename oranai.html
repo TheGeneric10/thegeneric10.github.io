@@ -216,25 +216,31 @@
       const start = performance.now();
       statusEl.innerHTML = streamFxEl.checked ? '<span class="dot"></span> oran-a1 is generating...' : 'oran-a1 is generating...';
       sendBtn.disabled = true;
-      const tone = document.querySelector('input[name="responseTone"]:checked')?.value || 'balanced';
-      const data = await apiFetch('/api/chat', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ chat_id: activeChatId, prompt, tone })
-      });
-      sendBtn.disabled = false;
-      if (data.chat_id) {
-        activeChatId = data.chat_id;
-        localStorage.setItem('oranai-active-chat', activeChatId);
+      try {
+        const tone = document.querySelector('input[name="responseTone"]:checked')?.value || 'balanced';
+        const data = await apiFetch('/api/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ chat_id: activeChatId, prompt, tone })
+        });
+        if (data.chat_id) {
+          activeChatId = data.chat_id;
+          localStorage.setItem('oranai-active-chat', activeChatId);
+        }
+        if (data.ok) {
+          bubble('assistant', data.answer, data.elapsed_ms);
+        } else {
+          bubble('assistant', data.error || 'Generation failed.');
+        }
+        await loadChats();
+        statusEl.textContent = `Done in ${((performance.now() - start)/1000).toFixed(2)}s · API ${apiBase}`;
+      } catch (error) {
+        bubble('assistant', `Request failed: ${error.message}`);
+        statusEl.textContent = `Failed · ${error.message}`;
+      } finally {
+        sendBtn.disabled = false;
       }
-      if (data.ok) {
-        bubble('assistant', data.answer, data.elapsed_ms);
-      } else {
-        bubble('assistant', data.error || 'Generation failed.');
-      }
-      await loadChats();
-      statusEl.textContent = `Done in ${((performance.now() - start)/1000).toFixed(2)}s · API ${apiBase}`;
-      setTimeout(() => { statusEl.textContent = ''; }, 1600);
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
     }
 
     newChatBtn.addEventListener('click', async () => {
