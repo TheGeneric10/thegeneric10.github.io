@@ -18,7 +18,12 @@ from pathlib import Path
 from threading import Lock
 from typing import Any
 
-from flask import Flask, jsonify, request, send_from_directory
+try:
+    from flask import Flask, jsonify, request, send_from_directory
+except ModuleNotFoundError as exc:
+    raise SystemExit(
+        "Missing dependency: flask. Install dependencies with `python -m pip install -r requirements.txt`."
+    ) from exc
 
 
 @dataclass
@@ -73,10 +78,15 @@ class OranA1Engine:
                 f"Details: {exc}"
             )
 
-    def _build_prompt(self, history: list[dict[str, str]], user_prompt: str) -> str:
+    def _build_prompt(self, history: list[dict[str, str]], user_prompt: str, tone: str = "balanced") -> str:
+        tone_instruction = {
+            "balanced": "Keep answers clear and practical.",
+            "concise": "Keep answers short and to the point.",
+            "detailed": "Provide a thorough explanation with structured steps.",
+        }.get(tone, "Keep answers clear and practical.")
         system = (
             "You are oran-a1, a helpful assistant made by TheGeneric. "
-            "Answer directly, clearly, and with practical steps when useful."
+            f"{tone_instruction}"
         )
         chunks = [f"System: {system}"]
         for item in history[-10:]:
@@ -88,7 +98,7 @@ class OranA1Engine:
         chunks.append("Assistant:")
         return "\n".join(chunks)
 
-    def generate(self, history: list[dict[str, str]], user_prompt: str) -> dict[str, Any]:
+    def generate(self, history: list[dict[str, str]], user_prompt: str, tone: str = "balanced") -> dict[str, Any]:
         self.load()
         started = time.perf_counter()
 
@@ -101,7 +111,7 @@ class OranA1Engine:
             }
 
         with self._lock:
-            prompt = self._build_prompt(history, user_prompt)
+            prompt = self._build_prompt(history, user_prompt, tone=tone)
             tok = self._tokenizer
             model = self._model
             torch = self._torch
@@ -240,6 +250,9 @@ def chat() -> Any:
     payload = request.get_json(force=True)
     prompt = (payload.get("prompt") or "").strip()
     chat_id = (payload.get("chat_id") or "").strip()
+    tone = (payload.get("tone") or "balanced").strip().lower()
+    if tone not in {"balanced", "concise", "detailed"}:
+        tone = "balanced"
 
     if not prompt:
         return jsonify({"ok": False, "error": "Prompt is required."}), 400
@@ -250,7 +263,7 @@ def chat() -> Any:
     existing = STORE.get_messages(chat_id)
     history = [{"role": m["role"], "content": m["content"]} for m in existing]
     STORE.add_message(chat_id, "user", prompt)
-    result = ENGINE.generate(history=history, user_prompt=prompt)
+    result = ENGINE.generate(history=history, user_prompt=prompt, tone=tone)
 
     if result["ok"]:
         STORE.add_message(chat_id, "assistant", result["answer"], elapsed_ms=result["elapsed_ms"])
