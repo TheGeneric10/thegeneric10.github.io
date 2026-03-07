@@ -85,16 +85,25 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 /* SETTINGS PANEL */
 .spbk{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
 .spbk.open{opacity:1;pointer-events:all}
-.sppn{position:fixed;top:0;right:-340px;width:320px;height:100vh;background:var(--bg2);border-left:1px solid var(--bo);z-index:301;transition:right .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.sppn{position:fixed;top:0;right:-760px;width:min(760px,100vw);height:100vh;background:linear-gradient(180deg,var(--bg2),#0b0b0d);border-left:1px solid var(--bo);z-index:301;transition:right .4s cubic-bezier(.22,1,.36,1);overflow:hidden}
 .sppn.open{right:0}
 .sphd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--bo);position:sticky;top:0;background:var(--bg2);z-index:1}
 .sptl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px}
-.spbd{padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.spbd{height:calc(100vh - 74px);padding:1rem}
 .spst{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.75rem}
 .spsw{display:flex;gap:10px;flex-wrap:wrap}
 .spsl{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
 .spsl:hover{transform:scale(1.15)}
 .spsl.active{border-color:var(--tx);box-shadow:0 0 0 3px var(--rg)}
+.spgrid{display:grid;grid-template-columns:180px 1fr;gap:1rem;height:100%}
+.spnav{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:.85rem;display:flex;flex-direction:column;gap:.45rem;overflow:auto}
+.spnavbtn{width:100%;background:transparent;border:1px solid var(--bo);color:var(--td);border-radius:10px;padding:.7rem .8rem;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:left;cursor:pointer;transition:all var(--T)}
+.spnavbtn:hover{color:var(--tx);border-color:var(--bo2);background:var(--sf)}
+.spnavbtn.active{color:#fff;border-color:rgba(224,43,43,.4);background:linear-gradient(135deg,rgba(224,43,43,.22),rgba(224,43,43,.07));box-shadow:0 8px 18px rgba(224,43,43,.22)}
+.spcont{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:1rem;overflow:auto}
+.spcat{display:none}
+.spcat.active{display:block;animation:pIn .28s ease both}
+
 
 /* ROUTING */
 #mc{position:relative;z-index:1;padding-top:var(--nh)}
@@ -337,7 +346,9 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 @keyframes tIn{to{transform:translateY(0);opacity:1}}
 .rdbk{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:1100;display:none;place-items:center;padding:1rem}
 .rdbk.open{display:grid}
-.rdmd{width:min(420px,100%);border-radius:16px;border:1px solid var(--bo2);background:var(--sf);padding:1.2rem;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.rdmd{width:min(430px,100%);border-radius:16px;border:1px solid var(--bo2);background:var(--sf);padding:1.2rem;box-shadow:0 30px 60px rgba(0,0,0,.45);position:relative;overflow:hidden;transform:translateY(22px) scale(.95);opacity:0}
+.rdbk.open .rdmd{animation:rdIn .46s cubic-bezier(.2,1.1,.35,1) forwards}
+.rdbk.closing .rdmd{animation:rdOut .26s ease forwards}
 .rdmd.github{background:linear-gradient(160deg,#1d1d1d,#111);box-shadow:0 0 50px rgba(0,0,0,.6)}
 .rdmd.youtube{background:linear-gradient(160deg,#2b0d12,#1a0f10);box-shadow:0 0 50px rgba(255,105,180,.25)}
 .rdmd.discord{background:linear-gradient(160deg,#0f1a35,#101624);box-shadow:0 0 50px rgba(125,211,252,.3)}
@@ -346,6 +357,21 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .rdtx{text-align:center;font-weight:800;letter-spacing:.5px;font-size:1.02rem;margin-bottom:5px}
 .rdsub{text-align:center;color:var(--td);font-size:.78rem;margin-bottom:14px}
 .rdact{display:flex;gap:.6rem;justify-content:center}
+.rd-particles,.cf-particles{position:absolute;inset:0;pointer-events:none}
+.rdp,.cfp{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(.2px);animation:prt 2.8s linear infinite}
+@keyframes prt{0%{opacity:0;transform:translateY(20px) scale(.5)}20%{opacity:.7}100%{opacity:0;transform:translateY(-120px) scale(1.1)}}
+@keyframes rdIn{0%{transform:translateY(22px) scale(.94);opacity:0}70%{transform:translateY(-4px) scale(1.02);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes rdOut{to{transform:translateY(18px) scale(.96);opacity:0}}
+
+/* CONFIRM MODAL */
+.cfbk{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(2px);display:none;place-items:center;z-index:1120;padding:1rem}
+.cfbk.open{display:grid}
+.cfmd{width:min(430px,100%);border-radius:16px;border:1px solid var(--bo2);background:linear-gradient(165deg,#101113,#0d0d10);padding:1.3rem;box-shadow:0 30px 65px rgba(0,0,0,.5);position:relative;overflow:hidden;transform:translateY(20px) scale(.94);opacity:0}
+.cfbk.open .cfmd{animation:rdIn .46s cubic-bezier(.2,1.1,.35,1) forwards}
+.cfbk.closing .cfmd{animation:rdOut .26s ease forwards}
+.cftx{font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:1.9rem;margin-bottom:.35rem}
+.cfsub{font-size:.84rem;color:var(--td);line-height:1.6;margin-bottom:1rem}
+.cfact{display:flex;justify-content:flex-end;gap:.6rem}
 
 /* PROFILE PICTURE UPLOAD */
 .pavw{position:relative;width:90px}
@@ -379,6 +405,9 @@ footer.hidden{display:none}
   .mcard{grid-template-columns:1fr}.dg{grid-template-columns:repeat(2,1fr)}
   .blg{grid-template-columns:repeat(2,1fr)}.ctg{grid-template-columns:1fr}
   .prfgr{grid-template-columns:1fr}.fcls{gap:2rem}
+  .spgrid{grid-template-columns:1fr}
+  .spnav{flex-direction:row;flex-wrap:wrap}
+  .spnavbtn{flex:1;min-width:120px;text-align:center}
 }
 @media(max-width:540px){
   .dg,.blg{grid-template-columns:1fr}.authcard{padding:1.75rem}
@@ -433,14 +462,15 @@ footer.hidden{display:none}
   <div id="toast-wrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
   <div class="sphd"><span class="sptl">Settings</span><button class="ibt" onclick="closeSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <div class="spbd">
-    <div style="display:grid;grid-template-columns:120px 1fr;gap:1rem;align-items:start">
-      <div style="display:flex;flex-direction:column;gap:.5rem">
-        <button class="bg" type="button" onclick="openSettingsCategory('appearance')" style="justify-content:flex-start">Appearance</button>
-        <button class="bg" type="button" onclick="openSettingsCategory('account')" style="justify-content:flex-start">Account</button>
-        <button class="bg" type="button" onclick="openSettingsCategory('about')" style="justify-content:flex-start">About</button>
+    <div class="spgrid">
+      <div class="spnav">
+        <button class="spnavbtn active" type="button" data-sbtn="appearance" onclick="openSettingsCategory('appearance')">Appearance</button>
+        <button class="spnavbtn" type="button" data-sbtn="account" onclick="openSettingsCategory('account')">Account</button>
+        <button class="spnavbtn" type="button" data-sbtn="notifications" onclick="openSettingsCategory('notifications')">Notifications</button>
+        <button class="spnavbtn" type="button" data-sbtn="about" onclick="openSettingsCategory('about')">About</button>
       </div>
-      <div id="settings-categories">
-        <div data-cat="appearance">
+      <div id="settings-categories" class="spcont">
+        <div data-cat="appearance" class="spcat active">
           <div><div class="spst">Accent Color</div>
           <div class="spsw">
             <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)"></div>
@@ -451,17 +481,26 @@ footer.hidden{display:none}
             <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)"></div>
           </div></div>
           <div style="margin-top:1rem"><div class="spst">Theme</div>
-          <div style="display:flex;gap:.5rem">
-            <button class="bg" type="button" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
-            <button class="bg" type="button" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
-          </div></div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="bg" type="button" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
+              <button class="bg" type="button" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
+            </div>
+          </div>
         </div>
-        <div data-cat="account" style="display:none">
+        <div data-cat="account" class="spcat">
           <div><div class="spst">Session</div>
-          <div style="font-size:.75rem;color:var(--td);line-height:1.7">Sign in to access profile actions, personalized navigation, and quick links.</div></div>
-          <div style="margin-top:1rem"><button class="bg" type="button" onclick="go('auth');closeSP()" style="font-size:.72rem">Open Account</button></div>
+          <div style="font-size:.78rem;color:var(--td);line-height:1.7">Manage account access, profile, and quick actions from one place.</div></div>
+          <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="bg" type="button" onclick="go('profile');closeSP()" style="font-size:.72rem">View Profile</button>
+            <button class="bg" type="button" onclick="go('auth');closeSP()" style="font-size:.72rem">Open Account</button>
+          </div>
         </div>
-        <div data-cat="about" style="display:none">
+        <div data-cat="notifications" class="spcat">
+          <div><div class="spst">Quick Notices</div>
+          <div style="font-size:.78rem;color:var(--td);line-height:1.75">Enable friendly toasts for important actions like profile updates, link redirects, and status messages.</div></div>
+          <div style="margin-top:1rem"><button class="bg" type="button" onclick="toast('Notifications are enabled.','ok')" style="font-size:.72rem">Test Notification</button></div>
+        </div>
+        <div data-cat="about" class="spcat">
           <div><div class="spst">Version</div><div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm)">TheGeneric</div></div>
           <div style="margin-top:1rem"><div class="spst">Contact</div><a href="mailto:toxicbusinessstudios@gmail.com" style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);text-decoration:none">toxicbusinessstudios@gmail.com</a></div>
         </div>
@@ -472,12 +511,25 @@ footer.hidden{display:none}
 
 <div class="rdbk" id="rdbk" onclick="if(event.target.id==='rdbk')closeRedirect()">
   <div class="rdmd" id="rdmd">
+    <div class="rd-particles" id="rd-particles"></div>
     <div class="rdi" id="rdi"></div>
     <div class="rdtx" id="rdtx">Redirecting</div>
     <div class="rdsub" id="rdsub">Preparing destination…</div>
     <div class="rdact">
       <button class="bp" id="rdbtn" type="button">Redirect</button>
       <button class="bg" type="button" onclick="closeRedirect()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="cfbk" id="cfbk" onclick="if(event.target.id==='cfbk')closeConfirm()">
+  <div class="cfmd" id="cfmd">
+    <div class="cf-particles" id="cf-particles"></div>
+    <div class="cftx" id="cftx">Confirm Action</div>
+    <div class="cfsub" id="cfsub">Please confirm to continue.</div>
+    <div class="cfact">
+      <button class="bg" type="button" onclick="closeConfirm()">Cancel</button>
+      <button class="bp" id="cfok" type="button">Continue</button>
     </div>
   </div>
 </div>
@@ -684,6 +736,21 @@ footer.hidden{display:none}
   </div>
 </div></div>
 
+
+<!-- EMAIL US -->
+<div id="page-email" class="page"><div class="sp" style="max-width:760px;margin:0 auto">
+  <div class="sh"><div class="sey">Direct Message</div><h2 class="sti">Email Us.</h2><p class="ssb">Send a focused message directly from this page.</p></div>
+  <form id="email-page-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem">
+    <div class="fg2"><label class="fl">Subject</label><input class="fi" id="ep-subject" type="text" placeholder="What do you need help with?"></div>
+    <div class="fg2"><label class="fl">Your Email</label><input class="fi" id="ep-email" type="email" placeholder="you@example.com"></div>
+    <div class="fg2"><label class="fl">Message</label><textarea class="fta" id="ep-message" placeholder="Write your message..." style="min-height:160px"></textarea></div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="bp" type="submit">Open Email Draft</button>
+      <button class="bg" type="button" onclick="go('contact')">Back to Contact</button>
+    </div>
+  </form>
+</div></div>
+
 <!-- TERMS -->
 <div id="page-terms" class="page"><div class="pgw">
   <h1>Terms of <span>Service</span></h1><div class="pgmt">LAST UPDATED: MARCH 2026 · V26.1</div>
@@ -842,9 +909,9 @@ footer.hidden{display:none}
         <div class="fbvr">TheGeneric · toxicbusinessstudios@gmail.com</div>
       </div>
       <div class="fcls">
-        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a href="mailto:toxicbusinessstudios@gmail.com">Email Us</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth ↗</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game ↗</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod ↗</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a onclick="go('email')">Email Us</a></li></ul></div>
       </div>
     </div>
     <div class="ftbt">
@@ -876,8 +943,8 @@ function go(id){
   closeUD();
   setTimeout(attachReveal,50);
 }
-window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
-window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
+window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
+window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
 
 // THEME
 function toggleTheme(){setTh(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
@@ -976,7 +1043,7 @@ async function doGoogle(){
 }
 
 // SIGN OUT
-async function doSO(){if(!confirm('Sign out now?'))return;await auth.signOut();closeUD();toast('Signed out successfully.','ok');location.hash='#home';location.reload()}
+async function doSO(){openConfirm({title:'Sign Out',message:'Are you sure you want to sign out of this session?',okText:'Sign Out',onConfirm:async()=>{await auth.signOut();closeUD();toast('Signed out successfully.','ok');location.hash='#home';location.reload()}})}
 
 // AUTH HELPERS
 function shErr(m){const e=document.getElementById('aerr');if(e){e.textContent=m;e.classList.add('show')}}
@@ -1042,15 +1109,19 @@ attachReveal();
 
 function toast(msg,type='ok'){const wrap=document.getElementById('toast-wrap');if(!wrap)return;const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;wrap.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),220)},2900)}
 function updCTA(user){const btn=document.getElementById('cta-account-btn');if(!btn)return;btn.innerHTML=(user?'View Account':'Create Account')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;btn.onclick=()=>go(user?'profile':'auth')}
-function openSettingsCategory(cat){document.querySelectorAll('#settings-categories [data-cat]').forEach(el=>el.style.display=el.dataset.cat===cat?'block':'none')}
+function openSettingsCategory(cat){document.querySelectorAll('#settings-categories [data-cat]').forEach(el=>el.classList.toggle('active',el.dataset.cat===cat));document.querySelectorAll('.spnavbtn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sbtn===cat))}
 const REDIRECTS={github:{name:'GitHub',url:'https://github.com/TheGeneric10',theme:'github',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>'},youtube:{name:'YouTube',url:'https://www.youtube.com/@goat8six',theme:'youtube',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>'},discord:{name:'Discord',url:'https://discord.gg/KjEZtRmWwc',theme:'discord',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>'}};
 let redirectUrl='';
-function openRedirect(key){const c=REDIRECTS[key];if(!c)return;redirectUrl=c.url;const bk=document.getElementById('rdbk');const md=document.getElementById('rdmd');document.getElementById('rdi').innerHTML=c.icon;document.getElementById('rdtx').textContent=`${c.name} link`;document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;document.getElementById('rdbtn').textContent=`Redirect to ${c.name}`;md.className=`rdmd ${c.theme}`;bk.classList.add('open');document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener')}
-function closeRedirect(){document.getElementById('rdbk')?.classList.remove('open')}
-function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}}
+function makeParticles(containerId,cls,count=14){const host=document.getElementById(containerId);if(!host)return;host.innerHTML='';for(let i=0;i<count;i++){const p=document.createElement('span');p.className=cls;p.style.left=`${Math.random()*100}%`;p.style.bottom=`${-8-Math.random()*20}px`;p.style.animationDelay=`${Math.random()*1.6}s`;p.style.animationDuration=`${2+Math.random()*1.6}s`;host.appendChild(p)}}
+function openRedirect(key){const c=REDIRECTS[key];if(!c)return;redirectUrl=c.url;const bk=document.getElementById('rdbk');const md=document.getElementById('rdmd');document.getElementById('rdi').innerHTML=c.icon;document.getElementById('rdtx').textContent=`${c.name} link`;document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;document.getElementById('rdbtn').textContent=`Redirect to ${c.name}`;md.className=`rdmd ${c.theme}`;makeParticles('rd-particles','rdp',16);bk.classList.remove('closing');bk.classList.add('open');document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener')}
+function closeRedirect(){const bk=document.getElementById('rdbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
+function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}const ep=document.getElementById('email-page-form');if(ep){ep.addEventListener('submit',e=>{e.preventDefault();const sub=document.getElementById('ep-subject')?.value.trim();const em=document.getElementById('ep-email')?.value.trim();const msg=document.getElementById('ep-message')?.value.trim();if(!sub||!em||!msg){toast('Please fill all Email Us fields.','err');return}window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(`From: ${em}\n\n${msg}`)}`;toast('Opening your email draft.','ok')})}}
+let confirmHandler=null;function openConfirm({title='Confirm Action',message='Please confirm.',okText='Continue',onConfirm=()=>{}}={}){const bk=document.getElementById('cfbk');document.getElementById('cftx').textContent=title;document.getElementById('cfsub').textContent=message;const ok=document.getElementById('cfok');ok.textContent=okText;confirmHandler=onConfirm;makeParticles('cf-particles','cfp',15);bk.classList.remove('closing');bk.classList.add('open')}
+function closeConfirm(){const bk=document.getElementById('cfbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
+document.getElementById('cfok')?.addEventListener('click',async()=>{try{if(confirmHandler)await confirmHandler()}finally{closeConfirm();confirmHandler=null}})
 function initPfpUpload(){const fi=document.getElementById('pav-file');if(!fi)return;fi.addEventListener('change',ev=>{const f=ev.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Only image files are supported.','err');return}if(f.size>4*1024*1024){toast('Image is too large (max 4MB).','err');return}const r=new FileReader();r.onload=()=>{const url=r.result;localStorage.setItem('tg-pfp',url);const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${url}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${url}" alt="Profile photo">`);toast('Profile photo updated.','ok')};r.readAsDataURL(f)})}
 function applySavedPfp(){const p=localStorage.getItem('tg-pfp');if(!p)return;const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${p}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${p}" alt="Profile photo">`)}
-initForms();initPfpUpload();applySavedPfp();
+initForms();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
 
 fetchMR();setInterval(fetchMR,60*60*1000);
 </script>
