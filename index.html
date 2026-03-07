@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TheGeneric</title>
+<title>TheGeneric · v26.1</title>
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b" async defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -21,7 +21,8 @@
   --sf:#1e1e1e;--sf2:#252525;
   --bo:rgba(255,255,255,.07);--bo2:rgba(255,255,255,.12);
   --tx:#f0f0f0;--tm:#777;--td:#aaa;
-  --r:12px;--rl:20px;--nh:64px;--T:.25s cubic-bezier(.4,0,.2,1)
+  --r:12px;--rl:20px;--nh:64px;--T:.25s cubic-bezier(.4,0,.2,1);
+  --fs:1rem;
 }
 [data-theme=light]{
   --bg:#f4f4f4;--bg2:#ececec;--bg3:#e4e4e4;
@@ -30,11 +31,14 @@
   --tx:#111;--tm:#888;--td:#555;
   --rg:rgba(224,43,43,.18);--rt:rgba(224,43,43,.06)
 }
-html{scroll-behavior:smooth}
+[data-fs=small]{--fs:.88rem}
+[data-fs=large]{--fs:1.1rem}
+html{scroll-behavior:smooth;font-size:var(--fs)}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;transition:background var(--T),color var(--T)}
 *{-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
 input,textarea,select{-webkit-user-select:text!important;user-select:text!important}
 img{-webkit-user-drag:none;pointer-events:none}
+[data-bg-off] body::before{display:none}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red-d);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--red)}
 .grecaptcha-badge{visibility:hidden!important;opacity:0!important;pointer-events:none!important;display:none!important}
@@ -77,7 +81,7 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .uav img{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .uname{font-size:.75rem;font-weight:700;color:var(--tx);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .utrig svg{width:12px;height:12px;color:var(--tm);flex-shrink:0}
-.udd{position:absolute;top:calc(100% + 8px);right:0;width:180px;background:var(--sf);border:1px solid var(--bo2);border-radius:var(--r);box-shadow:0 20px 40px rgba(0,0,0,.4);overflow:hidden;opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
+.udd{position:absolute;top:calc(100% + 8px);right:0;width:190px;background:var(--sf);border:1px solid var(--bo2);border-radius:var(--r);box-shadow:0 20px 40px rgba(0,0,0,.4);overflow:hidden;opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
 .udd.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
 .udit{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:.8rem;color:var(--td);cursor:pointer;transition:background var(--T),color var(--T);text-decoration:none}
 .udit svg{width:14px;height:14px;flex-shrink:0}
@@ -92,21 +96,39 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .sppn.open{right:0}
 .sphd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--bo);position:sticky;top:0;background:var(--bg2);z-index:1}
 .sptl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px}
-.spbd{height:calc(100vh - 74px);padding:1rem}
-.spst{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.75rem}
-.spsw{display:flex;gap:10px;flex-wrap:wrap}
-.spsl{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
-.spsl:hover{transform:scale(1.15)}
-.spsl.active{border-color:var(--tx);box-shadow:0 0 0 3px var(--rg)}
-.spgrid{display:grid;grid-template-columns:180px 1fr;gap:1rem;height:100%}
-.spnav{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:.85rem;display:flex;flex-direction:column;gap:.45rem;overflow:auto}
-.spnavbtn{width:100%;background:transparent;border:1px solid var(--bo);color:var(--td);border-radius:10px;padding:.7rem .8rem;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:left;cursor:pointer;transition:all var(--T)}
+.spbd{height:calc(100vh - 74px);padding:1rem;overflow:hidden}
+.spgrid{display:grid;grid-template-columns:190px 1fr;gap:1rem;height:100%}
+.spnav{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:.85rem;display:flex;flex-direction:column;gap:.4rem;overflow-y:auto}
+.spnavbtn{width:100%;background:transparent;border:1px solid var(--bo);color:var(--td);border-radius:10px;padding:.65rem .8rem;font-size:.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:left;cursor:pointer;transition:all var(--T)}
 .spnavbtn:hover{color:var(--tx);border-color:var(--bo2);background:var(--sf)}
 .spnavbtn.active{color:#fff;border-color:rgba(224,43,43,.4);background:linear-gradient(135deg,rgba(224,43,43,.22),rgba(224,43,43,.07));box-shadow:0 8px 18px rgba(224,43,43,.22)}
-.spcont{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:1rem;overflow:auto}
-.spcat{display:none}
-.spcat.active{display:block;animation:pIn .28s ease both}
-
+.spcont{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:1.25rem;overflow-y:auto}
+.spcat{display:none;animation:pIn .28s ease both}
+.spcat.active{display:block}
+.spst{font-size:.62rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.65rem;margin-top:1rem}
+.spst:first-child{margin-top:0}
+.sp-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
+.sp-tog{display:flex;align-items:center;justify-content:space-between;padding:.65rem .85rem;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;margin-bottom:.5rem;cursor:pointer;transition:border-color var(--T)}
+.sp-tog:hover{border-color:var(--bo2)}
+.sp-tog-label{font-size:.78rem;color:var(--tx);font-weight:600}
+.sp-tog-sub{font-size:.65rem;color:var(--tm);margin-top:2px}
+.sp-tog-switch{width:38px;height:20px;background:var(--bg2);border:1px solid var(--bo2);border-radius:99px;position:relative;transition:background .2s,border-color .2s;flex-shrink:0}
+.sp-tog-switch.on{background:var(--red);border-color:var(--red)}
+.sp-tog-switch::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .2s}
+.sp-tog-switch.on::after{transform:translateX(18px)}
+.spsw{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem}
+.spsl{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
+.spsl:hover{transform:scale(1.15)}
+.spsl.active{border-color:var(--tx);box-shadow:0 0 0 3px var(--rg)}
+.sp-seg{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:4px;margin-bottom:.75rem}
+.sp-seg-btn{flex:1;padding:6px 10px;border:none;border-radius:7px;background:transparent;color:var(--td);font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.sp-seg-btn.active{background:var(--red);color:#fff;box-shadow:0 4px 10px var(--rg)}
+.sp-info-card{background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.85rem 1rem;margin-bottom:.6rem}
+.sp-info-label{font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700;margin-bottom:.3rem}
+.sp-info-val{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--tx)}
+.sp-info-val a{color:var(--red);text-decoration:none}
+.sp-info-val a:hover{text-decoration:underline}
+.sp-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:.62rem;font-weight:700;letter-spacing:.5px;border:1px solid}
 
 /* ROUTING */
 #mc{position:relative;z-index:1;padding-top:var(--nh)}
@@ -127,28 +149,29 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 
 /* HERO */
 .hero{min-height:calc(100vh - var(--nh));position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:5rem 5vw 2rem}
-.hbg{animation:fU .6s ease both}
-@keyframes fU{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fI{from{opacity:0}to{opacity:1}}
 .hbdg{display:inline-flex;align-items:center;gap:8px;background:rgba(224,43,43,.1);border:1px solid rgba(224,43,43,.3);border-radius:999px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);letter-spacing:1px;margin-bottom:1.5rem;animation:fU .6s ease both}
 .hbdg .blk{width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 8px var(--red);animation:bk 2s ease infinite}
-@keyframes bk{0%,100%{opacity:1}50%{opacity:.15}}
-.htgs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;animation:fU .6s .05s ease both}
-.htg{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.5px;padding:4px 10px;border-radius:999px;border:1px solid}
-.tg{color:#27c47a;border-color:rgba(39,196,122,.3);background:rgba(39,196,122,.07)}
-.tb{color:#4a9eff;border-color:rgba(74,158,255,.3);background:rgba(74,158,255,.07)}
-.tr{color:var(--red);border-color:rgba(224,43,43,.3);background:var(--rt)}
-.hti{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,9vw,8rem);line-height:.9;letter-spacing:2px;margin-bottom:1.25rem;animation:fU .6s .1s ease both}
-.hti .ac{color:var(--red)}.hti .ol{-webkit-text-stroke:2px var(--td);color:transparent}
-.hds{font-size:.95rem;color:var(--td);line-height:1.75;max-width:460px;margin-bottom:2.5rem;animation:fU .6s .18s ease both}
-.hcta{display:flex;align-items:center;gap:1rem;animation:fU .6s .25s ease both}
-.hsts{display:flex;gap:2.5rem;margin-top:3.5rem;animation:fU .6s .32s ease both}
-.stn{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);letter-spacing:1px;line-height:1}
-.stn a{color:inherit;text-decoration:none}.stn a:hover{text-decoration:underline}
-.stl{font-size:.65rem;color:var(--tm);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-top:3px}
-.hvis{position:relative;display:flex;flex-direction:column;gap:1rem;animation:fI .8s .2s ease both;z-index:1}
-.hvc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.5rem;transition:border-color var(--T),box-shadow .2s,transform .2s;cursor:pointer}
-.hvc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fU{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.htgs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;animation:fU .6s .1s ease both}
+.htg{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-family:'DM Mono',monospace;font-size:.62rem;font-weight:500;letter-spacing:.5px}
+.tg{background:rgba(39,196,122,.12);color:#27c47a;border:1px solid rgba(39,196,122,.25)}
+.tb{background:rgba(74,158,255,.12);color:#4a9eff;border:1px solid rgba(74,158,255,.25)}
+.tr{background:var(--rt);color:var(--red);border:1px solid rgba(224,43,43,.25)}
+.hti{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,6.5rem);letter-spacing:3px;line-height:.95;margin-bottom:1.5rem;animation:fU .6s .15s ease both}
+.hti .ac{color:var(--red)}
+.hti .ol{-webkit-text-stroke:2px var(--tx);color:transparent}
+.hds{font-size:.95rem;color:var(--td);line-height:1.75;max-width:480px;margin-bottom:2rem;animation:fU .6s .2s ease both}
+.hcta{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:2.5rem;animation:fU .6s .25s ease both}
+.hsts{display:flex;gap:2.5rem;animation:fU .6s .3s ease both}
+.stn{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;line-height:1;color:var(--red)}
+.stn a{color:inherit;text-decoration:none}
+.stl{font-size:.62rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-top:2px}
+
+/* HERO CARDS */
+.hvis{display:flex;flex-direction:column;gap:1.25rem}
+.hvc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.75rem;cursor:pointer;transition:border-color var(--T),box-shadow .2s,transform .2s;animation:fU .6s .35s ease both}
+.hvc:hover{border-color:rgba(224,43,43,.3);box-shadow:0 20px 40px rgba(0,0,0,.3);transform:translateY(-3px)}
 .hvch{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
 .hvic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hv-sl{background:linear-gradient(135deg,#00ff88,#00ccff)}
@@ -174,7 +197,6 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .slsub{font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(0,255,136,.6);letter-spacing:3px;text-transform:uppercase}
 .gbdg{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);border-radius:999px;padding:4px 12px;font-family:'DM Mono',monospace;font-size:.62rem;color:#00ff88;letter-spacing:1px;margin-bottom:1.25rem}
 
-
 /* SLOPE LIVE CONFIG */
 .sllv{margin:0 auto 1.2rem;max-width:1040px;background:var(--sf);border:1px solid var(--bo);border-radius:14px;padding:1rem 1.1rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;align-items:stretch}
 .sllv.hidden{display:none!important}
@@ -183,8 +205,6 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .sllv .vl{font-size:.86rem;color:var(--tx);font-weight:700;line-height:1.4;word-break:break-word}
 .sllv .vl.dim{color:var(--tm)}
 .sllv .itm.sup{grid-column:span 2}
-@media(max-width:900px){.sllv{grid-template-columns:1fr 1fr}.sllv .itm.sup{grid-column:span 2}}
-@media(max-width:540px){.sllv{grid-template-columns:1fr}.sllv .itm.sup{grid-column:span 1}}
 
 /* MODS */
 .modsec{padding:6rem 5vw;background:var(--bg2);position:relative;overflow:hidden}
@@ -211,129 +231,131 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .sey::before,.sey::after{content:'';width:24px;height:1px;background:var(--red);opacity:.5}
 .sti{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,3.5rem);letter-spacing:2px}
 .ssb{color:var(--tm);font-size:.88rem;margin-top:.5rem;line-height:1.7}
-.divl{height:1px;background:linear-gradient(90deg,transparent,var(--bo),transparent);margin:0 5vw}
 
-/* CTA STRIP */
-.ctas{padding:5rem 5vw;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
-.ctas h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3rem);letter-spacing:2px}
-.ctas p{color:var(--tm);font-size:.85rem;margin-top:.5rem;max-width:380px;line-height:1.7}
-.ctaact{display:flex;gap:1rem;flex-wrap:wrap}
-
-/* FEATURES GRID */
+/* FEATURES */
 .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
-.fc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;position:relative;overflow:hidden;transition:border-color var(--T),transform .2s,box-shadow .2s}
-.fc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--rt) 0%,transparent 60%);opacity:0;transition:opacity var(--T)}
-.fc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.fc:hover::before{opacity:1}
-.fcico{width:46px;height:46px;background:var(--rt);border:1px solid rgba(224,43,43,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--red);margin-bottom:1.25rem}
-.fcico svg{width:20px;height:20px}
-.fcn{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--tm);letter-spacing:2px;margin-bottom:.75rem}
-.fct{font-weight:800;font-size:1rem;margin-bottom:.5rem}
-.fcd{font-size:.8rem;color:var(--tm);line-height:1.7}
-.fc.sp2{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.fc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;transition:border-color var(--T),box-shadow .2s,transform .2s}
+.fc:hover{border-color:rgba(224,43,43,.3);box-shadow:0 20px 40px rgba(0,0,0,.3);transform:translateY(-3px)}
+.fc.sp2{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.fcico{width:44px;height:44px;background:var(--rt);border:1px solid rgba(224,43,43,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;color:var(--red)}
+.fcico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fcn{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:.35rem}
+.fct{font-weight:800;font-size:1.05rem;margin-bottom:.75rem}
+.fcd{font-size:.82rem;color:var(--td);line-height:1.7}
 
 /* CHANGELOG */
-.cll{max-width:700px;margin:0 auto;display:flex;flex-direction:column}
-.cli{display:grid;grid-template-columns:110px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--bo)}
+.cll{display:flex;flex-direction:column;gap:0}
+.cli{display:grid;grid-template-columns:120px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--bo);position:relative}
+.cli::before{content:'';position:absolute;left:119px;top:0;bottom:0;width:1px;background:var(--bo)}
 .cli:last-child{border-bottom:none}
-.clv{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--red);letter-spacing:1px}
-.cld{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm);margin-top:4px}
-.cltg{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:.75rem;letter-spacing:.5px}
-.tgl{background:var(--red);color:#fff}
-.tgb{background:rgba(74,158,255,.2);color:#4a9eff;border:1px solid rgba(74,158,255,.3)}
-.clti{font-weight:800;font-size:1.05rem;margin-bottom:.75rem}
+.clv{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red);line-height:1}
+.cld{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm);letter-spacing:1px;margin-top:4px}
+.cltg{display:inline-flex;align-items:center;padding:3px 10px;border-radius:99px;font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem}
+.tgl{background:rgba(224,43,43,.15);color:var(--red);border:1px solid rgba(224,43,43,.35)}
+.tgb{background:rgba(39,196,122,.12);color:#27c47a;border:1px solid rgba(39,196,122,.3)}
+.tgleg{background:rgba(170,170,170,.1);color:var(--tm);border:1px solid var(--bo2)}
+.tgpv{background:rgba(245,166,35,.15);color:#f5a623;border:1px solid rgba(245,166,35,.3)}
+.clti{font-weight:800;font-size:1rem;margin-bottom:.75rem}
 .clch{list-style:none;display:flex;flex-direction:column;gap:.4rem}
-.clch li{font-size:.82rem;color:var(--td);padding-left:1rem;position:relative;line-height:1.6}
-.clch li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:.75rem}
+.clch li{font-size:.82rem;color:var(--td);line-height:1.5;padding-left:1.1rem;position:relative}
+.clch li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:.7rem}
 
 /* DOCS */
-.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:900px;margin:0 auto}
-.dc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);padding:1.75rem;cursor:pointer;transition:border-color var(--T),transform .2s,box-shadow .2s;text-decoration:none;color:var(--tx);display:flex;flex-direction:column;gap:.75rem}
-.dc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.3)}
-.dc svg{width:22px;height:22px;color:var(--red)}
-.dct{font-weight:800;font-size:.9rem}
-.dcd{font-size:.77rem;color:var(--tm);line-height:1.6}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.dc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.75rem;text-decoration:none;cursor:pointer;transition:border-color var(--T),box-shadow .2s,transform .2s;display:flex;flex-direction:column;gap:.75rem}
+.dc:hover{border-color:rgba(224,43,43,.3);box-shadow:0 20px 40px rgba(0,0,0,.3);transform:translateY(-3px)}
+.dc svg{width:28px;height:28px;color:var(--red)}
+.dct{font-weight:800;font-size:.95rem}
+.dcd{font-size:.8rem;color:var(--td);line-height:1.6}
 
-/* SIMPLE PAGES */
-.pgw{max-width:760px;margin:0 auto;padding:5rem 5vw}
-.pgw h1{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:3px;margin-bottom:.5rem}
+/* PAGE WRAPPER */
+.pgw{max-width:780px;margin:0 auto;padding:4rem 5vw}
+.pgw h1{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:2px;margin-bottom:.5rem}
 .pgw h1 span{color:var(--red)}
-.pgmt{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--tm);letter-spacing:1.5px;margin-bottom:2.5rem}
-.pgw h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin:2rem 0 .75rem;color:var(--red)}
-.pgw p{font-size:.88rem;color:var(--td);line-height:1.85;margin-bottom:1rem}
+.pgmt{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm);letter-spacing:2px;text-transform:uppercase;margin-bottom:2.5rem}
+.pgw h2{font-weight:800;font-size:1.05rem;margin-top:2rem;margin-bottom:.6rem;color:var(--tx)}
+.pgw p{font-size:.88rem;color:var(--td);line-height:1.8;margin-bottom:.75rem}
 .pgw a{color:var(--red);text-decoration:none}.pgw a:hover{text-decoration:underline}
-.pgw ul{padding-left:1.25rem;margin-bottom:1rem}.pgw ul li{font-size:.88rem;color:var(--td);line-height:1.85;margin-bottom:.35rem}
 
 /* BLOG */
 .blg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
-.blc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color var(--T),transform .2s,box-shadow .2s}
-.blc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.3)}
-.blt{height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg3),rgba(224,43,43,.1))}
-.blt svg{width:28px;height:28px;color:var(--red);opacity:.5}
+.blc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:border-color var(--T),box-shadow .2s,transform .2s}
+.blc:hover{border-color:rgba(224,43,43,.3);box-shadow:0 20px 40px rgba(0,0,0,.3);transform:translateY(-3px)}
+.blt{height:100px;background:linear-gradient(135deg,var(--bg3),var(--sf2));display:flex;align-items:center;justify-content:center}
+.blt svg{width:32px;height:32px;color:var(--red);opacity:.5}
 .blb{padding:1.25rem}
-.blcat{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
-.blti{font-weight:800;font-size:.88rem;line-height:1.4;margin-bottom:.5rem}
-.bldt{font-size:.7rem;color:var(--tm)}
+.blcat{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:.4rem}
+.blti{font-weight:800;font-size:.9rem;line-height:1.4;margin-bottom:.4rem}
+.bldt{font-size:.72rem;color:var(--tm)}
+
+/* CTA */
+.ctas{padding:6rem 5vw;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;max-width:1200px;margin:0 auto}
+.ctas h2{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:2px;margin-bottom:.5rem}
+.ctas p{color:var(--td);font-size:.88rem;line-height:1.7}
+.ctaact{display:flex;gap:.75rem;flex-wrap:wrap}
 
 /* CONTACT */
-.ctg{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:860px;margin:0 auto}
-.cti{display:flex;flex-direction:column;gap:1.5rem}
-.cti h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px}
-.cti p{font-size:.85rem;color:var(--td);line-height:1.75}
-.ceml{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);padding:1rem 1.25rem;text-decoration:none;color:var(--tx);transition:border-color var(--T),background var(--T)}
-.ceml:hover{border-color:var(--red);background:var(--rt)}
-.ceml svg{width:18px;height:18px;color:var(--red);flex-shrink:0}
-.ceml span{font-size:.82rem;font-weight:700}
-.ctf{display:flex;flex-direction:column;gap:1rem}
-.fg2{display:flex;flex-direction:column;gap:.4rem}
-.fl{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700}
-.fi,.fta{background:var(--sf);border:1px solid var(--bo);border-radius:8px;padding:11px 14px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;width:100%;transition:border-color var(--T);outline:none;resize:none}
-.fi:focus,.fta:focus{border-color:var(--red)}
-.fta{min-height:100px}
+.ctg{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:1000px;margin:0 auto}
+.cti h2{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px;margin-bottom:1rem}
+.cti p{font-size:.88rem;color:var(--td);line-height:1.75;margin-bottom:1rem}
+.ceml{display:flex;align-items:center;gap:10px;color:var(--red);text-decoration:none;font-size:.88rem;font-weight:700}
+.ceml svg{width:18px;height:18px}
+.ctf{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem}
+.fg2{display:flex;flex-direction:column;gap:.45rem}
+.fl{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm)}
+.fi{background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:.7rem .9rem;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;transition:border-color var(--T);outline:none}
+.fi:focus{border-color:var(--red)}
+.fta{background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:.7rem .9rem;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;min-height:120px;resize:vertical;transition:border-color var(--T);outline:none}
+.fta:focus{border-color:var(--red)}
+select.fi option{background:var(--bg3);color:var(--tx)}
 
 /* AUTH PAGE */
-.authpg{min-height:calc(100vh - var(--nh));display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
-.authcard{background:var(--sf);border:1px solid var(--bo);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 40px 80px rgba(0,0,0,.5);animation:pIn .4s ease both}
-.alo{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;justify-content:center}
-.ali{width:38px;height:38px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#fff;box-shadow:0 0 18px var(--rg)}
+.authpg{min-height:calc(100vh - var(--nh));display:flex;align-items:center;justify-content:center;padding:2rem;position:relative;overflow:hidden}
+.authcard{width:min(440px,100%);background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2.5rem;position:relative;z-index:1}
+.alo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:1.75rem}
+.ali{width:40px;height:40px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:#fff;box-shadow:0 0 20px var(--rg)}
 .alt{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px}
 .alt span{color:var(--red)}
-.atabs{display:flex;gap:.5rem;margin-bottom:1.75rem;background:var(--bg3);border-radius:10px;padding:4px}
-.atab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--tm);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:background var(--T),color var(--T)}
-.atab.active{background:var(--sf);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.flg{position:relative;margin-bottom:1.1rem}
-.fli{width:100%;padding:18px 14px 8px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;transition:border-color var(--T)}
-.fli:focus{border-color:var(--red)}
-.fll{position:absolute;top:13px;left:14px;font-size:.82rem;color:var(--tm);transition:all .2s ease;pointer-events:none}
-.fli:focus+.fll,.fli:not(:placeholder-shown)+.fll{top:5px;font-size:.6rem;color:var(--red);letter-spacing:1px;font-weight:700}
-.pwt{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tm);cursor:pointer;padding:4px;transition:color var(--T)}
-.pwt:hover{color:var(--tx)}.pwt svg{width:16px;height:16px}
-.aor{display:flex;align-items:center;gap:1rem;margin:1.25rem 0}
-.aor::before,.aor::after{content:'';flex:1;height:1px;background:var(--bo)}
-.aor span{font-size:.7rem;color:var(--tm);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
-.gbtn{width:100%;padding:11px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:border-color var(--T),background var(--T),transform .15s;margin-bottom:1rem}
-.gbtn:hover{border-color:var(--bo2);background:var(--sf2);transform:translateY(-1px)}
-.gbtn svg{width:18px;height:18px;flex-shrink:0}
-.achk{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem}
-.ckr{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
-.ckr input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:var(--red);flex-shrink:0;cursor:pointer;-webkit-user-select:auto;user-select:auto}
-.ckl{font-size:.76rem;color:var(--tm);line-height:1.5}
-.ckl a{color:var(--red);text-decoration:none;cursor:pointer}.ckl a:hover{text-decoration:underline}
-.asub{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:background var(--T),box-shadow var(--T),transform .15s}
-.asub:hover{background:var(--red-b);box-shadow:0 0 24px var(--rg);transform:translateY(-1px)}
-.asub:disabled{opacity:.6;cursor:not-allowed;transform:none}
-.aerr{background:rgba(224,43,43,.1);border:1px solid rgba(224,43,43,.3);border-radius:8px;padding:10px 14px;font-size:.78rem;color:var(--red);margin-bottom:1rem;display:none}
+.atabs{display:flex;gap:0;border:1px solid var(--bo);border-radius:10px;overflow:hidden;margin-bottom:1.5rem}
+.atab{flex:1;padding:.65rem;background:transparent;border:none;color:var(--td);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:background var(--T),color var(--T)}
+.atab.active{background:var(--red);color:#fff}
+.aerr{background:rgba(224,43,43,.1);border:1px solid rgba(224,43,43,.3);border-radius:8px;padding:.75rem 1rem;font-size:.8rem;color:var(--red);margin-bottom:1rem;display:none}
 .aerr.show{display:block}
-.aok{background:rgba(39,196,122,.1);border:1px solid rgba(39,196,122,.3);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#27c47a;margin-bottom:1rem;display:none}
+.aok{background:rgba(39,196,122,.1);border:1px solid rgba(39,196,122,.3);border-radius:8px;padding:.75rem 1rem;font-size:.8rem;color:#27c47a;margin-bottom:1rem;display:none}
 .aok.show{display:block}
-.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
-@keyframes sp{to{transform:rotate(360deg)}}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:.8rem;background:var(--bg3);border:1px solid var(--bo2);border-radius:8px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;margin-bottom:1rem;transition:background var(--T),border-color var(--T)}
+.gbtn:hover{background:var(--sf2);border-color:var(--bo2)}
+.gbtn svg{width:18px;height:18px;pointer-events:none}
+.aor{text-align:center;position:relative;margin-bottom:1rem;color:var(--tm);font-size:.72rem}
+.aor::before,.aor::after{content:'';position:absolute;top:50%;width:calc(50% - 30px);height:1px;background:var(--bo)}
+.aor::before{left:0}.aor::after{right:0}
+.flg{position:relative;margin-bottom:1rem}
+.fli{width:100%;background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:.85rem .9rem .6rem;color:var(--tx);font-family:'Syne',sans-serif;font-size:.88rem;outline:none;transition:border-color var(--T)}
+.fli:focus{border-color:var(--red)}
+.fll{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--tm);pointer-events:none;transition:all .15s;font-weight:600}
+.fli:focus~.fll,.fli:not(:placeholder-shown)~.fll{top:.5rem;font-size:.6rem;transform:none;color:var(--red)}
+.pwt{position:absolute;right:.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--tm);padding:4px;transition:color var(--T)}
+.pwt:hover{color:var(--tx)}
+.pwt svg{width:16px;height:16px;pointer-events:none}
+.achk{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.25rem}
+.ckr{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
+.ckl{font-size:.74rem;color:var(--td);line-height:1.4}
+.ckl a{color:var(--red);cursor:pointer;text-decoration:none}
+.ckl a:hover{text-decoration:underline}
+.asub{width:100%;padding:.875rem;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background var(--T),box-shadow var(--T)}
+.asub:hover{background:var(--red-b);box-shadow:0 0 20px var(--rg)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--bo2);border-top-color:var(--red);border-radius:50%;animation:rot .7s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
 
 /* PROFILE */
 .prfpg{padding:4rem 5vw;max-width:1100px;margin:0 auto}
 .prfhd{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--bo)}
+.pavw{position:relative;width:90px}
 .prfav{width:90px;height:90px;border-radius:50%;background:var(--red);border:3px solid var(--red);box-shadow:0 0 30px var(--rg);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#fff;overflow:hidden}
 .prfav img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.pav-edit{position:absolute;inset:auto 0 -10px 0;margin:auto;width:max-content;padding:4px 8px;border-radius:999px;border:1px solid var(--bo2);background:var(--sf2);font-size:.58rem;letter-spacing:.8px;text-transform:uppercase;color:var(--tx);opacity:0;transform:translateY(6px);transition:all .2s;cursor:pointer}
+.pavw:hover .pav-edit{opacity:1;transform:translateY(0)}
+.pav-file{display:none}
 .prfnm{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px}
 .prfem{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm);margin-top:4px}
 .prfbds{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
@@ -351,14 +373,15 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .slplni{width:36px;height:36px;background:linear-gradient(135deg,#00ff88,#00ccff);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .slplni svg{width:18px;height:18px}
 .prfld{display:flex;align-items:center;gap:8px;color:var(--tm);font-size:.82rem;padding:1rem 0}
-.prfld .spin{border-color:rgba(224,43,43,.3);border-top-color:var(--red)}
 
-/* TOAST + REDIRECT MODAL */
+/* TOAST */
 .toast-wrap{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:1200}
 .toast{min-width:260px;max-width:340px;padding:12px 14px;border-radius:10px;border:1px solid var(--bo2);background:var(--sf);color:var(--tx);box-shadow:0 20px 35px rgba(0,0,0,.35);font-size:.78rem;transform:translateY(16px);opacity:0;animation:tIn .25s ease forwards}
 .toast.err{border-color:rgba(224,43,43,.45);background:rgba(224,43,43,.08)}
 .toast.ok{border-color:rgba(39,196,122,.45);background:rgba(39,196,122,.08)}
 @keyframes tIn{to{transform:translateY(0);opacity:1}}
+
+/* REDIRECT MODAL */
 .rdbk{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:1100;display:none;place-items:center;padding:1rem}
 .rdbk.open{display:grid}
 .rdmd{width:min(430px,100%);border-radius:16px;border:1px solid var(--bo2);background:var(--sf);padding:1.2rem;box-shadow:0 30px 60px rgba(0,0,0,.45);position:relative;overflow:hidden;transform:translateY(22px) scale(.95);opacity:0}
@@ -388,11 +411,8 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .cfsub{font-size:.84rem;color:var(--td);line-height:1.6;margin-bottom:1rem}
 .cfact{display:flex;justify-content:flex-end;gap:.6rem}
 
-/* PROFILE PICTURE UPLOAD */
-.pavw{position:relative;width:90px}
-.pav-edit{position:absolute;inset:auto 0 -10px 0;margin:auto;width:max-content;padding:4px 8px;border-radius:999px;border:1px solid var(--bo2);background:var(--sf2);font-size:.58rem;letter-spacing:.8px;text-transform:uppercase;color:var(--tx);opacity:0;transform:translateY(6px);transition:all .2s}
-.pavw:hover .pav-edit{opacity:1;transform:translateY(0)}
-.pav-file{display:none}
+/* EMAIL PAGE */
+.ep-form{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem}
 
 /* FOOTER */
 footer{position:relative;border-top:1px solid var(--bo);z-index:1}
@@ -411,7 +431,30 @@ footer.hidden{display:none}
 .ftbt{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--tm);flex-wrap:wrap;gap:1rem}
 .ftbt a{color:var(--red);text-decoration:none;cursor:pointer}.ftbt a:hover{text-decoration:underline}
 
+/* REDUCED MOTION */
+[data-motion=reduced] *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+[data-motion=reduced] .wa,[data-motion=reduced] .wb{animation:none}
+
+/* HIGH CONTRAST */
+[data-contrast=high]{--bo:rgba(255,255,255,.2);--bo2:rgba(255,255,255,.3);--td:#ccc;--tm:#999}
+[data-theme=light][data-contrast=high]{--bo:rgba(0,0,0,.2);--bo2:rgba(0,0,0,.3);--td:#333;--tm:#555}
+
+/* FOCUS VISIBILITY */
+[data-focus=visible] *:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+/* COMPACT DENSITY */
+[data-density=compact] .sp,.spa{padding:4rem 5vw}
+[data-density=compact] .sh{margin-bottom:2.5rem}
+[data-density=compact] .fc{padding:1.5rem}
+[data-density=compact] .prfc{padding:1.25rem}
+
 /* RESPONSIVE */
+@media(max-width:1000px){
+  .spgrid{grid-template-columns:1fr}
+  .spnav{flex-direction:row;flex-wrap:wrap}
+  .spnavbtn{flex:1;min-width:110px;text-align:center;font-size:.65rem}
+  .spbd{overflow-y:auto}
+}
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;padding-top:3rem;text-align:center}
   .hds{max-width:100%}.hcta,.hsts{justify-content:center}.hvis{display:none}
@@ -420,13 +463,13 @@ footer.hidden{display:none}
   .mcard{grid-template-columns:1fr}.dg{grid-template-columns:repeat(2,1fr)}
   .blg{grid-template-columns:repeat(2,1fr)}.ctg{grid-template-columns:1fr}
   .prfgr{grid-template-columns:1fr}.fcls{gap:2rem}
-  .spgrid{grid-template-columns:1fr}
-  .spnav{flex-direction:row;flex-wrap:wrap}
-  .spnavbtn{flex:1;min-width:120px;text-align:center}
+  .ctas{grid-template-columns:1fr}
+  .sllv{grid-template-columns:1fr 1fr}.sllv .itm.sup{grid-column:span 2}
 }
 @media(max-width:540px){
   .dg,.blg{grid-template-columns:1fr}.authcard{padding:1.75rem}
   .prfhd{grid-template-columns:1fr;text-align:center}.prfbds{justify-content:center}.ssbl{justify-content:center}
+  .sllv{grid-template-columns:1fr}.sllv .itm.sup{grid-column:span 1}
 }
 </style>
 </head>
@@ -442,9 +485,9 @@ footer.hidden{display:none}
     <li><a onclick="go('features')">Features</a></li>
     <li><a onclick="go('changelog')">Changelog</a></li>
     <li><a onclick="go('docs')">Docs</a></li>
-    <li><a class="ext" onclick="openRedirect('github')">GitHub</a></li>
     <li><a onclick="go('about')">About</a></li>
     <li><a onclick="go('blog')">Blog</a></li>
+    <li><a class="ext" onclick="openRedirect('github')">GitHub</a></li>
   </ul>
   <div class="nr">
     <div class="nsoc">
@@ -452,7 +495,7 @@ footer.hidden{display:none}
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>
       </button>
       <button class="ibt" title="Discord" onclick="openRedirect('discord')">
-        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       </button>
       <button class="ibt" title="GitHub" onclick="openRedirect('github')">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -471,59 +514,224 @@ footer.hidden{display:none}
   </div>
 </nav>
 
+<!-- TOAST WRAPPER -->
+<div id="toast-wrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+
 <!-- SETTINGS PANEL -->
 <div class="spbk" id="spbk" onclick="closeSP()"></div>
 <div class="sppn" id="sppn">
-  <div id="toast-wrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
-  <div class="sphd"><span class="sptl">Settings</span><button class="ibt" onclick="closeSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="sphd">
+    <span class="sptl">Settings</span>
+    <button class="ibt" onclick="closeSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+  </div>
   <div class="spbd">
     <div class="spgrid">
       <div class="spnav">
-        <button class="spnavbtn active" type="button" data-sbtn="appearance" onclick="openSettingsCategory('appearance')">Appearance</button>
-        <button class="spnavbtn" type="button" data-sbtn="account" onclick="openSettingsCategory('account')">Account</button>
-        <button class="spnavbtn" type="button" data-sbtn="notifications" onclick="openSettingsCategory('notifications')">Notifications</button>
-        <button class="spnavbtn" type="button" data-sbtn="about" onclick="openSettingsCategory('about')">About</button>
+        <button class="spnavbtn active" data-sbtn="appearance" onclick="openSettingsCategory('appearance')">Appearance</button>
+        <button class="spnavbtn" data-sbtn="account" onclick="openSettingsCategory('account')">Account</button>
+        <button class="spnavbtn" data-sbtn="notifications" onclick="openSettingsCategory('notifications')">Notifications</button>
+        <button class="spnavbtn" data-sbtn="privacy" onclick="openSettingsCategory('privacy')">Privacy</button>
+        <button class="spnavbtn" data-sbtn="accessibility" onclick="openSettingsCategory('accessibility')">Accessibility</button>
+        <button class="spnavbtn" data-sbtn="experimental" onclick="openSettingsCategory('experimental')">Experimental</button>
+        <button class="spnavbtn" data-sbtn="about" onclick="openSettingsCategory('about')">About</button>
       </div>
       <div id="settings-categories" class="spcont">
+
+        <!-- APPEARANCE -->
         <div data-cat="appearance" class="spcat active">
-          <div><div class="spst">Accent Color</div>
-          <div class="spsw">
-            <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)"></div>
-            <div class="spsl" style="background:#e07b2b" data-c="#e07b2b" onclick="setAcc(this)"></div>
-            <div class="spsl" style="background:#2b6be0" data-c="#2b6be0" onclick="setAcc(this)"></div>
-            <div class="spsl" style="background:#27c47a" data-c="#27c47a" onclick="setAcc(this)"></div>
-            <div class="spsl" style="background:#9b2be0" data-c="#9b2be0" onclick="setAcc(this)"></div>
-            <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)"></div>
-          </div></div>
-          <div style="margin-top:1rem"><div class="spst">Theme</div>
-            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-              <button class="bg" type="button" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
-              <button class="bg" type="button" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
-            </div>
+          <div class="spst">Theme</div>
+          <div class="sp-seg" id="theme-seg">
+            <button class="sp-seg-btn active" onclick="setThSeg(this,'dark')">Dark</button>
+            <button class="sp-seg-btn" onclick="setThSeg(this,'light')">Light</button>
+          </div>
+          <div class="spst">Accent Color</div>
+          <div class="spsw" id="accent-sw">
+            <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)" title="Red"></div>
+            <div class="spsl" style="background:#e07b2b" data-c="#e07b2b" onclick="setAcc(this)" title="Orange"></div>
+            <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)" title="Gold"></div>
+            <div class="spsl" style="background:#27c47a" data-c="#27c47a" onclick="setAcc(this)" title="Emerald"></div>
+            <div class="spsl" style="background:#2b6be0" data-c="#2b6be0" onclick="setAcc(this)" title="Blue"></div>
+            <div class="spsl" style="background:#9b2be0" data-c="#9b2be0" onclick="setAcc(this)" title="Purple"></div>
+            <div class="spsl" style="background:#e02b9b" data-c="#e02b9b" onclick="setAcc(this)" title="Pink"></div>
+            <div class="spsl" style="background:#00ccff" data-c="#00ccff" onclick="setAcc(this)" title="Cyan"></div>
+          </div>
+          <div class="spst">UI Density</div>
+          <div class="sp-seg" id="density-seg">
+            <button class="sp-seg-btn active" onclick="setDensitySeg(this,'comfortable')">Comfortable</button>
+            <button class="sp-seg-btn" onclick="setDensitySeg(this,'compact')">Compact</button>
+          </div>
+          <div class="spst">Animations</div>
+          <div onclick="toggleSpToggle(this,'motion')" class="sp-tog">
+            <div><div class="sp-tog-label">Full Animations</div><div class="sp-tog-sub">Smooth transitions and motion effects</div></div>
+            <div class="sp-tog-switch on" id="toggle-motion"></div>
+          </div>
+          <div class="spst">Visual Effects</div>
+          <div onclick="toggleSpToggle(this,'bgfx')" class="sp-tog">
+            <div><div class="sp-tog-label">Background Noise Texture</div><div class="sp-tog-sub">Grain overlay on backgrounds</div></div>
+            <div class="sp-tog-switch on" id="toggle-bgfx"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'blur')" class="sp-tog">
+            <div><div class="sp-tog-label">Glass Blur Effects</div><div class="sp-tog-sub">Backdrop blur on nav and panels</div></div>
+            <div class="sp-tog-switch on" id="toggle-blur"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'hoverorbs')" class="sp-tog">
+            <div><div class="sp-tog-label">Advanced Hover Effects</div><div class="sp-tog-sub">Enhanced hover states on cards</div></div>
+            <div class="sp-tog-switch on" id="toggle-hoverorbs"></div>
           </div>
         </div>
+
+        <!-- ACCOUNT -->
         <div data-cat="account" class="spcat">
-          <div><div class="spst">Session</div>
-          <div style="font-size:.78rem;color:var(--td);line-height:1.7">Manage account access, profile, and quick actions from one place.</div></div>
-          <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
-            <button class="bg" type="button" onclick="go('profile');closeSP()" style="font-size:.72rem">View Profile</button>
-            <button class="bg" type="button" onclick="go('auth');closeSP()" style="font-size:.72rem">Open Account</button>
+          <div class="spst">Session</div>
+          <div id="sp-account-info" class="sp-info-card">
+            <div class="sp-info-label">Status</div>
+            <div class="sp-info-val" id="sp-acc-status">Not signed in</div>
+          </div>
+          <div class="sp-info-card" id="sp-acc-provider-card" style="display:none">
+            <div class="sp-info-label">Sign-in Provider</div>
+            <div class="sp-info-val" id="sp-acc-provider">—</div>
+          </div>
+          <div class="sp-info-card" id="sp-acc-photo-card" style="display:none">
+            <div class="sp-info-label">Profile Photo</div>
+            <div class="sp-info-val" id="sp-acc-photo">Default initials</div>
+          </div>
+          <div class="spst">Actions</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="bg" onclick="go('profile');closeSP()" style="font-size:.72rem">View Profile</button>
+            <button class="bg" onclick="go('auth');closeSP()" style="font-size:.72rem">Account Page</button>
+            <button class="bg" id="sp-signout-btn" style="font-size:.72rem;display:none;color:var(--red);border-color:rgba(224,43,43,.3)" onclick="doSO()">Sign Out</button>
           </div>
         </div>
+
+        <!-- NOTIFICATIONS -->
         <div data-cat="notifications" class="spcat">
-          <div><div class="spst">Quick Notices</div>
-          <div style="font-size:.78rem;color:var(--td);line-height:1.75">Enable friendly toasts for important actions like profile updates, link redirects, and status messages.</div></div>
-          <div style="margin-top:1rem"><button class="bg" type="button" onclick="toast('Notifications are enabled.','ok')" style="font-size:.72rem">Test Notification</button></div>
+          <div class="spst">Toast Notifications</div>
+          <div onclick="toggleSpToggle(this,'toasts')" class="sp-tog">
+            <div><div class="sp-tog-label">Toast Notifications</div><div class="sp-tog-sub">Status messages for actions</div></div>
+            <div class="sp-tog-switch on" id="toggle-toasts"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'redirectconfirm')" class="sp-tog">
+            <div><div class="sp-tog-label">Redirect Confirmation</div><div class="sp-tog-sub">Preview modal before leaving site</div></div>
+            <div class="sp-tog-switch on" id="toggle-redirectconfirm"></div>
+          </div>
+          <div class="spst">Preview</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="bg" style="font-size:.72rem" onclick="toast('Action completed successfully.','ok')">Test Success</button>
+            <button class="bg" style="font-size:.72rem" onclick="toast('Something went wrong. Try again.','err')">Test Error</button>
+            <button class="bg" style="font-size:.72rem" onclick="toast('TheGeneric v26.1 — Platform Ready.')">Test Info</button>
+          </div>
         </div>
+
+        <!-- PRIVACY -->
+        <div data-cat="privacy" class="spcat">
+          <div class="spst">Profile Visibility</div>
+          <div class="sp-seg" id="visibility-seg">
+            <button class="sp-seg-btn active" onclick="setSegActive(this,'visibility')">Public</button>
+            <button class="sp-seg-btn" onclick="setSegActive(this,'visibility')">Friends</button>
+            <button class="sp-seg-btn" onclick="setSegActive(this,'visibility')">Private</button>
+          </div>
+          <div class="spst">Analytics</div>
+          <div onclick="toggleSpToggle(this,'analytics')" class="sp-tog">
+            <div><div class="sp-tog-label">Usage Analytics</div><div class="sp-tog-sub">Anonymous usage data to improve the platform</div></div>
+            <div class="sp-tog-switch on" id="toggle-analytics"></div>
+          </div>
+          <div class="spst">Session</div>
+          <div onclick="toggleSpToggle(this,'remembersession')" class="sp-tog">
+            <div><div class="sp-tog-label">Remember Session</div><div class="sp-tog-sub">Stay signed in across browser restarts</div></div>
+            <div class="sp-tog-switch" id="toggle-remembersession"></div>
+          </div>
+          <div class="spst" style="margin-top:.75rem">Data Information</div>
+          <div style="font-size:.78rem;color:var(--td);line-height:1.75;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.85rem 1rem">
+            Your data is stored securely via Firebase and never sold to third parties. Profile data includes display name, email, and SLOPE social stats. Contact us to request data deletion.
+          </div>
+        </div>
+
+        <!-- ACCESSIBILITY -->
+        <div data-cat="accessibility" class="spcat">
+          <div class="spst">Font Size</div>
+          <div class="sp-seg" id="fontsize-seg">
+            <button class="sp-seg-btn" onclick="setFontSize(this,'small')">Small</button>
+            <button class="sp-seg-btn active" onclick="setFontSize(this,'default')">Default</button>
+            <button class="sp-seg-btn" onclick="setFontSize(this,'large')">Large</button>
+          </div>
+          <div class="spst">Motion & Visual</div>
+          <div onclick="toggleSpToggle(this,'reducedmotion')" class="sp-tog">
+            <div><div class="sp-tog-label">Reduced Motion</div><div class="sp-tog-sub">Minimize animations for sensitivity</div></div>
+            <div class="sp-tog-switch" id="toggle-reducedmotion"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'highcontrast')" class="sp-tog">
+            <div><div class="sp-tog-label">Higher Contrast</div><div class="sp-tog-sub">Increase border and text contrast</div></div>
+            <div class="sp-tog-switch" id="toggle-highcontrast"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'focusvisible')" class="sp-tog">
+            <div><div class="sp-tog-label">Keyboard Focus Indicators</div><div class="sp-tog-sub">Visible outline on focused elements</div></div>
+            <div class="sp-tog-switch" id="toggle-focusvisible"></div>
+          </div>
+        </div>
+
+        <!-- EXPERIMENTAL -->
+        <div data-cat="experimental" class="spcat">
+          <div style="background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.25);border-radius:10px;padding:.85rem 1rem;font-size:.78rem;color:#f5a623;margin-bottom:1rem;line-height:1.6">
+            ⚠ Experimental features may be unstable. Use at your own discretion.
+          </div>
+          <div onclick="toggleSpToggle(this,'livedata')" class="sp-tog">
+            <div><div class="sp-tog-label">Live Data Cards</div><div class="sp-tog-sub">Show SLOPE live config on home page</div></div>
+            <div class="sp-tog-switch on" id="toggle-livedata"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'devmode')" class="sp-tog">
+            <div><div class="sp-tog-label">Developer Mode</div><div class="sp-tog-sub">Show extra debug info in profile</div></div>
+            <div class="sp-tog-switch" id="toggle-devmode"></div>
+          </div>
+          <div onclick="toggleSpToggle(this,'betaui')" class="sp-tog">
+            <div><div class="sp-tog-label">Beta UI Features</div><div class="sp-tog-sub">Preview upcoming interface changes</div></div>
+            <div class="sp-tog-switch" id="toggle-betaui"></div>
+          </div>
+          <div class="spst">Startup Page</div>
+          <div class="sp-seg" id="startpage-seg">
+            <button class="sp-seg-btn active" onclick="setSegActive(this,'startpage')">Home</button>
+            <button class="sp-seg-btn" onclick="setSegActive(this,'startpage')">Profile</button>
+            <button class="sp-seg-btn" onclick="setSegActive(this,'startpage')">Docs</button>
+          </div>
+          <div class="spst" style="margin-top:.5rem">Region</div>
+          <select class="fi" style="font-size:.78rem" onchange="localStorage.setItem('tg-region',this.value)">
+            <option>Global</option><option>North America</option><option>Europe</option><option>Asia Pacific</option>
+          </select>
+        </div>
+
+        <!-- ABOUT -->
         <div data-cat="about" class="spcat">
-          <div><div class="spst">Version</div><div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm)">TheGeneric</div></div>
-          <div style="margin-top:1rem"><div class="spst">Contact</div><a href="mailto:toxicbusinessstudios@gmail.com" style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);text-decoration:none">toxicbusinessstudios@gmail.com</a></div>
+          <div class="sp-info-card">
+            <div class="sp-info-label">Platform</div>
+            <div class="sp-info-val">TheGeneric</div>
+          </div>
+          <div class="sp-info-card">
+            <div class="sp-info-label">Version</div>
+            <div class="sp-info-val" style="color:var(--red)">v26.1 — Major Platform Overhaul</div>
+          </div>
+          <div class="sp-info-card">
+            <div class="sp-info-label">Created By</div>
+            <div class="sp-info-val">thegoat86 · @goat8six</div>
+          </div>
+          <div class="sp-info-card">
+            <div class="sp-info-label">Support Email</div>
+            <div class="sp-info-val"><a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a></div>
+          </div>
+          <div class="sp-info-card">
+            <div class="sp-info-label">About</div>
+            <div class="sp-info-val" style="font-family:'Syne',sans-serif;line-height:1.6;color:var(--td)">An independent platform for Minecraft mods, web games, community tools, and social profiles. Built with a commitment to quality, balance, and zero pay-to-win.</div>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+            <a href="https://github.com/thegeneric10" target="_blank" rel="noopener" class="bg" style="font-size:.72rem">GitHub ↗</a>
+            <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.72rem">Modrinth ↗</a>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
+<!-- REDIRECT MODAL -->
 <div class="rdbk" id="rdbk" onclick="if(event.target.id==='rdbk')closeRedirect()">
   <div class="rdmd" id="rdmd">
     <div class="rd-particles" id="rd-particles"></div>
@@ -537,6 +745,7 @@ footer.hidden{display:none}
   </div>
 </div>
 
+<!-- CONFIRM MODAL -->
 <div class="cfbk" id="cfbk" onclick="if(event.target.id==='cfbk')closeConfirm()">
   <div class="cfmd" id="cfmd">
     <div class="cf-particles" id="cf-particles"></div>
@@ -558,14 +767,14 @@ footer.hidden{display:none}
     <div class="orb" style="top:-150px;right:-100px;width:700px;height:700px"></div>
     <div class="orb" style="bottom:-100px;left:-50px;width:400px;height:400px;animation-delay:-4s"></div>
     <div>
-      <div class="hbdg"><span class="blk"></span>v26.1 — System Ready</div>
+      <div class="hbdg"><span class="blk"></span>v26.1 — Platform Ready</div>
       <div class="htgs">
         <span class="htg tg">Minecraft: Java Edition</span>
-        <span class="htg tb">1.21.8+ NeoForge</span>
-        <span class="htg tr">SLOPE Available</span>
+        <span class="htg tb">NeoForge 1.21.8+</span>
+        <span class="htg tr">SLOPE Live</span>
       </div>
       <h1 class="hti">The<br><span class="ac">Generic</span><br><span class="ol">Platform.</span></h1>
-      <p class="hds">An all-in-one hub for mods, games, and community. Built different. Works better. Unapologetically red.</p>
+      <p class="hds">An all-in-one hub for mods, games, and community. Built with purpose. Works without compromise. Unapologetically red.</p>
       <div class="hcta">
         <button class="bp js-gs-btn" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
         <button class="bg" onclick="document.getElementById('modsec').scrollIntoView({behavior:'smooth'})">Explore Mods</button>
@@ -582,15 +791,15 @@ footer.hidden{display:none}
           <div class="hvic hv-sl"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
           <div><div class="hvtl">SLOPE</div><div class="hvsb">HTML5 · Arcade Runner · All Devices</div></div>
         </div>
-        <div class="hvds">Fast-paced neon arcade runner. Steer through narrowing futuristic tracks, chain combos, and survive escalating hazards.</div>
+        <div class="hvds">Fast-paced neon arcade runner. Steer through narrowing futuristic tracks, chain combos, and survive escalating hazards — no install required.</div>
         <div class="hvft"><div class="hvst">Free · <span>No Install</span></div><a class="hvlk" href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">Play Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
       </div>
       <div class="hvc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')">
         <div class="hvch">
           <div class="hvic hv-mc"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><div class="hvtl">Mo'CharmsMod</div><div class="hvsb">Minecraft Java NeoForge 1.21.8+</div></div>
+          <div><div class="hvtl">Mo'CharmsMod</div><div class="hvsb">Minecraft · NeoForge 1.21.8+</div></div>
         </div>
-        <div class="hvds">Powerful charm items granting temporary potion effects for strategic survival gameplay. ✨🧿</div>
+        <div class="hvds">Powerful charm items granting strategic potion effects for survival gameplay. Balanced, free, and maintained. ✨🧿</div>
         <div class="hvft"><div class="hvst">Downloads: <span id="hv-dl">…</span></div><a class="hvlk" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Modrinth <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
       </div>
     </div>
@@ -600,21 +809,21 @@ footer.hidden{display:none}
 
   <!-- SLOPE -->
   <section class="slsec" style="background:var(--bg2)">
-    <div class="sh"><div class="sey">Featured Game</div><h2 class="sti">Play SLOPE.<br>Free. Now.</h2><p class="ssb">Browser-based. All devices. No download required.</p></div>
+    <div class="sh"><div class="sey">Featured Game</div><h2 class="sti">Play SLOPE.<br>Free. Now.</h2><p class="ssb">Browser-based. All devices. Zero downloads required.</p></div>
     <div class="sllv hidden" id="slope-live">
       <div class="itm"><div class="lb">Current Version</div><div class="vl" id="slope-cv">—</div></div>
       <div class="itm"><div class="lb">Current Season</div><div class="vl" id="slope-cs">—</div></div>
-      <div class="itm"><div class="lb">Current Event</div><div class="vl" id="slope-ltm">—</div></div>
+      <div class="itm"><div class="lb">Active Event</div><div class="vl" id="slope-ltm">—</div></div>
       <div class="itm sup"><div class="lb">Supported Versions</div><div class="vl dim" id="slope-sv">—</div></div>
     </div>
     <div class="slin">
       <div class="slL">
         <div class="gbdg"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><circle cx="12" cy="12" r="10"/></svg>LIVE · HTML5 ARCADE</div>
         <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:2px;line-height:1;margin-bottom:1rem">SLOPE</h3>
-        <p style="font-size:.88rem;color:var(--td);line-height:1.75;margin-bottom:1.75rem">A fast-paced neon arcade runner built with a single-page HTML5 Canvas stack. You steer through a narrowing futuristic track, collect gems, chain combos, and survive escalating hazards while dynamic effects, powerups, and responsive controls keep each run intense.</p>
+        <p style="font-size:.88rem;color:var(--td);line-height:1.75;margin-bottom:1.75rem">A fast-paced neon arcade runner built on a single-page HTML5 Canvas stack. Steer through a narrowing futuristic track, collect gems, chain combos, and outlast escalating hazards. Dynamic effects, powerups, and sharp controls make every run a new challenge.</p>
         <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
           <a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener" class="bp" style="background:linear-gradient(135deg,#00cc66,#0099cc);box-shadow:0 0 24px rgba(0,255,136,.3)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>Play Now!
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>Play Now
           </a>
           <span class="htg tg" style="font-size:.6rem">All Devices</span>
           <span class="htg tb" style="font-size:.6rem">HTML5</span>
@@ -632,20 +841,21 @@ footer.hidden{display:none}
 
   <!-- MODS -->
   <section class="modsec" id="modsec">
-    <div class="sh"><div class="sey">Modrinth · TheGeneric</div><h2 class="sti">Our Mods.</h2><p class="ssb">Minecraft experience enhancements — balanced, free, and maintained.</p></div>
+    <div class="sh"><div class="sey">Modrinth · TheGeneric</div><h2 class="sti">Our Mods.</h2><p class="ssb">Minecraft experience enhancements — balanced, free, and actively maintained.</p></div>
     <div class="mcard">
       <div class="mcimg"><div class="mcimgb"></div><div class="mcic">🧿</div></div>
       <div class="mcbd">
         <div class="morg">TheGeneric Organization</div>
         <div class="mttl">Mo'CharmsMod</div>
-        <p class="mds">Mo'CharmsMod adds a collection of powerful charm items that grant temporary potion effects to enhance your gameplay experience. Each charm provides a unique ability designed for strategic use in survival worlds. ✨🧿</p>
+        <p class="mds">A collection of powerful charm items that grant strategic temporary potion effects to enhance survival gameplay. Each charm is carefully balanced for intentional use in hardcore and standard worlds. Available on NeoForge 1.21.8+. ✨🧿</p>
         <div class="msts">
           <div><div class="mstn" id="mod-dl">—</div><div class="mstl">Downloads</div></div>
           <div><div class="mstn" id="mod-fl">—</div><div class="mstl">Followers</div></div>
           <div><div class="mstn">1.21.8+</div><div class="mstl">NeoForge</div></div>
+          <div><div class="mstn">Free</div><div class="mstl">Always</div></div>
         </div>
         <div class="mact">
-          <a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener" class="bp" style="font-size:.75rem">SEE MORE via Modrinth ↗</a>
+          <a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener" class="bp" style="font-size:.75rem">View on Modrinth ↗</a>
           <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.75rem">Organization ↗</a>
         </div>
       </div>
@@ -654,24 +864,30 @@ footer.hidden{display:none}
 
   <div class="wdiv"><svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:80px"><path class="wb" d="M0,40 C360,10 720,90 1080,50 C1260,30 1380,60 1440,50 L1440,80 L0,80 Z" fill="var(--bg2)"/></svg></div>
 
-  <section class="ctas" style="background:var(--bg2)">
-    <div><p style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:.75rem">Get Started Today</p><h2>Ready to Go Generic?</h2><p>No fluff. No filler. Join, play SLOPE, grab the mods.</p></div>
-    <div class="ctaact">
-      <button class="bp" id="cta-account-btn" onclick="go('auth')">Create Account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-      <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg">Modrinth ↗</a>
+  <section style="background:var(--bg2);padding:6rem 5vw">
+    <div class="ctas" style="max-width:1100px;margin:0 auto">
+      <div>
+        <p style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:.75rem">Get Started Today</p>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:2px;margin-bottom:.5rem">Ready to Go Generic?</h2>
+        <p style="color:var(--td);font-size:.88rem;line-height:1.7">No fluff. No filler. Create an account, play SLOPE, grab the mods — and be part of what we're building.</p>
+      </div>
+      <div class="ctaact">
+        <button class="bp js-gs-btn" id="cta-account-btn" onclick="go('auth')">Create Account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg">Modrinth ↗</a>
+      </div>
     </div>
   </section>
 </div>
 
 <!-- FEATURES -->
 <div id="page-features" class="page"><div class="sp">
-  <div class="sh"><div class="sey">What We Offer</div><h2 class="sti">Built Different.</h2><p class="ssb">Every module optimized, tested, and maintained.</p></div>
+  <div class="sh"><div class="sey">What We Offer</div><h2 class="sti">Built Different.</h2><p class="ssb">Every module is optimized, tested, and maintained with intention.</p></div>
   <div class="fg">
     <div class="fc sp2">
       <div>
         <div class="fcico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
         <div class="fcn">01 — PLATFORM</div><div class="fct">Modular Architecture</div>
-        <p class="fcd">Mo'CharmsMod, SLOPE, and future releases as individual nodes in one ecosystem. Snap together, no overhead.</p>
+        <p class="fcd">Mo'CharmsMod, SLOPE, and future releases operate as individual nodes within one unified ecosystem. Snap together, zero overhead.</p>
       </div>
       <div style="background:var(--bg3);border-radius:10px;padding:1.5rem;font-family:'DM Mono',monospace;font-size:.72rem;display:flex;flex-direction:column;gap:.75rem">
         <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 6px var(--red);flex-shrink:0"></span><span style="flex:1">thegeneric.core</span><span style="color:var(--red)">ACTIVE</span></div>
@@ -680,48 +896,156 @@ footer.hidden{display:none}
         <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:#f5a623;border-radius:50%;flex-shrink:0"></span><span style="flex:1">social.layer</span><span>v26.1</span></div>
       </div>
     </div>
-    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="fcn">02 — SECURITY</div><div class="fct">Firebase Auth</div><p class="fcd">Email/password and Google Sign-In with reCAPTCHA Enterprise. Every account protected.</p></div>
-    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="fcn">03 — PERFORMANCE</div><div class="fct">Edge-Speed</div><p class="fcd">SLOPE runs natively in-browser at 60fps. No installs, no waiting, instant access.</p></div>
-    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="fcn">04 — COMMUNITY</div><div class="fct">Social Profiles</div><p class="fcd">Follow players, add friends, and track leaderboards — connected to SLOPE.</p></div>
-    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="fcn">05 — MODS</div><div class="fct">Modrinth Published</div><p class="fcd">Mo'CharmsMod published on Modrinth. Always versioned, always available, always free.</p></div>
-    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="fcn">06 — QUALITY</div><div class="fct">Survival-Grade</div><p class="fcd">Every charm balanced for survival. Strategic power — not pay-to-win, not bloat.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="fcn">02 — SECURITY</div><div class="fct">Firebase Auth</div><p class="fcd">Email/password and Google Sign-In protected by reCAPTCHA Enterprise. Every account secured from day one.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="fcn">03 — PERFORMANCE</div><div class="fct">Edge-Speed</div><p class="fcd">SLOPE runs natively in-browser at 60fps. No installs, no loading screens, instant access on any device.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="fcn">04 — COMMUNITY</div><div class="fct">Social Profiles</div><p class="fcd">Follow players, connect with friends, and track SLOPE leaderboards — all tied to your TheGeneric account.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="fcn">05 — MODS</div><div class="fct">Modrinth Published</div><p class="fcd">Mo'CharmsMod published and maintained on Modrinth. Always versioned, always available, always free.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="fcn">06 — QUALITY</div><div class="fct">Survival-Grade</div><p class="fcd">Every charm balanced for genuine survival strategy. No pay-to-win. No bloat. Just craft, equip, survive.</p></div>
   </div>
 </div></div>
 
 <!-- CHANGELOG -->
 <div id="page-changelog" class="page"><div class="sp" style="max-width:900px;margin:0 auto">
-  <div class="sh"><div class="sey">Release History</div><h2 class="sti">Changelog.</h2><p class="ssb">What's new, fixed, and coming next.</p></div>
+  <div class="sh"><div class="sey">Release History</div><h2 class="sti">Changelog.</h2><p class="ssb">What's shipped, what's fixed, and where we're going.</p></div>
   <div class="cll">
-    <div class="cli"><div><div class="clv">26.1</div><div class="cld">Mar 2026</div></div><div><span class="cltg tgl">LATEST</span><div class="clti">Platform v26.1 — Full Overhaul</div><ul class="clch"><li>Complete SPA rebuild with Firebase Auth + Realtime DB</li><li>SLOPE game integration and social profile sync</li><li>Google Sign-In and reCAPTCHA Enterprise protection</li><li>Dark/Light mode with 6 accent color options</li><li>Mo'CharmsMod live Modrinth stats fetch</li><li>Wave animations, smooth page transitions</li><li>Disabled text selection and image drag globally</li></ul></div></div>
-    <div class="cli"><div><div class="clv">26.0</div><div class="cld">Dec 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v26.0 — Preview Channel</div><ul class="clch"><li>Preview framework for upcoming major release</li></ul></div></div>
-    <div class="cli"><div><div class="clv">25.4</div><div class="cld">Sep 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v25.4</div><ul class="clch"><li>UI and module preview updates</li></ul></div></div>
-    <div class="cli"><div><div class="clv">25.3</div><div class="cld">Jun 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v25.3</div><ul class="clch"><li>Gameplay and account-flow preview changes</li></ul></div></div>
-    <div class="cli"><div><div class="clv">2.0</div><div class="cld">Apr 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v2.0</div><ul class="clch"><li>Core rebuild preview launch</li></ul></div></div>
-    <div class="cli"><div><div class="clv">1.5</div><div class="cld">Dec 2024</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.5</div><ul class="clch"><li>Early UI and authentication prototype</li></ul></div></div>
-    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Mar 5, 2026</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.0 — Mo'CharmsMod Release</div><ul class="clch"><li>Mo'CharmsMod officially released on March 5, 2026</li><li>10 charm types with unique potion effects</li><li>NeoForge compatibility path began</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
+
+    <div class="cli">
+      <div><div class="clv">26.1</div><div class="cld">Mar 2026</div></div>
+      <div>
+        <span class="cltg tgl">LATEST</span>
+        <div class="clti">Platform v26.1 — Major Platform Overhaul</div>
+        <ul class="clch">
+          <li>Complete SPA rebuild with Firebase Auth + Realtime Database integration</li>
+          <li>Released Mo'CharmsMod on Modrinth for NeoForge 1.21.8+</li>
+          <li>SLOPE game integration with live social profile sync</li>
+          <li>Google Sign-In and reCAPTCHA Enterprise authentication layer</li>
+          <li>Dark/Light theme with 8 accent color options and CSS variable system</li>
+          <li>Expanded Settings panel — 7 full categories with toggles and segments</li>
+          <li>Upgraded account and profile flow with photo upload, provider display, and quick actions</li>
+          <li>Polished redirect modal and sign-out confirmation modal system</li>
+          <li>Improved multi-page SPA structure and smooth page transitions</li>
+          <li>Live data cards for SLOPE configuration fetched from Firebase</li>
+          <li>Mo'CharmsMod live Modrinth stats with animated counters</li>
+          <li>Enhanced footer, docs, contact, and feedback flows</li>
+          <li>Smart CTA behavior adapts based on signed-in user state</li>
+          <li>Accessibility options: font size, reduced motion, high contrast, focus indicators</li>
+          <li>Wave animations, scroll reveal, and global noise texture layer</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">2.0</div><div class="cld">Jan 2026</div></div>
+      <div>
+        <span class="cltg tgb">STABLE</span>
+        <div class="clti">Platform v2.0 — Core Rebuild</div>
+        <ul class="clch">
+          <li>Red system theme with full CSS variable architecture</li>
+          <li>Hero stats counter animations with intersection observer</li>
+          <li>Initial Modrinth organization setup and project listings</li>
+          <li>Modular card layout system introduced</li>
+          <li>Initial routing and SPA scaffolding</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">26.0</div><div class="cld">Dec 2025</div></div>
+      <div>
+        <span class="cltg tgpv">PREVIEW</span>
+        <div class="clti">Platform v26.0 — Preview Channel</div>
+        <ul class="clch">
+          <li>Preview framework established for upcoming major release cycle</li>
+          <li>Auth and database architecture designed</li>
+          <li>Internal branding and component library tests</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">25.4</div><div class="cld">Sep 2025</div></div>
+      <div>
+        <span class="cltg tgpv">PREVIEW</span>
+        <div class="clti">Platform v25.4 — UI Preview</div>
+        <ul class="clch">
+          <li>UI component and layout previews</li>
+          <li>Module architecture iteration</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">25.3</div><div class="cld">Jun 2025</div></div>
+      <div>
+        <span class="cltg tgpv">PREVIEW</span>
+        <div class="clti">Platform v25.3</div>
+        <ul class="clch">
+          <li>Gameplay hooks and account-flow previews</li>
+          <li>Early SLOPE prototype testing</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">1.5</div><div class="cld">Dec 2024</div></div>
+      <div>
+        <span class="cltg tgpv">PREVIEW</span>
+        <div class="clti">Platform v1.5 — Authentication Prototype</div>
+        <ul class="clch">
+          <li>Early UI and authentication prototype</li>
+          <li>First styled page components</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cli">
+      <div><div class="clv">1.0</div><div class="cld">Oct 2024</div></div>
+      <div>
+        <span class="cltg tgleg">LEGACY</span>
+        <div class="clti">TheGeneric v1.0 — Development Begins</div>
+        <ul class="clch">
+          <li>Initial platform concept and project direction established</li>
+          <li>Early identity and branding direction began</li>
+          <li>First visual experiments and project structure created</li>
+          <li>Foundation set for future games, mods, and community tools</li>
+          <li>TheGeneric10 organization registered and scoped</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </div></div>
 
 <!-- DOCS -->
 <div id="page-docs" class="page"><div class="sp">
-  <div class="sh"><div class="sey">Documentation</div><h2 class="sti">Reference.</h2><p class="ssb">Everything you need to get started fast.</p></div>
+  <div class="sh"><div class="sey">Documentation</div><h2 class="sti">Reference.</h2><p class="ssb">Everything you need to get started quickly.</p></div>
   <div class="dg">
-    <a class="dc" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="dct">Mo'CharmsMod Guide</div><div class="dcd">Installation, charm types, crafting, and effect durations.</div></a>
-    <a class="dc" href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><div class="dct">SLOPE Controls</div><div class="dcd">How to play, controls reference, powerups, and scoring.</div></a>
-    <a class="dc" href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><div class="dct">Organization</div><div class="dcd">All projects under TheGeneric on Modrinth.</div></a>
-    <a class="dc" onclick="go('features')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><div class="dct">Platform Features</div><div class="dcd">Overview of all platform capabilities and modules.</div></a>
-    <a class="dc" onclick="go('changelog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="dct">Changelog</div><div class="dcd">Full version history and release notes.</div></a>
-    <a class="dc" onclick="go('contact')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg><div class="dct">Support</div><div class="dcd">Contact for help, bugs, or collaboration.</div></a>
+    <a class="dc" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="dct">Mo'CharmsMod Guide</div><div class="dcd">Installation, charm types, crafting recipes, and effect durations.</div></a>
+    <a class="dc" href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><div class="dct">SLOPE Controls</div><div class="dcd">How to play, keyboard controls, powerup guide, and scoring system.</div></a>
+    <a class="dc" href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><div class="dct">Organization</div><div class="dcd">All projects published under TheGeneric on Modrinth.</div></a>
+    <a class="dc" onclick="go('features')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><div class="dct">Platform Features</div><div class="dcd">Overview of all platform capabilities, modules, and tools.</div></a>
+    <a class="dc" onclick="go('changelog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="dct">Changelog</div><div class="dcd">Full version history, release notes, and upgrade path.</div></a>
+    <a class="dc" onclick="go('contact')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg><div class="dct">Support</div><div class="dcd">Contact us for help, bug reports, or collaboration opportunities.</div></a>
   </div>
 </div></div>
 
 <!-- ABOUT -->
 <div id="page-about" class="page"><div class="pgw">
-  <h1>About <span>TheGeneric</span></h1><div class="pgmt">EST. 2025 · THEGENERIC10 · V26.1</div>
-  <h2>Who We Are</h2><p>TheGeneric is an independent development organization focused on Minecraft mods, web-based games, and community-driven tools. We believe great software should be accessible, free, and well-crafted.</p>
-  <h2>What We Build</h2><p><strong style="color:var(--tx)">Mo'CharmsMod</strong> — A Minecraft Java Edition mod adding powerful charm items with strategic potion effects for survival gameplay. Available on Modrinth for NeoForge 1.21.8+.</p><p><strong style="color:var(--tx)">SLOPE</strong> — A fast-paced HTML5 arcade runner playable in any browser on any device. No install. No cost.</p>
-  <h2>Our Philosophy</h2><p>No pay-to-win. No bloat. Every release is tested, balanced, and maintained. If we ship it, we stand behind it.</p>
-  <h2>Contact</h2><p>Business inquiries: <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a></p><p>GitHub: <a href="https://github.com/thegeneric10" target="_blank" rel="noopener">github.com/thegeneric10</a></p><p>Modrinth: <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">modrinth.com/organization/thegeneric</a></p>
+  <h1>About <span>TheGeneric</span></h1><div class="pgmt">EST. 2024 · THEGENERIC10 · V26.1</div>
+  <h2>Who We Are</h2>
+  <p>TheGeneric is an independent development organization focused on Minecraft mods, web-based games, and community-driven tools. We believe great software should be accessible, free, and built with genuine craft.</p>
+  <h2>What We Build</h2>
+  <p><strong style="color:var(--tx)">Mo'CharmsMod</strong> — A Minecraft mod adding powerful charm items with strategic potion effects for survival gameplay. Available on Modrinth for NeoForge 1.21.8+.</p>
+  <p><strong style="color:var(--tx)">SLOPE</strong> — A fast-paced HTML5 arcade runner playable in any browser on any device. No install. No cost. No compromise.</p>
+  <p><strong style="color:var(--tx)">TheGeneric Platform</strong> — A unified hub for accounts, social profiles, leaderboards, mod discovery, and community tools — all connected through one identity.</p>
+  <h2>Our Philosophy</h2>
+  <p>No pay-to-win. No bloat. No filler. Every release is tested, balanced, and maintained. If we ship it, we stand behind it — fully and permanently.</p>
+  <h2>History</h2>
+  <p>TheGeneric began in October 2024 as a personal project to build something worth using. From a single concept and early branding experiments, it has grown into a multi-product platform with Modrinth presence, a live game, and a community identity built from the ground up.</p>
+  <h2>Contact</h2>
+  <p>Business inquiries: <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a></p>
+  <p>GitHub: <a href="https://github.com/thegeneric10" target="_blank" rel="noopener">github.com/thegeneric10</a></p>
+  <p>Modrinth: <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">modrinth.com/organization/thegeneric</a></p>
 </div></div>
 
 <!-- BLOG -->
@@ -729,8 +1053,9 @@ footer.hidden{display:none}
   <div class="sh"><div class="sey">Updates & News</div><h2 class="sti">The Blog.</h2><p class="ssb">Dev logs, mod announcements, and game updates.</p></div>
   <div class="blg">
     <div class="blc" onclick="go('changelog')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blb"><div class="blcat">Platform</div><div class="blti">TheGeneric v26.1 — Major Platform Overhaul</div><div class="bldt">March 2026</div></div></div>
-    <div class="blc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blb"><div class="blcat">Minecraft Mod</div><div class="blti">Mo'CharmsMod — NeoForge 1.21.8+ Support</div><div class="bldt">January 2026</div></div></div>
+    <div class="blc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blb"><div class="blcat">Minecraft Mod</div><div class="blti">Mo'CharmsMod — Released on NeoForge 1.21.8+</div><div class="bldt">March 2026</div></div></div>
     <div class="blc" onclick="window.open('https://thegeneric10.github.io/SLOPE/','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="blb"><div class="blcat">Game</div><div class="blti">SLOPE — Neon Arcade Runner Now Live</div><div class="bldt">December 2025</div></div></div>
+    <div class="blc" onclick="go('about')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="blb"><div class="blcat">Origin Story</div><div class="blti">TheGeneric — How It Started (Oct 2024)</div><div class="bldt">October 2024</div></div></div>
   </div>
 </div></div>
 
@@ -740,28 +1065,27 @@ footer.hidden{display:none}
   <div class="ctg">
     <div class="cti">
       <h2>Let's Talk.</h2>
-      <p>Bug report, collab idea, or feedback? Reach us at our business email.</p>
+      <p>Bug report, collaboration idea, or general feedback? Reach us directly at our business email. We read everything.</p>
       <a href="mailto:toxicbusinessstudios@gmail.com" class="ceml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg><span>toxicbusinessstudios@gmail.com</span></a>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.25rem">
         <a href="https://github.com/thegeneric10" target="_blank" rel="noopener" class="bg" style="font-size:.72rem;padding:7px 14px">GitHub ↗</a>
         <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.72rem;padding:7px 14px">Modrinth ↗</a>
       </div>
     </div>
     <form class="ctf" id="contact-form">
-      <div class="fg2"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name"></div>
-      <div class="fg2"><label class="fl">Email</label><input class="fi" type="email" placeholder="your@email.com"></div>
-      <div class="fg2"><label class="fl">Subject</label><input class="fi" type="text" placeholder="What's it about?"></div>
-      <div class="fg2"><label class="fl">Message</label><textarea class="fta" placeholder="Your message…"></textarea></div>
+      <div class="fg2"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name" required></div>
+      <div class="fg2"><label class="fl">Email</label><input class="fi" type="email" placeholder="your@email.com" required></div>
+      <div class="fg2"><label class="fl">Subject</label><input class="fi" type="text" placeholder="What's it about?" required></div>
+      <div class="fg2"><label class="fl">Message</label><textarea class="fta" placeholder="Your message…" required></textarea></div>
       <button class="bp" type="submit" style="width:100%;justify-content:center;padding:13px">Send Message</button>
     </form>
   </div>
 </div></div>
 
-
 <!-- EMAIL US -->
 <div id="page-email" class="page"><div class="sp" style="max-width:760px;margin:0 auto">
   <div class="sh"><div class="sey">Direct Message</div><h2 class="sti">Email Us.</h2><p class="ssb">Connect your Google account and send directly through Gmail API.</p></div>
-  <form id="email-page-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem">
+  <form id="email-page-form" class="ep-form">
     <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
       <button class="bg" id="ep-connect" type="button">Connect Gmail</button>
       <button class="bg" id="ep-disconnect" type="button">Disconnect</button>
@@ -787,7 +1111,7 @@ footer.hidden{display:none}
   <h2>2. Platform Use</h2><p>TheGeneric provides free access to software, games, and Minecraft mods. You may not reverse-engineer, redistribute, or claim ownership of any TheGeneric content without written permission.</p>
   <h2>3. User Accounts</h2><p>You are responsible for your account security. We reserve the right to terminate accounts that violate these terms, engage in abuse, or attempt to circumvent security measures.</p>
   <h2>4. SLOPE Game</h2><p>SLOPE is provided as-is for free personal entertainment. Leaderboard manipulation or exploit abuse will result in account termination. In-game data is owned by TheGeneric.</p>
-  <h2>5. Mod Usage</h2><p>Mo'CharmsMod is distributed for personal use under its Modrinth license. Commercial redistribution is not permitted without written permission.</p>
+  <h2>5. Mod Usage</h2><p>Mo'CharmsMod is distributed for personal use under its Modrinth license. Commercial redistribution without written permission is not permitted.</p>
   <h2>6. Liability</h2><p>TheGeneric is not liable for any damages arising from use of our services. All services are provided "as is" without warranty.</p>
   <h2>7. Changes</h2><p>We may update these terms at any time. Continued use after changes constitutes acceptance.</p>
   <h2>Contact</h2><p>Questions? Email <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a>.</p>
@@ -797,23 +1121,23 @@ footer.hidden{display:none}
 <div id="page-privacy" class="page"><div class="pgw">
   <h1>Privacy <span>Policy</span></h1><div class="pgmt">LAST UPDATED: MARCH 2026 · V26.1</div>
   <h2>1. Data We Collect</h2><p>We collect via Firebase Authentication: email address, Google display name and photo (if using Google Sign-In), and authentication timestamps.</p>
-  <h2>2. SLOPE Game Data</h2><p>SLOPE stores your username, scores, leaderboard rankings, and social connections (followers/following) in Firebase Realtime Database. Used to power your profile and social features.</p>
+  <h2>2. SLOPE Game Data</h2><p>SLOPE stores your username, scores, leaderboard rankings, and social connections (followers/following) in Firebase Realtime Database, used to power your profile and social features.</p>
   <h2>3. How We Use Data</h2><p>Your data is used exclusively to provide platform features. We do not sell data to third parties.</p>
-  <h2>4. Analytics</h2><p>We use Firebase Analytics to understand general usage patterns. This data is anonymized.</p>
-  <h2>5. reCAPTCHA</h2><p>We use Google reCAPTCHA Enterprise to protect authentication. Google's <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> applies.</p>
+  <h2>4. Analytics</h2><p>We use Firebase Analytics to understand general usage patterns. All analytics data is anonymized.</p>
+  <h2>5. reCAPTCHA</h2><p>We use Google reCAPTCHA Enterprise to protect authentication flows. Google's <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> applies.</p>
   <h2>6. Retention & Rights</h2><p>Account data is retained until you request deletion. Contact <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a> to exercise your data rights.</p>
 </div></div>
 
 <!-- FEEDBACK -->
 <div id="page-feedback" class="page"><div class="sp" style="max-width:600px;margin:0 auto">
-  <div class="sh"><div class="sey">Your Voice Matters</div><h2 class="sti">Feedback.</h2><p class="ssb">Tell us what to fix, improve, or build next.</p></div>
+  <div class="sh"><div class="sey">Your Voice Matters</div><h2 class="sti">Feedback.</h2><p class="ssb">Tell us what to fix, improve, or build next. We're listening.</p></div>
   <form id="feedback-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2.5rem;display:flex;flex-direction:column;gap:1.25rem">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-      <div class="fg2"><label class="fl">Category</label><select class="fi" style="cursor:pointer"><option>Bug Report</option><option>Feature Request</option><option>Mod Feedback</option><option>SLOPE Feedback</option><option>General</option></select></div>
+      <div class="fg2"><label class="fl">Category</label><select class="fi" style="cursor:pointer"><option>Bug Report</option><option>Feature Request</option><option>Mod Feedback</option><option>SLOPE Feedback</option><option>Platform Feedback</option><option>General</option></select></div>
       <div class="fg2"><label class="fl">Rating</label><select class="fi" style="cursor:pointer"><option>⭐⭐⭐⭐⭐ Excellent</option><option>⭐⭐⭐⭐ Great</option><option>⭐⭐⭐ Good</option><option>⭐⭐ Needs Work</option><option>⭐ Poor</option></select></div>
     </div>
-    <div class="fg2"><label class="fl">Your Feedback</label><textarea class="fta" placeholder="Describe in detail…" style="min-height:140px"></textarea></div>
-    <div class="fg2"><label class="fl">Email (optional)</label><input class="fi" type="email" placeholder="For follow-up"></div>
+    <div class="fg2"><label class="fl">Your Feedback</label><textarea class="fta" placeholder="Describe in detail…" style="min-height:140px" required></textarea></div>
+    <div class="fg2"><label class="fl">Email (optional)</label><input class="fi" type="email" placeholder="For follow-up responses"></div>
     <button class="bp" type="submit" style="justify-content:center;padding:13px">Submit Feedback</button>
   </form>
 </div></div>
@@ -847,7 +1171,7 @@ footer.hidden{display:none}
           <label class="ckr"><input type="checkbox" id="si-rob" required><span class="ckl">I am not a robot</span></label>
         </div>
         <button class="asub" id="btn-si" type="submit">Sign In</button>
-        <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">No account? <a style="color:var(--red);cursor:pointer" onclick="swTab('su')">Sign up</a></p>
+        <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">No account? <a style="color:var(--red);cursor:pointer" onclick="swTab('su')">Sign up free</a></p>
       </form>
 
       <!-- SIGN UP -->
@@ -876,7 +1200,11 @@ footer.hidden{display:none}
 <!-- PROFILE -->
 <div id="page-profile" class="page"><div class="prfpg">
   <div class="prfhd">
-    <div class="pavw"><div class="prfav" id="pav">?</div><button class="pav-edit" type="button" onclick="document.getElementById('pav-file').click()">Change Photo</button><input id="pav-file" class="pav-file" type="file" accept="image/*"></div>
+    <div class="pavw">
+      <div class="prfav" id="pav">?</div>
+      <button class="pav-edit" type="button" onclick="document.getElementById('pav-file').click()">Change Photo</button>
+      <input id="pav-file" class="pav-file" type="file" accept="image/*">
+    </div>
     <div>
       <div class="prfnm" id="pnm">Loading…</div>
       <div class="prfem" id="pem">—</div>
@@ -889,7 +1217,7 @@ footer.hidden{display:none}
   <div class="prfgr">
     <div class="prfc">
       <div class="prfct">SLOPE Social</div>
-      <div id="psl-ld" class="prfld"><span class="spin"></span>Loading SLOPE data…</div>
+      <div id="psl-ld" class="prfld"><span class="spin"></span>&nbsp;Loading SLOPE data…</div>
       <div id="psl-dt" style="display:none;flex-direction:column;gap:.75rem">
         <div class="ssbl">
           <div class="ssi"><div class="ssn" id="ss-fw">0</div><div class="ssl">Followers</div></div>
@@ -903,13 +1231,22 @@ footer.hidden{display:none}
       </div>
     </div>
     <div class="prfc">
-      <div class="prfct">Account</div>
-      <div style="display:flex;flex-direction:column;gap:.75rem">
-        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Display Name</div><div style="font-size:.88rem" id="pa-nm">—</div></div>
-        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Email</div><div style="font-size:.88rem;font-family:'DM Mono',monospace" id="pa-em">—</div></div>
-        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Provider</div><div style="font-size:.88rem" id="pa-pv">—</div></div>
-        <div style="display:flex;gap:.5rem;margin-top:.5rem">
-          <button class="bg" style="flex:1;font-size:.72rem;padding:8px;justify-content:center" onclick="openSP()">Settings</button>
+      <div class="prfct">Account Info</div>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div style="background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.85rem 1rem">
+          <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700;margin-bottom:.3rem">Display Name</div>
+          <div id="pa-nm" style="font-size:.88rem;font-weight:600">—</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.85rem 1rem">
+          <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700;margin-bottom:.3rem">Email</div>
+          <div id="pa-em" style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--td)">—</div>
+        </div>
+        <div style="background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.85rem 1rem">
+          <div style="font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700;margin-bottom:.3rem">Sign-in Provider</div>
+          <div id="pa-pv" style="font-size:.82rem;color:var(--td)">—</div>
+        </div>
+        <div style="display:flex;gap:.5rem;margin-top:.25rem">
+          <button class="bp" style="flex:1;font-size:.72rem;padding:8px;justify-content:center" onclick="go('auth')">Manage Account</button>
           <button class="bg" style="flex:1;font-size:.72rem;padding:8px;justify-content:center;color:var(--red);border-color:rgba(224,43,43,.3)" onclick="doSO()">Sign Out</button>
         </div>
       </div>
@@ -934,13 +1271,28 @@ footer.hidden{display:none}
     <div class="fttp">
       <div>
         <div class="fbnm">The<span>Generic</span></div>
-        <p class="fbtg">Mods, games, and community tools. Built with love.</p>
+        <p class="fbtg">Mods, games, and community tools. Built with intention.</p>
         <div class="fbvr">TheGeneric · toxicbusinessstudios@gmail.com</div>
       </div>
       <div class="fcls">
-        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth ↗</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game ↗</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod ↗</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a onclick="go('email')">Email Us</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Product</div><ul>
+          <li><a onclick="go('features')">Features</a></li>
+          <li><a onclick="go('changelog')">Changelog</a></li>
+          <li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth ↗</a></li>
+          <li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game ↗</a></li>
+        </ul></div>
+        <div class="fcl"><div class="fcltt">Developers</div><ul>
+          <li><a onclick="go('docs')">Docs</a></li>
+          <li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod ↗</a></li>
+          <li><a onclick="go('changelog')">Changelog</a></li>
+        </ul></div>
+        <div class="fcl"><div class="fcltt">Company</div><ul>
+          <li><a onclick="go('about')">About</a></li>
+          <li><a onclick="go('blog')">Blog</a></li>
+          <li><a onclick="go('contact')">Contact</a></li>
+          <li><a onclick="go('email')">Email Us</a></li>
+        </ul></div>
       </div>
     </div>
     <div class="ftbt">
@@ -951,7 +1303,7 @@ footer.hidden{display:none}
 </footer>
 
 <script>
-// FIREBASE
+// ── FIREBASE ──────────────────────────────────────────────────────────────────
 const fbCfg={apiKey:"AIzaSyA375t6p_Zc9Ztfi-RUniqAmjttsjPyy1k",authDomain:"thegeneric-685b0.firebaseapp.com",databaseURL:"https://thegeneric-685b0-default-rtdb.firebaseio.com",projectId:"thegeneric-685b0",storageBucket:"thegeneric-685b0.firebasestorage.app",messagingSenderId:"272113167212",appId:"1:272113167212:web:7260ebf20da857f2292149",measurementId:"G-E4620YC1HF"};
 firebase.initializeApp(fbCfg);
 const auth=firebase.auth();
@@ -960,12 +1312,11 @@ firebase.analytics.isSupported().then(y=>{if(y)firebase.analytics()});
 const RK='6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b';
 const GMAIL_CLIENT_ID='272113167212-2ssvab7orlgb4vofs5cnulae44scrp08.apps.googleusercontent.com';
 const GMAIL_SCOPES='https://www.googleapis.com/auth/gmail.send';
-let gmailTokenClient=null;
-let gmailAccessToken='';
+let gmailTokenClient=null,gmailAccessToken='';
 
-
-// ROUTER
+// ── ROUTER ────────────────────────────────────────────────────────────────────
 const NO_FT=['auth'];
+const VALID_PAGES=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];
 function go(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+id);
@@ -977,50 +1328,169 @@ function go(id){
   closeUD();
   setTimeout(attachReveal,50);
 }
-window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
-window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
+window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';go(VALID_PAGES.includes(h)?h:'home')});
+window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';go(VALID_PAGES.includes(h)?h:'home')});
 
-// THEME
+// ── THEME ─────────────────────────────────────────────────────────────────────
 function toggleTheme(){setTh(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
-function setTh(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tg-th',t)}
-(()=>{const t=localStorage.getItem('tg-th');if(t)document.documentElement.setAttribute('data-theme',t)})();
+function setTh(t){
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('tg-th',t);
+  document.querySelectorAll('#theme-seg .sp-seg-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===t));
+}
+function setThSeg(btn,t){setTh(t)}
+(()=>{const t=localStorage.getItem('tg-th');if(t)setTh(t)})();
 
-// SETTINGS
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
 function openSP(){document.getElementById('sppn').classList.add('open');document.getElementById('spbk').classList.add('open')}
 function closeSP(){document.getElementById('sppn').classList.remove('open');document.getElementById('spbk').classList.remove('open')}
+function openSettingsCategory(cat){
+  document.querySelectorAll('#settings-categories [data-cat]').forEach(el=>el.classList.toggle('active',el.dataset.cat===cat));
+  document.querySelectorAll('.spnavbtn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sbtn===cat));
+}
+
 function setAcc(el){
   const c=el.dataset.c;
   document.querySelectorAll('.spsl').forEach(s=>s.classList.remove('active'));
   el.classList.add('active');
   const h2r=h=>{const n=parseInt(h.replace('#',''),16);return[(n>>16)&255,(n>>8)&255,n&255].join(',')};
-  let rgb;try{rgb=h2r(c)}catch(e){rgb='224,43,43'}
+  let rgb;try{rgb=h2r(c)}catch{rgb='224,43,43'}
   document.documentElement.style.setProperty('--red',c);
   document.documentElement.style.setProperty('--red-b',c);
+  document.documentElement.style.setProperty('--red-d',c);
   document.documentElement.style.setProperty('--rg',`rgba(${rgb},.35)`);
   document.documentElement.style.setProperty('--rt',`rgba(${rgb},.08)`);
+  localStorage.setItem('tg-acc',c);
+}
+(()=>{const a=localStorage.getItem('tg-acc');if(a){const el=document.querySelector(`.spsl[data-c="${a}"]`);if(el)setAcc(el)}})();
+
+function setDensitySeg(btn,val){
+  document.querySelectorAll('#density-seg .sp-seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.documentElement.setAttribute('data-density',val);
+  localStorage.setItem('tg-density',val);
+}
+(()=>{const d=localStorage.getItem('tg-density');if(d){const btn=document.querySelector(`#density-seg .sp-seg-btn[onclick*="${d}"]`);if(btn)setDensitySeg(btn,d)}})();
+
+function setFontSize(btn,size){
+  document.querySelectorAll('#fontsize-seg .sp-seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.documentElement.setAttribute('data-fs',size==='default'?'':size);
+  localStorage.setItem('tg-fs',size);
+}
+(()=>{const fs=localStorage.getItem('tg-fs');if(fs&&fs!=='default'){const btn=document.querySelector(`#fontsize-seg .sp-seg-btn[onclick*="${fs}"]`);if(btn)setFontSize(btn,fs)}})();
+
+function setSegActive(btn,group){
+  btn.closest('.sp-seg')?.querySelectorAll('.sp-seg-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
 }
 
-// USER MENU
+// Toggle system
+const TOGGLES={
+  motion:(on)=>document.documentElement.setAttribute('data-motion',on?'full':'reduced'),
+  bgfx:(on)=>{document.documentElement.toggleAttribute('data-bg-off',!on)},
+  blur:(on)=>{document.querySelectorAll('nav').forEach(n=>{n.style.backdropFilter=on?'blur(24px) saturate(1.8)':'none'})},
+  hoverorbs:(on)=>{},
+  toasts:(on)=>{window._toastsEnabled=on},
+  redirectconfirm:(on)=>{window._redirectConfirm=on},
+  analytics:(on)=>{},
+  remembersession:(on)=>{localStorage.setItem('tg-remsess',on?'1':'')},
+  reducedmotion:(on)=>document.documentElement.setAttribute('data-motion',on?'reduced':'full'),
+  highcontrast:(on)=>document.documentElement.setAttribute('data-contrast',on?'high':''),
+  focusvisible:(on)=>document.documentElement.setAttribute('data-focus',on?'visible':''),
+  livedata:(on)=>{const c=document.getElementById('slope-live');if(c)c.classList.toggle('hidden',!on)},
+  devmode:(on)=>{},
+  betaui:(on)=>{},
+};
+window._toastsEnabled=true;window._redirectConfirm=true;
+function toggleSpToggle(row,key){
+  const sw=row.querySelector('.sp-tog-switch');
+  const on=!sw.classList.contains('on');
+  sw.classList.toggle('on',on);
+  TOGGLES[key]?.(on);
+  localStorage.setItem('tg-tog-'+key,on?'1':'');
+}
+// restore toggles
+['motion','bgfx','blur','hoverorbs','toasts','redirectconfirm','analytics','remembersession','reducedmotion','highcontrast','focusvisible','livedata','devmode','betaui'].forEach(k=>{
+  const v=localStorage.getItem('tg-tog-'+k);
+  if(v!==null){
+    const sw=document.getElementById('toggle-'+k);
+    const on=v==='1';
+    sw?.classList.toggle('on',on);
+    TOGGLES[k]?.(on);
+    if(k==='toasts')window._toastsEnabled=on;
+    if(k==='redirectconfirm')window._redirectConfirm=on;
+  }
+});
+
+// ── USER MENU ─────────────────────────────────────────────────────────────────
 function toggleUD(){document.getElementById('udd-el')?.classList.toggle('open')}
 function closeUD(){document.getElementById('udd-el')?.classList.remove('open')}
 document.addEventListener('click',e=>{const dd=document.getElementById('udd-el');const t=document.querySelector('.utrig');if(dd&&!dd.contains(e.target)&&t&&!t.contains(e.target))closeUD()});
 
-// AUTH UI
+// ── AUTH UI ───────────────────────────────────────────────────────────────────
 function updNav(user){
   const a=document.getElementById('navauth');
-  if(!user){a.innerHTML=`<button class="bp js-gs-btn" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;return}
+  if(!user){
+    a.innerHTML=`<button class="bp js-gs-btn" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+    return;
+  }
   const init=(user.displayName||user.email||'?').charAt(0).toUpperCase();
   const dn=user.displayName||user.email.split('@')[0];
-  const avH=user.photoURL?`<div class="uav"><img src="${user.photoURL}" alt=""></div>`:`<div class="uav">${init}</div>`;
-  a.innerHTML=`<div class="umenu"><div class="utrig" onclick="toggleUD()">${avH}<span class="uname">${dn}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="udd" id="udd-el"><a class="udit" onclick="go('profile');closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a><a class="udit" onclick="openSP();closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a><div class="udhr"></div><a class="udit dng" onclick="doSO()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a></div></div>`;
+  const savedPfp=localStorage.getItem('tg-pfp');
+  const avH=savedPfp?`<div class="uav"><img src="${savedPfp}" alt=""></div>`
+    :user.photoURL?`<div class="uav"><img src="${user.photoURL}" alt=""></div>`
+    :`<div class="uav">${init}</div>`;
+  a.innerHTML=`<div class="umenu"><div class="utrig" onclick="toggleUD()">${avH}<span class="uname">${dn}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="udd" id="udd-el"><a class="udit" onclick="go('profile');closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a><a class="udit" onclick="openSP();openSettingsCategory('account');closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a><div class="udhr"></div><a class="udit dng" onclick="doSO()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a></div></div>`;
 }
 
-let lastUid=null;auth.onAuthStateChanged(user=>{updNav(user);updCTA(user);updGetStartedBtns(user);if(user){fillProfile(user);if(lastUid!==user.uid){toast('Signed in successfully.','ok');if(location.hash==='#auth')go('home')}}lastUid=user?.uid||null});
+function updSpAccount(user){
+  const status=document.getElementById('sp-acc-status');
+  const provCard=document.getElementById('sp-acc-provider-card');
+  const photoCard=document.getElementById('sp-acc-photo-card');
+  const signoutBtn=document.getElementById('sp-signout-btn');
+  if(!user){
+    if(status)status.textContent='Not signed in';
+    if(provCard)provCard.style.display='none';
+    if(photoCard)photoCard.style.display='none';
+    if(signoutBtn)signoutBtn.style.display='none';
+    return;
+  }
+  const dn=user.displayName||user.email.split('@')[0];
+  if(status)status.textContent=`Signed in as ${dn}`;
+  const prov=user.providerData[0]?.providerId||'email';
+  if(provCard){provCard.style.display='block';document.getElementById('sp-acc-provider').textContent=prov==='google.com'?'Google Sign-In':'Email / Password'}
+  if(photoCard){photoCard.style.display='block';document.getElementById('sp-acc-photo').textContent=localStorage.getItem('tg-pfp')?'Custom uploaded photo':user.photoURL?'Google profile photo':'Default initials'}
+  if(signoutBtn)signoutBtn.style.display='';
+}
 
-// RECAPTCHA
-async function rcToken(action){return new Promise(r=>{if(typeof grecaptcha==='undefined'||!grecaptcha.enterprise){r(null);return}let done=false;const tm=setTimeout(()=>{if(!done){done=true;r(null)}},3200);grecaptcha.enterprise.ready(async()=>{try{const t=await grecaptcha.enterprise.execute(RK,{action});if(!done){done=true;clearTimeout(tm);r(t)}}catch{if(!done){done=true;clearTimeout(tm);r(null)}}})})}
+let lastUid=null;
+auth.onAuthStateChanged(user=>{
+  updNav(user);
+  updCTA(user);
+  updGetStartedBtns(user);
+  updSpAccount(user);
+  if(user){
+    fillProfile(user);
+    if(lastUid!==user.uid){toast('Signed in successfully.','ok');if(location.hash==='#auth')go('home')}
+  }
+  lastUid=user?.uid||null;
+});
 
-// SIGN IN
+// ── RECAPTCHA ─────────────────────────────────────────────────────────────────
+async function rcToken(action){
+  return new Promise(r=>{
+    if(typeof grecaptcha==='undefined'||!grecaptcha.enterprise){r(null);return}
+    let done=false;
+    const tm=setTimeout(()=>{if(!done){done=true;r(null)}},3200);
+    grecaptcha.enterprise.ready(async()=>{
+      try{const t=await grecaptcha.enterprise.execute(RK,{action});if(!done){done=true;clearTimeout(tm);r(t)}}
+      catch{if(!done){done=true;clearTimeout(tm);r(null)}}
+    });
+  });
+}
+
+// ── SIGN IN ───────────────────────────────────────────────────────────────────
 async function doSI(){
   const btn=document.getElementById('btn-si');
   const e=document.getElementById('si-e').value.trim();
@@ -1030,7 +1500,7 @@ async function doSI(){
   const rob=document.getElementById('si-rob').checked;
   clrA();
   if(!e||!p){shErr('Please fill in all fields.');return}
-  if(!trm){shErr('Please agree to Terms & Privacy Policy.');return}
+  if(!trm){shErr('Please agree to the Terms & Privacy Policy.');return}
   if(!rob){shErr('Please confirm you are not a robot.');return}
   ldBtn(btn,true,'signin');
   await rcToken('LOGIN');
@@ -1042,7 +1512,7 @@ async function doSI(){
   }catch(er){ldBtn(btn,false,'signin');shErr(fErr(er.code))}
 }
 
-// SIGN UP
+// ── SIGN UP ───────────────────────────────────────────────────────────────────
 async function doSU(){
   const btn=document.getElementById('btn-su');
   const u=document.getElementById('su-u').value.trim();
@@ -1056,7 +1526,7 @@ async function doSU(){
   if(!u||!e||!p||!c){shErr('Please fill in all fields.');return}
   if(p!==c){shErr('Passwords do not match.');return}
   if(p.length<6){shErr('Password must be at least 6 characters.');return}
-  if(!trm){shErr('Please agree to Terms & Privacy Policy.');return}
+  if(!trm){shErr('Please agree to the Terms & Privacy Policy.');return}
   if(!rob){shErr('Please confirm you are not a robot.');return}
   ldBtn(btn,true,'signup');
   await rcToken('REGISTER');
@@ -1064,51 +1534,60 @@ async function doSU(){
     await auth.setPersistence(rem?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
     const cr=await auth.createUserWithEmailAndPassword(e,p);
     await cr.user.updateProfile({displayName:u});
-    shOk('Account created! Welcome to TheGeneric!');
+    shOk('Account created! Welcome to TheGeneric.');
     setTimeout(()=>go('profile'),1200);
   }catch(er){ldBtn(btn,false,'signup');shErr(fErr(er.code))}
 }
 
-// GOOGLE
+// ── GOOGLE ────────────────────────────────────────────────────────────────────
 async function doGoogle(){
   clrA();
   try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());shOk('Signed in with Google!');setTimeout(()=>go('profile'),1000)}
   catch(e){if(e.code!=='auth/popup-closed-by-user')shErr(fErr(e.code))}
 }
 
-// SIGN OUT
-async function doSO(){openConfirm({title:'Sign Out',message:'Are you sure you want to sign out of this session?',okText:'Sign Out',onConfirm:async()=>{await auth.signOut();closeUD();toast('Signed out successfully.','ok');location.hash='#home';location.reload()}})}
+// ── SIGN OUT ──────────────────────────────────────────────────────────────────
+async function doSO(){
+  openConfirm({
+    title:'Sign Out',
+    message:'Are you sure you want to sign out of this session?',
+    okText:'Sign Out',
+    onConfirm:async()=>{await auth.signOut();closeUD();toast('Signed out successfully.','ok');go('home')}
+  });
+}
 
-// AUTH HELPERS
+// ── AUTH HELPERS ──────────────────────────────────────────────────────────────
 function shErr(m){const e=document.getElementById('aerr');if(e){e.textContent=m;e.classList.add('show')}}
 function shOk(m){const e=document.getElementById('aok');if(e){e.textContent=m;e.classList.add('show')}}
 function clrA(){document.getElementById('aerr')?.classList.remove('show');document.getElementById('aok')?.classList.remove('show')}
 function ldBtn(btn,on,type){if(!btn)return;if(on){btn.disabled=true;btn.innerHTML=`<span style="display:flex;align-items:center;gap:8px;justify-content:center"><span class="spin"></span>Please wait…</span>`}else{btn.disabled=false;btn.textContent=type==='signin'?'Sign In':'Create Account'}}
-function fErr(c){const m={'auth/invalid-email':'Invalid email address.','auth/user-not-found':'No account with this email.','auth/wrong-password':'Incorrect password.','auth/email-already-in-use':'Email already in use.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts. Try again later.','auth/network-request-failed':'Network error. Check connection.','auth/popup-blocked':'Popup blocked. Allow popups for this site.','auth/invalid-credential':'Invalid credentials.'};return m[c]||'Something went wrong. Please try again.'}
+function fErr(c){const m={'auth/invalid-email':'Invalid email address.','auth/user-not-found':'No account with this email.','auth/wrong-password':'Incorrect password.','auth/email-already-in-use':'Email already in use.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts. Try again later.','auth/network-request-failed':'Network error. Check your connection.','auth/popup-blocked':'Popup blocked. Allow popups for this site.','auth/invalid-credential':'Invalid credentials. Please check and retry.'};return m[c]||'Something went wrong. Please try again.'}
 function swTab(t){document.getElementById('frm-si').style.display=t==='si'?'block':'none';document.getElementById('frm-su').style.display=t==='su'?'block':'none';document.getElementById('tab-si').classList.toggle('active',t==='si');document.getElementById('tab-su').classList.toggle('active',t==='su');clrA()}
 function tpw(id,btn){const i=document.getElementById(id);const s=i.type==='text';i.type=s?'password':'text';btn.querySelector('svg').innerHTML=s?'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>':'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'}
 
-// PROFILE
+// ── PROFILE ───────────────────────────────────────────────────────────────────
 async function fillProfile(user){
   const dn=user.displayName||user.email.split('@')[0];
   setText('pnm',dn);setText('pem',user.email);setText('pa-nm',dn);setText('pa-em',user.email);
-  const pv=user.providerData[0]?.providerId||'email';
-  setText('pa-pv',pv==='google.com'?'Google':'Email / Password');
+  const prov=user.providerData[0]?.providerId||'email';
+  setText('pa-pv',prov==='google.com'?'Google Sign-In':'Email / Password');
   const pav=document.getElementById('pav');
-  const savedPfp=localStorage.getItem('tg-pfp');if(pav){if(savedPfp)pav.innerHTML=`<img src="${savedPfp}" alt="${dn}">`;else if(user.photoURL)pav.innerHTML=`<img src="${user.photoURL}" alt="${dn}">`;else pav.textContent=dn.charAt(0).toUpperCase()}
+  const savedPfp=localStorage.getItem('tg-pfp');
+  if(pav){
+    if(savedPfp)pav.innerHTML=`<img src="${savedPfp}" alt="${dn}">`;
+    else if(user.photoURL)pav.innerHTML=`<img src="${user.photoURL}" alt="${dn}">`;
+    else pav.textContent=dn.charAt(0).toUpperCase();
+  }
   fetchSlope(user);
 }
 
 async function fetchSlope(user){
-  const ld=document.getElementById('psl-ld');
-  const dt=document.getElementById('psl-dt');
+  const ld=document.getElementById('psl-ld'),dt=document.getElementById('psl-dt');
   try{
-    // Try to find username from SLOPE encrypted info
     try{
       const snap=await db.ref('SLOPE/user/encrypted/info').once('value');
       snap.forEach(ch=>{const d=ch.val();if(d&&(d.email===user.email||d.uid===user.uid)){const b=document.getElementById('slope-ubdg');if(b&&(d.username||d.name)){b.textContent='SLOPE: '+(d.username||d.name);b.style.display='inline-block'}}});
     }catch{}
-    // Social stats
     let fw=0,fg=0,fr=0;
     try{const s=await db.ref(`SLOPE/social/${user.uid}`).once('value');if(s.exists()){const v=s.val();fw=v.followers?Object.keys(v.followers).length:0;fg=v.following?Object.keys(v.following).length:0;fr=v.friends?Object.keys(v.friends).length:0}}catch{}
     setText('ss-fw',fw);setText('ss-fg',fg);setText('ss-fr',fr);
@@ -1117,34 +1596,28 @@ async function fetchSlope(user){
 }
 function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
 
-
+// ── SLOPE LIVE CONFIG ─────────────────────────────────────────────────────────
 async function fetchSlopeLiveConfig(){
   const card=document.getElementById('slope-live');
-  if(!card)return;
+  if(!card||card.classList.contains('hidden'))return;
   try{
-    const [cvSnap,csSnap,ltmSnap,svSnap]=await Promise.all([
+    const [cvS,csS,ltmS,svS]=await Promise.all([
       db.ref('SLOPE/config/currentVersion').once('value'),
       db.ref('SLOPE/config/currentSeason').once('value'),
       db.ref('SLOPE/config/ltm/name').once('value'),
       db.ref('SLOPE/config/supportedVersions').once('value')
     ]);
-    const cv=cvSnap.val();
-    const cs=csSnap.val();
-    const ltm=ltmSnap.val();
-    const svRaw=svSnap.val();
+    const cv=cvS.val(),cs=csS.val(),ltm=ltmS.val(),svRaw=svS.val();
     let versions=[];
     if(Array.isArray(svRaw))versions=svRaw.filter(Boolean);
-    else if(svRaw&&typeof svRaw==='object')versions=Object.keys(svRaw).sort((a,b)=>Number(a)-Number(b)).map(k=>svRaw[k]).filter(Boolean);
+    else if(svRaw&&typeof svRaw==='object')versions=Object.keys(svRaw).sort((a,b)=>+a-+b).map(k=>svRaw[k]).filter(Boolean);
     if(!cv||!cs||!ltm||!versions.length){card.classList.add('hidden');return}
-    setText('slope-cv',cv);
-    setText('slope-cs',cs);
-    setText('slope-ltm',ltm);
-    setText('slope-sv',versions.join(', '));
+    setText('slope-cv',cv);setText('slope-cs',cs);setText('slope-ltm',ltm);setText('slope-sv',versions.join(', '));
     card.classList.remove('hidden');
   }catch{card.classList.add('hidden')}
 }
 
-// MODRINTH
+// ── MODRINTH ──────────────────────────────────────────────────────────────────
 async function fetchMR(){
   try{
     const r=await fetch('https://api.modrinth.com/v2/project/mocharmsmod');
@@ -1157,47 +1630,162 @@ async function fetchMR(){
   }catch{setText('hv-dl','—')}
 }
 
-// COUNTERS
+// ── COUNTERS ──────────────────────────────────────────────────────────────────
 function animC(el,target,big=false){if(!el)return;const dur=1800,start=performance.now();function step(now){const t=Math.min((now-start)/dur,1),e=1-Math.pow(1-t,3),v=Math.round(e*target);el.textContent=big?v.toLocaleString():v;if(t<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
-
 const cObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(!en.isIntersecting)return;document.querySelectorAll('[data-count]').forEach(el=>animC(el,parseInt(el.dataset.count)));cObs.disconnect()})},{threshold:.3});
 const cTgt=document.querySelector('.hsts');if(cTgt)cObs.observe(cTgt);
 
-// SCROLL REVEAL
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
 const rObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:.08});
-function attachReveal(){document.querySelectorAll('.fc,.blc,.dc,.mcard,.hvc').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv='1';el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .2s';rObs.observe(el)})}
+function attachReveal(){document.querySelectorAll('.fc,.blc,.dc,.mcard,.hvc,.cli,.prfc').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv='1';el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .2s';rObs.observe(el)})}
 attachReveal();
 
-function toast(msg,type='ok'){const wrap=document.getElementById('toast-wrap');if(!wrap)return;const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;wrap.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),220)},2900)}
-function updCTA(user){const btn=document.getElementById('cta-account-btn');if(!btn)return;btn.innerHTML=(user?'View Account':'Create Account')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;btn.onclick=()=>go(user?'profile':'auth')}
-function updGetStartedBtns(user){document.querySelectorAll('.js-gs-btn').forEach(btn=>{btn.innerHTML=(user?'View Profile':'Get Started')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;btn.onclick=()=>go(user?'profile':'auth')})}
-function openSettingsCategory(cat){document.querySelectorAll('#settings-categories [data-cat]').forEach(el=>el.classList.toggle('active',el.dataset.cat===cat));document.querySelectorAll('.spnavbtn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sbtn===cat))}
-const REDIRECTS={github:{name:'GitHub',url:'https://github.com/TheGeneric10',theme:'github',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>'},youtube:{name:'YouTube',url:'https://www.youtube.com/@goat8six',theme:'youtube',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>'},discord:{name:'Discord',url:'https://discord.gg/KjEZtRmWwc',theme:'discord',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>'}};
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg,type=''){
+  if(!window._toastsEnabled)return;
+  const wrap=document.getElementById('toast-wrap');if(!wrap)return;
+  const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;wrap.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),220)},2900);
+}
+
+// ── CTA / GET STARTED BUTTONS ─────────────────────────────────────────────────
+function updCTA(user){
+  const btn=document.getElementById('cta-account-btn');if(!btn)return;
+  btn.innerHTML=(user?'View Account':'Create Account')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+  btn.onclick=()=>go(user?'profile':'auth');
+}
+function updGetStartedBtns(user){
+  document.querySelectorAll('.js-gs-btn').forEach(btn=>{
+    btn.innerHTML=(user?'View Profile':'Get Started')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+    btn.onclick=()=>go(user?'profile':'auth');
+  });
+}
+
+// ── REDIRECT MODAL ────────────────────────────────────────────────────────────
+const REDIRECTS={
+  github:{name:'GitHub',url:'https://github.com/TheGeneric10',theme:'github',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>'},
+  youtube:{name:'YouTube',url:'https://www.youtube.com/@goat8six',theme:'youtube',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>'},
+  discord:{name:'Discord',url:'https://discord.gg/KjEZtRmWwc',theme:'discord',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>'}
+};
 let redirectUrl='';
 function makeParticles(containerId,cls,count=14){const host=document.getElementById(containerId);if(!host)return;host.innerHTML='';for(let i=0;i<count;i++){const p=document.createElement('span');p.className=cls;p.style.left=`${Math.random()*100}%`;p.style.bottom=`${-8-Math.random()*20}px`;p.style.animationDelay=`${Math.random()*1.6}s`;p.style.animationDuration=`${2+Math.random()*1.6}s`;host.appendChild(p)}}
-function openRedirect(key){const c=REDIRECTS[key];if(!c)return;redirectUrl=c.url;const bk=document.getElementById('rdbk');const md=document.getElementById('rdmd');document.getElementById('rdi').innerHTML=c.icon;document.getElementById('rdtx').textContent=`${c.name} link`;document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;document.getElementById('rdbtn').textContent=`Redirect to ${c.name}`;md.className=`rdmd ${c.theme}`;makeParticles('rd-particles','rdp',16);bk.classList.remove('closing');bk.classList.add('open');document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener')}
+function openRedirect(key){
+  const c=REDIRECTS[key];if(!c)return;
+  if(!window._redirectConfirm){window.open(c.url,'_blank','noopener');return}
+  redirectUrl=c.url;
+  const bk=document.getElementById('rdbk'),md=document.getElementById('rdmd');
+  document.getElementById('rdi').innerHTML=c.icon;
+  document.getElementById('rdtx').textContent=`${c.name} link`;
+  document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;
+  document.getElementById('rdbtn').textContent=`Go to ${c.name}`;
+  md.className=`rdmd ${c.theme}`;
+  makeParticles('rd-particles','rdp',16);
+  bk.classList.remove('closing');bk.classList.add('open');
+  document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener');
+}
 function closeRedirect(){const bk=document.getElementById('rdbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
-function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}}
 
+// ── CONFIRM MODAL ─────────────────────────────────────────────────────────────
+let confirmHandler=null;
+function openConfirm({title='Confirm',message='Please confirm.',okText='Continue',onConfirm=()=>{}}={}){
+  document.getElementById('cftx').textContent=title;
+  document.getElementById('cfsub').textContent=message;
+  const ok=document.getElementById('cfok');ok.textContent=okText;
+  confirmHandler=onConfirm;
+  makeParticles('cf-particles','cfp',15);
+  const bk=document.getElementById('cfbk');
+  bk.classList.remove('closing');bk.classList.add('open');
+}
+function closeConfirm(){const bk=document.getElementById('cfbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
+document.getElementById('cfok')?.addEventListener('click',async()=>{try{if(confirmHandler)await confirmHandler()}finally{closeConfirm();confirmHandler=null}});
+
+// ── PROFILE PHOTO UPLOAD ──────────────────────────────────────────────────────
+function initPfpUpload(){
+  const fi=document.getElementById('pav-file');if(!fi)return;
+  fi.addEventListener('change',ev=>{
+    const f=ev.target.files?.[0];if(!f)return;
+    if(!f.type.startsWith('image/')){toast('Only image files are supported.','err');return}
+    if(f.size>4*1024*1024){toast('Image is too large (max 4MB).','err');return}
+    const r=new FileReader();
+    r.onload=()=>{
+      const url=r.result;
+      localStorage.setItem('tg-pfp',url);
+      const pav=document.getElementById('pav');
+      if(pav)pav.innerHTML=`<img src="${url}" alt="Profile photo">`;
+      document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${url}" alt="">`);
+      toast('Profile photo updated.','ok');
+    };
+    r.readAsDataURL(f);
+  });
+}
+function applySavedPfp(){
+  const p=localStorage.getItem('tg-pfp');if(!p)return;
+  const pav=document.getElementById('pav');
+  if(pav)pav.innerHTML=`<img src="${p}" alt="Profile photo">`;
+  document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${p}" alt="">`);
+}
+
+// ── FORMS ─────────────────────────────────────────────────────────────────────
+function initForms(){
+  const cf=document.getElementById('contact-form');
+  if(cf){cf.addEventListener('submit',e=>{
+    e.preventDefault();
+    const inputs=cf.querySelectorAll('input,textarea');
+    const name=inputs[0]?.value.trim(),email=inputs[1]?.value.trim(),subject=inputs[2]?.value.trim(),msg=inputs[3]?.value.trim();
+    if(!name||!email||!msg){toast('Please complete all contact form fields.','err');return}
+    window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${encodeURIComponent(`TheGeneric · ${subject||'Contact'} · ${name}`)}&body=${encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`)}`;
+    toast('Opening your email client.','ok');
+  })}
+  const ff=document.getElementById('feedback-form');
+  if(ff){ff.addEventListener('submit',e=>{
+    e.preventDefault();
+    const cat=ff.querySelector('select')?.value||'General';
+    const txt=ff.querySelector('textarea')?.value.trim();
+    const em=ff.querySelector('input[type="email"]')?.value.trim()||'not provided';
+    if(!txt){toast('Please add feedback before submitting.','err');return}
+    window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${encodeURIComponent(`Feedback · ${cat}`)}&body=${encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`)}`;
+    toast('Opening your email client.','ok');
+  })}
+}
+
+// ── GMAIL / EMAIL PAGE ────────────────────────────────────────────────────────
 function b64url(str){return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
 function setEmailStatus(txt,ok=false){const el=document.getElementById('ep-status');if(el){el.textContent=txt;el.style.color=ok?'#27c47a':'var(--tm)'}}
 function setEmailOutput(txt,isErr=false){const o=document.getElementById('ep-output');if(!o)return;o.style.display='block';o.textContent=txt;o.style.color=isErr?'#ff6b6b':'var(--td)'}
 function initGmailTokenClient(){if(gmailTokenClient||!window.google?.accounts?.oauth2)return;gmailTokenClient=google.accounts.oauth2.initTokenClient({client_id:GMAIL_CLIENT_ID,scope:GMAIL_SCOPES,callback:(resp)=>{if(resp?.access_token){gmailAccessToken=resp.access_token;setEmailStatus('Connected to Gmail.',true);toast('Gmail connected.','ok')}else{setEmailStatus('Gmail connection failed.');toast('Unable to connect Gmail.','err')}}})}
-async function sendViaGmail(){const to=document.getElementById('ep-to')?.value.trim();const subject=document.getElementById('ep-subject')?.value.trim();const reply=document.getElementById('ep-email')?.value.trim();const msg=document.getElementById('ep-message')?.value.trim();if(!to||!subject||!reply||!msg){toast('Please fill all Email Us fields.','err');return}if(!gmailAccessToken){toast('Connect Gmail first.','err');return}const mime=`To: ${to}\r\nSubject: ${subject}\r\nReply-To: ${reply}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nFrom: ${reply}\n\n${msg}`;const raw=b64url(mime);const res=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',headers:{'Authorization':`Bearer ${gmailAccessToken}`,'Content-Type':'application/json'},body:JSON.stringify({raw})});const data=await res.json();if(!res.ok)throw new Error(data?.error?.message||'Gmail send failed');setEmailOutput(`Sent successfully. Message ID: ${data.id||'n/a'}`);toast('Message sent via Gmail API.','ok')}
-function openMailtoDraft(){const to=document.getElementById('ep-to')?.value.trim()||'toxicbusinessstudios@gmail.com';const subject=document.getElementById('ep-subject')?.value.trim()||'TheGeneric Email';const reply=document.getElementById('ep-email')?.value.trim()||'not provided';const msg=document.getElementById('ep-message')?.value.trim()||'';window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${reply}\n\n${msg}`)}`}
-function initEmailPage(){const form=document.getElementById('email-page-form');if(!form)return;const connect=document.getElementById('ep-connect');const disconnect=document.getElementById('ep-disconnect');const mailto=document.getElementById('ep-mailto');initGmailTokenClient();connect?.addEventListener('click',()=>{initGmailTokenClient();if(!gmailTokenClient){toast('Google Identity failed to load.','err');return}gmailTokenClient.requestAccessToken({prompt:gmailAccessToken?'':'consent'})});disconnect?.addEventListener('click',()=>{gmailAccessToken='';setEmailStatus('Not connected.');toast('Gmail disconnected.','ok')});mailto?.addEventListener('click',openMailtoDraft);form.addEventListener('submit',async e=>{e.preventDefault();try{await sendViaGmail()}catch(err){setEmailOutput(`Send failed: ${err.message}`,true);toast('Failed to send via Gmail API.','err')}})}
+async function sendViaGmail(){
+  const to=document.getElementById('ep-to')?.value.trim(),subject=document.getElementById('ep-subject')?.value.trim(),reply=document.getElementById('ep-email')?.value.trim(),msg=document.getElementById('ep-message')?.value.trim();
+  if(!to||!subject||!reply||!msg){toast('Please fill all fields.','err');return}
+  if(!gmailAccessToken){toast('Connect Gmail first.','err');return}
+  const mime=`To: ${to}\r\nSubject: ${subject}\r\nReply-To: ${reply}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nFrom: ${reply}\n\n${msg}`;
+  const res=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',headers:{'Authorization':`Bearer ${gmailAccessToken}`,'Content-Type':'application/json'},body:JSON.stringify({raw:b64url(mime)})});
+  const data=await res.json();
+  if(!res.ok)throw new Error(data?.error?.message||'Gmail send failed');
+  setEmailOutput(`Sent successfully. Message ID: ${data.id||'n/a'}`);toast('Message sent via Gmail API.','ok');
+}
+function openMailtoDraft(){
+  const to=document.getElementById('ep-to')?.value.trim()||'toxicbusinessstudios@gmail.com';
+  const subject=document.getElementById('ep-subject')?.value.trim()||'TheGeneric Email';
+  const reply=document.getElementById('ep-email')?.value.trim()||'not provided';
+  const msg=document.getElementById('ep-message')?.value.trim()||'';
+  window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${reply}\n\n${msg}`)}`;
+}
+function initEmailPage(){
+  const form=document.getElementById('email-page-form');if(!form)return;
+  initGmailTokenClient();
+  document.getElementById('ep-connect')?.addEventListener('click',()=>{initGmailTokenClient();if(!gmailTokenClient){toast('Google Identity failed to load.','err');return}gmailTokenClient.requestAccessToken({prompt:gmailAccessToken?'':'consent'})});
+  document.getElementById('ep-disconnect')?.addEventListener('click',()=>{gmailAccessToken='';setEmailStatus('Not connected.');toast('Gmail disconnected.','ok')});
+  document.getElementById('ep-mailto')?.addEventListener('click',openMailtoDraft);
+  form.addEventListener('submit',async e=>{e.preventDefault();try{await sendViaGmail()}catch(err){setEmailOutput(`Send failed: ${err.message}`,true);toast('Failed to send via Gmail API.','err')}});
+}
 
-let confirmHandler=null;function openConfirm({title='Confirm Action',message='Please confirm.',okText='Continue',onConfirm=()=>{}}={}){const bk=document.getElementById('cfbk');document.getElementById('cftx').textContent=title;document.getElementById('cfsub').textContent=message;const ok=document.getElementById('cfok');ok.textContent=okText;confirmHandler=onConfirm;makeParticles('cf-particles','cfp',15);bk.classList.remove('closing');bk.classList.add('open')}
-function closeConfirm(){const bk=document.getElementById('cfbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
-document.getElementById('cfok')?.addEventListener('click',async()=>{try{if(confirmHandler)await confirmHandler()}finally{closeConfirm();confirmHandler=null}})
-function initPfpUpload(){const fi=document.getElementById('pav-file');if(!fi)return;fi.addEventListener('change',ev=>{const f=ev.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Only image files are supported.','err');return}if(f.size>4*1024*1024){toast('Image is too large (max 4MB).','err');return}const r=new FileReader();r.onload=()=>{const url=r.result;localStorage.setItem('tg-pfp',url);const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${url}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${url}" alt="Profile photo">`);toast('Profile photo updated.','ok')};r.readAsDataURL(f)})}
-function applySavedPfp(){const p=localStorage.getItem('tg-pfp');if(!p)return;const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${p}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${p}" alt="Profile photo">`)}
-initForms();initEmailPage();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
-
-
-function hideCaptchaBadge(){document.querySelectorAll('.grecaptcha-badge, iframe[title*="reCAPTCHA"], iframe[src*="recaptcha"]').forEach(el=>{el.style.display='none';el.style.visibility='hidden';el.style.opacity='0'})}
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function hideCaptchaBadge(){document.querySelectorAll('.grecaptcha-badge,iframe[title*="reCAPTCHA"],iframe[src*="recaptcha"]').forEach(el=>{el.style.display='none';el.style.visibility='hidden';el.style.opacity='0'})}
 setInterval(hideCaptchaBadge,1200);hideCaptchaBadge();
-fetchMR();fetchSlopeLiveConfig();setInterval(fetchMR,60*60*1000);setInterval(fetchSlopeLiveConfig,5*60*1000);
+
+initForms();initEmailPage();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
+fetchMR();fetchSlopeLiveConfig();
+setInterval(fetchMR,60*60*1000);setInterval(fetchSlopeLiveConfig,5*60*1000);
 </script>
 </body>
 </html>
