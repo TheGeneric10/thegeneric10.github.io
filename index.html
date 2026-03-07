@@ -1318,12 +1318,13 @@ let gmailTokenClient=null,gmailAccessToken='';
 const NO_FT=['auth'];
 const VALID_PAGES=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];
 function go(id){
+  if(id==='auth'&&auth.currentUser)id='profile';
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const pg=document.getElementById('page-'+id);
   if(!pg)return;
   pg.classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
-  history.pushState({},'','#'+id);
+  history.pushState({},'',`#${id}`);
   document.getElementById('ftmain').classList.toggle('hidden',NO_FT.includes(id));
   closeUD();
   setTimeout(attachReveal,50);
@@ -1472,7 +1473,8 @@ auth.onAuthStateChanged(user=>{
   updSpAccount(user);
   if(user){
     fillProfile(user);
-    if(lastUid!==user.uid){toast('Signed in successfully.','ok');if(location.hash==='#auth')go('home')}
+    if(lastUid!==user.uid){toast('Signed in successfully.','ok')}
+    if(location.hash==='#auth')go('profile')
   }
   lastUid=user?.uid||null;
 });
