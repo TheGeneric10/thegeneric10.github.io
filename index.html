@@ -1,9 +1,987 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TheGeneric</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TheGeneric · v26.1</title>
+<script src="https://www.google.com/recaptcha/enterprise.js?render=6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#e02b2b;--red-b:#ff3b3b;--red-d:#8b1a1a;
+  --rg:rgba(224,43,43,.35);--rt:rgba(224,43,43,.08);
+  --bg:#0c0c0c;--bg2:#121212;--bg3:#1a1a1a;
+  --sf:#1e1e1e;--sf2:#252525;
+  --bo:rgba(255,255,255,.07);--bo2:rgba(255,255,255,.12);
+  --tx:#f0f0f0;--tm:#777;--td:#aaa;
+  --r:12px;--rl:20px;--nh:64px;--T:.25s cubic-bezier(.4,0,.2,1)
+}
+[data-theme=light]{
+  --bg:#f4f4f4;--bg2:#ececec;--bg3:#e4e4e4;
+  --sf:#fff;--sf2:#f8f8f8;
+  --bo:rgba(0,0,0,.08);--bo2:rgba(0,0,0,.14);
+  --tx:#111;--tm:#888;--td:#555;
+  --rg:rgba(224,43,43,.18);--rt:rgba(224,43,43,.06)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;transition:background var(--T),color var(--T)}
+*{-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+input,textarea,select{-webkit-user-select:text!important;user-select:text!important}
+img{-webkit-user-drag:none;pointer-events:none}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red-d);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--red)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:200;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px);background:rgba(12,12,12,.85);border-bottom:1px solid var(--bo);transition:background var(--T)}
+[data-theme=light] nav{background:rgba(244,244,244,.9)}
+.nlogo{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.nli{width:36px;height:36px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:#fff;box-shadow:0 0 18px var(--rg);transition:box-shadow var(--T),transform .15s}
+.nlogo:hover .nli{box-shadow:0 0 30px var(--rg);transform:scale(1.05)}
+.nltx{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--tx)}
+.nltx span{color:var(--red)}
+.nlinks{display:flex;align-items:center;gap:.15rem;list-style:none}
+.nlinks a{text-decoration:none;color:var(--td);font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 12px;border-radius:6px;cursor:pointer;transition:color var(--T),background var(--T)}
+.nlinks a:hover{color:var(--tx);background:var(--sf2)}
+.nlinks a.ext::after{content:'↗';font-size:.6rem;margin-left:3px}
+.nr{display:flex;align-items:center;gap:.4rem}
+.nsoc{display:flex;align-items:center;gap:.25rem;margin-right:.35rem}
+.ibt{width:36px;height:36px;background:var(--sf);border:1px solid var(--bo);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tm);transition:background var(--T),color var(--T),transform .15s}
+.ibt:hover{background:var(--sf2);color:var(--tx);transform:scale(1.05)}
+.ibt svg{width:15px;height:15px;pointer-events:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#tbt{position:relative;overflow:hidden}
+.tsun,.tmoon{position:absolute;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .3s}
+[data-theme=dark] .tsun{transform:translateY(0);opacity:1}[data-theme=dark] .tmoon{transform:translateY(20px);opacity:0}
+[data-theme=light] .tsun{transform:translateY(-20px);opacity:0}[data-theme=light] .tmoon{transform:translateY(0);opacity:1}
+
+/* BUTTONS */
+.bp{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:background var(--T),box-shadow var(--T),transform .15s}
+.bp:hover{background:var(--red-b);box-shadow:0 0 24px var(--rg);transform:translateY(-1px)}
+.bp svg{width:13px;height:13px}
+.bg{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:transparent;color:var(--td);border:1px solid var(--bo);border-radius:8px;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:border-color var(--T),color var(--T),background var(--T)}
+.bg:hover{border-color:var(--red);color:var(--red);background:var(--rt)}
+
+/* USER MENU */
+.umenu{position:relative}
+.utrig{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;background:var(--sf);border:1px solid var(--bo);border-radius:99px;cursor:pointer;transition:border-color var(--T),background var(--T)}
+.utrig:hover{border-color:var(--red);background:var(--sf2)}
+.uav{width:28px;height:28px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff;overflow:hidden;flex-shrink:0}
+.uav img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.uname{font-size:.75rem;font-weight:700;color:var(--tx);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.utrig svg{width:12px;height:12px;color:var(--tm);flex-shrink:0}
+.udd{position:absolute;top:calc(100% + 8px);right:0;width:180px;background:var(--sf);border:1px solid var(--bo2);border-radius:var(--r);box-shadow:0 20px 40px rgba(0,0,0,.4);overflow:hidden;opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:opacity .2s,transform .2s;z-index:999}
+.udd.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.udit{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:.8rem;color:var(--td);cursor:pointer;transition:background var(--T),color var(--T);text-decoration:none}
+.udit svg{width:14px;height:14px;flex-shrink:0}
+.udit:hover{background:var(--sf2);color:var(--tx)}
+.udit.dng:hover{background:rgba(224,43,43,.1);color:var(--red)}
+.udhr{height:1px;background:var(--bo);margin:4px 0}
+
+/* SETTINGS PANEL */
+.spbk{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+.spbk.open{opacity:1;pointer-events:all}
+.sppn{position:fixed;top:0;right:-340px;width:320px;height:100vh;background:var(--bg2);border-left:1px solid var(--bo);z-index:301;transition:right .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.sppn.open{right:0}
+.sphd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--bo);position:sticky;top:0;background:var(--bg2);z-index:1}
+.sptl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px}
+.spbd{padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.spst{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.75rem}
+.spsw{display:flex;gap:10px;flex-wrap:wrap}
+.spsl{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
+.spsl:hover{transform:scale(1.15)}
+.spsl.active{border-color:var(--tx);box-shadow:0 0 0 3px var(--rg)}
+
+/* ROUTING */
+#mc{position:relative;z-index:1;padding-top:var(--nh)}
+.page{display:none}
+.page.active{display:block;animation:pIn .4s ease both}
+@keyframes pIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* WAVES */
+.wdiv{overflow:hidden;line-height:0;position:relative;z-index:1}
+.wdiv svg{display:block;width:100%}
+.wa{animation:wm 9s ease-in-out infinite}.wb{animation:wm 12s ease-in-out infinite reverse;opacity:.6}
+@keyframes wm{
+  0%,100%{d:path("M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z")}
+  50%{d:path("M0,40 C240,0 480,80 720,40 C960,0 1200,80 1440,40 L1440,80 L0,80 Z")}
+}
+.orb{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,var(--rg) 0%,transparent 70%);animation:of 8s ease-in-out infinite}
+@keyframes of{0%,100%{transform:translateY(0) scale(1);opacity:.6}50%{transform:translateY(-30px) scale(1.05);opacity:1}}
+
+/* HERO */
+.hero{min-height:calc(100vh - var(--nh));position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:5rem 5vw 2rem}
+.hbg{animation:fU .6s ease both}
+@keyframes fU{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fI{from{opacity:0}to{opacity:1}}
+.hbdg{display:inline-flex;align-items:center;gap:8px;background:rgba(224,43,43,.1);border:1px solid rgba(224,43,43,.3);border-radius:999px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);letter-spacing:1px;margin-bottom:1.5rem;animation:fU .6s ease both}
+.hbdg .blk{width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 8px var(--red);animation:bk 2s ease infinite}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:.15}}
+.htgs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;animation:fU .6s .05s ease both}
+.htg{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.5px;padding:4px 10px;border-radius:999px;border:1px solid}
+.tg{color:#27c47a;border-color:rgba(39,196,122,.3);background:rgba(39,196,122,.07)}
+.tb{color:#4a9eff;border-color:rgba(74,158,255,.3);background:rgba(74,158,255,.07)}
+.tr{color:var(--red);border-color:rgba(224,43,43,.3);background:var(--rt)}
+.hti{font-family:'Bebas Neue',sans-serif;font-size:clamp(4.5rem,9vw,8rem);line-height:.9;letter-spacing:2px;margin-bottom:1.25rem;animation:fU .6s .1s ease both}
+.hti .ac{color:var(--red)}.hti .ol{-webkit-text-stroke:2px var(--td);color:transparent}
+.hds{font-size:.95rem;color:var(--td);line-height:1.75;max-width:460px;margin-bottom:2.5rem;animation:fU .6s .18s ease both}
+.hcta{display:flex;align-items:center;gap:1rem;animation:fU .6s .25s ease both}
+.hsts{display:flex;gap:2.5rem;margin-top:3.5rem;animation:fU .6s .32s ease both}
+.stn{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red);letter-spacing:1px;line-height:1}
+.stn a{color:inherit;text-decoration:none}.stn a:hover{text-decoration:underline}
+.stl{font-size:.65rem;color:var(--tm);text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-top:3px}
+.hvis{position:relative;display:flex;flex-direction:column;gap:1rem;animation:fI .8s .2s ease both;z-index:1}
+.hvc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.5rem;transition:border-color var(--T),box-shadow .2s,transform .2s;cursor:pointer}
+.hvc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.hvch{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.hvic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hv-sl{background:linear-gradient(135deg,#00ff88,#00ccff)}
+.hv-mc{background:linear-gradient(135deg,#ff6b35,#e02b2b)}
+.hvic svg{width:20px;height:20px}
+.hvtl{font-weight:800;font-size:.95rem}.hvsb{font-size:.72rem;color:var(--tm);margin-top:2px}
+.hvds{font-size:.78rem;color:var(--td);line-height:1.6;margin-bottom:1rem}
+.hvft{display:flex;align-items:center;justify-content:space-between}
+.hvst{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm)}.hvst span{color:var(--red);font-weight:700}
+.hvlk{font-size:.7rem;font-weight:700;color:var(--red);text-decoration:none;letter-spacing:.5px;display:flex;align-items:center;gap:4px;transition:gap .15s}
+.hvlk:hover{gap:7px}.hvlk svg{width:12px;height:12px}
+
+/* SLOPE SECTION */
+.slsec{padding:6rem 5vw;position:relative;overflow:hidden}
+.slin{background:var(--sf);border:1px solid var(--bo);border-radius:24px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:380px;position:relative}
+.slL{padding:3.5rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1}
+.slR{position:relative;overflow:hidden;background:linear-gradient(135deg,#001a0d 0%,#001533 50%,#0d001a 100%);display:flex;align-items:center;justify-content:center}
+.slgr{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,136,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.08) 1px,transparent 1px);background-size:40px 40px;animation:gsc 4s linear infinite}
+@keyframes gsc{from{background-position:0 0}to{background-position:0 40px}}
+.slbig{position:relative;z-index:1;text-align:center}
+.slttl{font-family:'Bebas Neue',sans-serif;font-size:5rem;letter-spacing:4px;background:linear-gradient(135deg,#00ff88,#00ccff,#ff00ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(0,255,136,.5));animation:np 3s ease-in-out infinite}
+@keyframes np{0%,100%{filter:drop-shadow(0 0 20px rgba(0,255,136,.5))}50%{filter:drop-shadow(0 0 40px rgba(0,255,136,.9))}}
+.slsub{font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(0,255,136,.6);letter-spacing:3px;text-transform:uppercase}
+.gbdg{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);border-radius:999px;padding:4px 12px;font-family:'DM Mono',monospace;font-size:.62rem;color:#00ff88;letter-spacing:1px;margin-bottom:1.25rem}
+
+/* MODS */
+.modsec{padding:6rem 5vw;background:var(--bg2);position:relative;overflow:hidden}
+.mcard{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);overflow:hidden;display:grid;grid-template-columns:280px 1fr;max-width:860px;margin:0 auto;transition:border-color var(--T),box-shadow .2s}
+.mcard:hover{border-color:rgba(224,43,43,.3);box-shadow:0 30px 60px rgba(0,0,0,.4)}
+.mcimg{background:linear-gradient(135deg,#1a0a00,#2d0d00);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:220px}
+.mcimgb{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(224,43,43,.2) 0%,transparent 70%);animation:of 5s ease-in-out infinite}
+.mcic{position:relative;z-index:1;width:80px;height:80px;border-radius:18px;background:linear-gradient(135deg,#e02b2b,#ff6b35);display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 10px 30px rgba(224,43,43,.5);animation:of 6s ease-in-out infinite}
+.mcbd{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;gap:1rem}
+.morg{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);letter-spacing:1.5px;text-transform:uppercase}
+.morg::before{content:'●';font-size:.5rem}
+.mttl{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:2px}
+.mds{font-size:.85rem;color:var(--td);line-height:1.75}
+.msts{display:flex;gap:1.5rem}
+.mstn{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--red)}
+.mstl{font-size:.62rem;color:var(--tm);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.mact{display:flex;gap:.75rem}
+
+/* SECTION COMMONS */
+.sp{padding:6rem 5vw;position:relative;z-index:1}
+.spa{padding:6rem 5vw;background:var(--bg2);position:relative;z-index:1}
+.sh{text-align:center;margin-bottom:3.5rem}
+.sey{display:inline-flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem}
+.sey::before,.sey::after{content:'';width:24px;height:1px;background:var(--red);opacity:.5}
+.sti{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,3.5rem);letter-spacing:2px}
+.ssb{color:var(--tm);font-size:.88rem;margin-top:.5rem;line-height:1.7}
+.divl{height:1px;background:linear-gradient(90deg,transparent,var(--bo),transparent);margin:0 5vw}
+
+/* CTA STRIP */
+.ctas{padding:5rem 5vw;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.ctas h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3rem);letter-spacing:2px}
+.ctas p{color:var(--tm);font-size:.85rem;margin-top:.5rem;max-width:380px;line-height:1.7}
+.ctaact{display:flex;gap:1rem;flex-wrap:wrap}
+
+/* FEATURES GRID */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.fc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;position:relative;overflow:hidden;transition:border-color var(--T),transform .2s,box-shadow .2s}
+.fc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--rt) 0%,transparent 60%);opacity:0;transition:opacity var(--T)}
+.fc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.fc:hover::before{opacity:1}
+.fcico{width:46px;height:46px;background:var(--rt);border:1px solid rgba(224,43,43,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--red);margin-bottom:1.25rem}
+.fcico svg{width:20px;height:20px}
+.fcn{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--tm);letter-spacing:2px;margin-bottom:.75rem}
+.fct{font-weight:800;font-size:1rem;margin-bottom:.5rem}
+.fcd{font-size:.8rem;color:var(--tm);line-height:1.7}
+.fc.sp2{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+
+/* CHANGELOG */
+.cll{max-width:700px;margin:0 auto;display:flex;flex-direction:column}
+.cli{display:grid;grid-template-columns:110px 1fr;gap:2rem;padding:2rem 0;border-bottom:1px solid var(--bo)}
+.cli:last-child{border-bottom:none}
+.clv{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--red);letter-spacing:1px}
+.cld{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm);margin-top:4px}
+.cltg{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:.75rem;letter-spacing:.5px}
+.tgl{background:var(--red);color:#fff}
+.tgb{background:rgba(74,158,255,.2);color:#4a9eff;border:1px solid rgba(74,158,255,.3)}
+.clti{font-weight:800;font-size:1.05rem;margin-bottom:.75rem}
+.clch{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.clch li{font-size:.82rem;color:var(--td);padding-left:1rem;position:relative;line-height:1.6}
+.clch li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:.75rem}
+
+/* DOCS */
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:900px;margin:0 auto}
+.dc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);padding:1.75rem;cursor:pointer;transition:border-color var(--T),transform .2s,box-shadow .2s;text-decoration:none;color:var(--tx);display:flex;flex-direction:column;gap:.75rem}
+.dc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.3)}
+.dc svg{width:22px;height:22px;color:var(--red)}
+.dct{font-weight:800;font-size:.9rem}
+.dcd{font-size:.77rem;color:var(--tm);line-height:1.6}
+
+/* SIMPLE PAGES */
+.pgw{max-width:760px;margin:0 auto;padding:5rem 5vw}
+.pgw h1{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;letter-spacing:3px;margin-bottom:.5rem}
+.pgw h1 span{color:var(--red)}
+.pgmt{font-family:'DM Mono',monospace;font-size:.68rem;color:var(--tm);letter-spacing:1.5px;margin-bottom:2.5rem}
+.pgw h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin:2rem 0 .75rem;color:var(--red)}
+.pgw p{font-size:.88rem;color:var(--td);line-height:1.85;margin-bottom:1rem}
+.pgw a{color:var(--red);text-decoration:none}.pgw a:hover{text-decoration:underline}
+.pgw ul{padding-left:1.25rem;margin-bottom:1rem}.pgw ul li{font-size:.88rem;color:var(--td);line-height:1.85;margin-bottom:.35rem}
+
+/* BLOG */
+.blg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.blc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color var(--T),transform .2s,box-shadow .2s}
+.blc:hover{border-color:rgba(224,43,43,.3);transform:translateY(-3px);box-shadow:0 16px 32px rgba(0,0,0,.3)}
+.blt{height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg3),rgba(224,43,43,.1))}
+.blt svg{width:28px;height:28px;color:var(--red);opacity:.5}
+.blb{padding:1.25rem}
+.blcat{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--red);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.5rem}
+.blti{font-weight:800;font-size:.88rem;line-height:1.4;margin-bottom:.5rem}
+.bldt{font-size:.7rem;color:var(--tm)}
+
+/* CONTACT */
+.ctg{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:860px;margin:0 auto}
+.cti{display:flex;flex-direction:column;gap:1.5rem}
+.cti h2{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px}
+.cti p{font-size:.85rem;color:var(--td);line-height:1.75}
+.ceml{display:flex;align-items:center;gap:10px;background:var(--sf);border:1px solid var(--bo);border-radius:var(--r);padding:1rem 1.25rem;text-decoration:none;color:var(--tx);transition:border-color var(--T),background var(--T)}
+.ceml:hover{border-color:var(--red);background:var(--rt)}
+.ceml svg{width:18px;height:18px;color:var(--red);flex-shrink:0}
+.ceml span{font-size:.82rem;font-weight:700}
+.ctf{display:flex;flex-direction:column;gap:1rem}
+.fg2{display:flex;flex-direction:column;gap:.4rem}
+.fl{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700}
+.fi,.fta{background:var(--sf);border:1px solid var(--bo);border-radius:8px;padding:11px 14px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;width:100%;transition:border-color var(--T);outline:none;resize:none}
+.fi:focus,.fta:focus{border-color:var(--red)}
+.fta{min-height:100px}
+
+/* AUTH PAGE */
+.authpg{min-height:calc(100vh - var(--nh));display:flex;align-items:center;justify-content:center;padding:3rem 1.5rem;position:relative;overflow:hidden}
+.authcard{background:var(--sf);border:1px solid var(--bo);border-radius:24px;padding:2.5rem;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 40px 80px rgba(0,0,0,.5);animation:pIn .4s ease both}
+.alo{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;justify-content:center}
+.ali{width:38px;height:38px;background:var(--red);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:10px;color:#fff;box-shadow:0 0 18px var(--rg)}
+.alt{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px}
+.alt span{color:var(--red)}
+.atabs{display:flex;gap:.5rem;margin-bottom:1.75rem;background:var(--bg3);border-radius:10px;padding:4px}
+.atab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--tm);font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:background var(--T),color var(--T)}
+.atab.active{background:var(--sf);color:var(--tx);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.flg{position:relative;margin-bottom:1.1rem}
+.fli{width:100%;padding:18px 14px 8px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.9rem;outline:none;transition:border-color var(--T)}
+.fli:focus{border-color:var(--red)}
+.fll{position:absolute;top:13px;left:14px;font-size:.82rem;color:var(--tm);transition:all .2s ease;pointer-events:none}
+.fli:focus+.fll,.fli:not(:placeholder-shown)+.fll{top:5px;font-size:.6rem;color:var(--red);letter-spacing:1px;font-weight:700}
+.pwt{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--tm);cursor:pointer;padding:4px;transition:color var(--T)}
+.pwt:hover{color:var(--tx)}.pwt svg{width:16px;height:16px}
+.aor{display:flex;align-items:center;gap:1rem;margin:1.25rem 0}
+.aor::before,.aor::after{content:'';flex:1;height:1px;background:var(--bo)}
+.aor span{font-size:.7rem;color:var(--tm);text-transform:uppercase;letter-spacing:1px;white-space:nowrap}
+.gbtn{width:100%;padding:11px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px;color:var(--tx);font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:border-color var(--T),background var(--T),transform .15s;margin-bottom:1rem}
+.gbtn:hover{border-color:var(--bo2);background:var(--sf2);transform:translateY(-1px)}
+.gbtn svg{width:18px;height:18px;flex-shrink:0}
+.achk{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem}
+.ckr{display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.ckr input[type=checkbox]{width:16px;height:16px;margin-top:2px;accent-color:var(--red);flex-shrink:0;cursor:pointer;-webkit-user-select:auto;user-select:auto}
+.ckl{font-size:.76rem;color:var(--tm);line-height:1.5}
+.ckl a{color:var(--red);text-decoration:none;cursor:pointer}.ckl a:hover{text-decoration:underline}
+.asub{width:100%;padding:13px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:.88rem;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:background var(--T),box-shadow var(--T),transform .15s}
+.asub:hover{background:var(--red-b);box-shadow:0 0 24px var(--rg);transform:translateY(-1px)}
+.asub:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.aerr{background:rgba(224,43,43,.1);border:1px solid rgba(224,43,43,.3);border-radius:8px;padding:10px 14px;font-size:.78rem;color:var(--red);margin-bottom:1rem;display:none}
+.aerr.show{display:block}
+.aok{background:rgba(39,196,122,.1);border:1px solid rgba(39,196,122,.3);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#27c47a;margin-bottom:1rem;display:none}
+.aok.show{display:block}
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* PROFILE */
+.prfpg{padding:4rem 5vw;max-width:1100px;margin:0 auto}
+.prfhd{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--bo)}
+.prfav{width:90px;height:90px;border-radius:50%;background:var(--red);border:3px solid var(--red);box-shadow:0 0 30px var(--rg);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#fff;overflow:hidden}
+.prfav img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.prfnm{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px}
+.prfem{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm);margin-top:4px}
+.prfbds{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+.pbdg{font-family:'DM Mono',monospace;font-size:.62rem;padding:3px 10px;border-radius:999px;border:1px solid}
+.prfgr{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+.prfc{background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.75rem}
+.prfct{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--tm);text-transform:uppercase;letter-spacing:2px;margin-bottom:1.25rem;display:flex;align-items:center;gap:8px}
+.prfct::before{content:'';width:3px;height:12px;background:var(--red);border-radius:2px}
+.ssbl{display:flex;gap:1.5rem}
+.ssi{text-align:center}
+.ssn{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--red)}
+.ssl{font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);font-weight:700}
+.slpln{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:1rem 1.25rem;text-decoration:none;color:var(--tx);margin-top:1rem;transition:border-color var(--T),background var(--T)}
+.slpln:hover{border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05)}
+.slplni{width:36px;height:36px;background:linear-gradient(135deg,#00ff88,#00ccff);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slplni svg{width:18px;height:18px}
+.prfld{display:flex;align-items:center;gap:8px;color:var(--tm);font-size:.82rem;padding:1rem 0}
+.prfld .spin{border-color:rgba(224,43,43,.3);border-top-color:var(--red)}
+
+/* FOOTER */
+footer{position:relative;border-top:1px solid var(--bo);z-index:1}
+footer.hidden{display:none}
+.ftin{padding:4rem 5vw 2rem}
+.fttp{display:flex;justify-content:space-between;gap:3rem;flex-wrap:wrap;margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--bo)}
+.fbnm{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;margin-bottom:.5rem}
+.fbnm span{color:var(--red)}
+.fbtg{font-size:.78rem;color:var(--tm);max-width:220px;line-height:1.65}
+.fbvr{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--red);margin-top:.5rem}
+.fcls{display:flex;gap:4rem;flex-wrap:wrap}
+.fcltt{font-size:.62rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.9rem}
+.fcl ul{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.fcl ul a{text-decoration:none;color:var(--td);font-size:.8rem;cursor:pointer;transition:color var(--T)}
+.fcl ul a:hover{color:var(--red)}
+.ftbt{display:flex;align-items:center;justify-content:space-between;font-size:.72rem;color:var(--tm);flex-wrap:wrap;gap:1rem}
+.ftbt a{color:var(--red);text-decoration:none;cursor:pointer}.ftbt a:hover{text-decoration:underline}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:3rem;text-align:center}
+  .hds{max-width:100%}.hcta,.hsts{justify-content:center}.hvis{display:none}
+  .fg{grid-template-columns:1fr}.fc.sp2{grid-column:span 1;grid-template-columns:1fr}
+  .nlinks{display:none}.slin{grid-template-columns:1fr}.slR{min-height:200px}
+  .mcard{grid-template-columns:1fr}.dg{grid-template-columns:repeat(2,1fr)}
+  .blg{grid-template-columns:repeat(2,1fr)}.ctg{grid-template-columns:1fr}
+  .prfgr{grid-template-columns:1fr}.fcls{gap:2rem}
+}
+@media(max-width:540px){
+  .dg,.blg{grid-template-columns:1fr}.authcard{padding:1.75rem}
+  .prfhd{grid-template-columns:1fr;text-align:center}.prfbds{justify-content:center}.ssbl{justify-content:center}
+}
+</style>
 </head>
-<body></body>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nlogo" onclick="go('home')">
+    <div class="nli">TG</div>
+    <span class="nltx">The<span>Generic</span></span>
+  </a>
+  <ul class="nlinks">
+    <li><a onclick="go('features')">Features</a></li>
+    <li><a onclick="go('changelog')">Changelog</a></li>
+    <li><a onclick="go('docs')">Docs</a></li>
+    <li><a class="ext" href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub</a></li>
+    <li><a onclick="go('about')">About</a></li>
+    <li><a onclick="go('blog')">Blog</a></li>
+  </ul>
+  <div class="nr">
+    <div class="nsoc">
+      <button class="ibt" title="YouTube" onclick="open('https://youtube.com','_blank')">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>
+      </button>
+      <button class="ibt" title="Discord" onclick="open('https://discord.gg','_blank')">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </button>
+      <button class="ibt" title="GitHub" onclick="open('https://github.com/thegeneric10','_blank')">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      </button>
+    </div>
+    <button class="ibt" id="tbt" title="Toggle theme" onclick="toggleTheme()">
+      <svg class="tsun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="tmoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="ibt" title="Settings" onclick="openSP()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <div id="navauth">
+      <button class="bp" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+    </div>
+  </div>
+</nav>
+
+<!-- SETTINGS PANEL -->
+<div class="spbk" id="spbk" onclick="closeSP()"></div>
+<div class="sppn" id="sppn">
+  <div class="sphd"><span class="sptl">Settings</span><button class="ibt" onclick="closeSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="spbd">
+    <div><div class="spst">Accent Color</div>
+    <div class="spsw">
+      <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)"></div>
+      <div class="spsl" style="background:#e07b2b" data-c="#e07b2b" onclick="setAcc(this)"></div>
+      <div class="spsl" style="background:#2b6be0" data-c="#2b6be0" onclick="setAcc(this)"></div>
+      <div class="spsl" style="background:#27c47a" data-c="#27c47a" onclick="setAcc(this)"></div>
+      <div class="spsl" style="background:#9b2be0" data-c="#9b2be0" onclick="setAcc(this)"></div>
+      <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)"></div>
+    </div></div>
+    <div><div class="spst">Theme</div>
+    <div style="display:flex;gap:.5rem">
+      <button class="bg" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
+      <button class="bg" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
+    </div></div>
+    <div><div class="spst">Version</div><div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm)">TheGeneric v26.1</div></div>
+    <div><div class="spst">Contact</div><a href="mailto:toxicbusinessstudios@gmail.com" style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);text-decoration:none">toxicbusinessstudios@gmail.com</a></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="mc">
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="orb" style="top:-150px;right:-100px;width:700px;height:700px"></div>
+    <div class="orb" style="bottom:-100px;left:-50px;width:400px;height:400px;animation-delay:-4s"></div>
+    <div>
+      <div class="hbdg"><span class="blk"></span>v26.1 — System Ready</div>
+      <div class="htgs">
+        <span class="htg tg">Minecraft: Java Edition</span>
+        <span class="htg tb">1.6 – 1.20+</span>
+        <span class="htg tr">SLOPE Available</span>
+      </div>
+      <h1 class="hti">The<br><span class="ac">Generic</span><br><span class="ol">Platform.</span></h1>
+      <p class="hds">An all-in-one hub for mods, games, and community. Built different. Works better. Unapologetically red.</p>
+      <div class="hcta">
+        <button class="bp" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        <button class="bg" onclick="document.getElementById('modsec').scrollIntoView({behavior:'smooth'})">Explore Mods</button>
+      </div>
+      <div class="hsts">
+        <div><div class="stn" id="stn-dl"><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">0</a></div><div class="stl">Downloads</div></div>
+        <div><div class="stn" data-count="48">0</div><div class="stl">Modules</div></div>
+        <div><div class="stn" data-count="99">0</div><div class="stl">% Uptime</div></div>
+      </div>
+    </div>
+    <div class="hvis">
+      <div class="hvc" onclick="window.open('https://thegeneric10.github.io/SLOPE/','_blank')">
+        <div class="hvch">
+          <div class="hvic hv-sl"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div><div class="hvtl">SLOPE</div><div class="hvsb">HTML5 · Arcade Runner · All Devices</div></div>
+        </div>
+        <div class="hvds">Fast-paced neon arcade runner. Steer through narrowing futuristic tracks, chain combos, and survive escalating hazards.</div>
+        <div class="hvft"><div class="hvst">Free · <span>No Install</span></div><a class="hvlk" href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">Play Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      </div>
+      <div class="hvc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')">
+        <div class="hvch">
+          <div class="hvic hv-mc"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="hvtl">Mo'CharmsMod</div><div class="hvsb">Minecraft Java 1.6–1.20+</div></div>
+        </div>
+        <div class="hvds">Powerful charm items granting temporary potion effects for strategic survival gameplay. ✨🧿</div>
+        <div class="hvft"><div class="hvst">Downloads: <span id="hv-dl">…</span></div><a class="hvlk" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Modrinth <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wdiv"><svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:80px"><path class="wa" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="var(--bg2)"/><path class="wb" d="M0,50 C360,10 720,90 1080,50 C1260,30 1380,60 1440,50 L1440,80 L0,80 Z" fill="var(--bg2)" opacity=".5"/></svg></div>
+
+  <!-- SLOPE -->
+  <section class="slsec" style="background:var(--bg2)">
+    <div class="sh"><div class="sey">Featured Game</div><h2 class="sti">Play SLOPE.<br>Free. Now.</h2><p class="ssb">Browser-based. All devices. No download required.</p></div>
+    <div class="slin">
+      <div class="slL">
+        <div class="gbdg"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><circle cx="12" cy="12" r="10"/></svg>LIVE · HTML5 ARCADE</div>
+        <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:2px;line-height:1;margin-bottom:1rem">SLOPE</h3>
+        <p style="font-size:.88rem;color:var(--td);line-height:1.75;margin-bottom:1.75rem">A fast-paced neon arcade runner built with a single-page HTML5 Canvas stack. You steer through a narrowing futuristic track, collect gems, chain combos, and survive escalating hazards while dynamic effects, powerups, and responsive controls keep each run intense.</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center">
+          <a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener" class="bp" style="background:linear-gradient(135deg,#00cc66,#0099cc);box-shadow:0 0 24px rgba(0,255,136,.3)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="5 3 19 12 5 21 5 3"/></svg>Play Now!
+          </a>
+          <span class="htg tg" style="font-size:.6rem">All Devices</span>
+          <span class="htg tb" style="font-size:.6rem">HTML5</span>
+          <span class="htg tr" style="font-size:.6rem">Free</span>
+        </div>
+      </div>
+      <div class="slR">
+        <div class="slgr"></div>
+        <div class="slbig"><div class="slttl">SLOPE</div><div class="slsub">▲ Arcade Runner ▲</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wdiv" style="transform:scaleY(-1)"><svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:80px"><path class="wa" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="var(--bg)"/></svg></div>
+
+  <!-- MODS -->
+  <section class="modsec" id="modsec">
+    <div class="sh"><div class="sey">Modrinth · TheGeneric</div><h2 class="sti">Our Mods.</h2><p class="ssb">Minecraft experience enhancements — balanced, free, and maintained.</p></div>
+    <div class="mcard">
+      <div class="mcimg"><div class="mcimgb"></div><div class="mcic">🧿</div></div>
+      <div class="mcbd">
+        <div class="morg">TheGeneric Organization</div>
+        <div class="mttl">Mo'CharmsMod</div>
+        <p class="mds">Mo'CharmsMod adds a collection of powerful charm items that grant temporary potion effects to enhance your gameplay experience. Each charm provides a unique ability designed for strategic use in survival worlds. ✨🧿</p>
+        <div class="msts">
+          <div><div class="mstn" id="mod-dl">—</div><div class="mstl">Downloads</div></div>
+          <div><div class="mstn" id="mod-fl">—</div><div class="mstl">Followers</div></div>
+          <div><div class="mstn">1.6+</div><div class="mstl">MC Version</div></div>
+        </div>
+        <div class="mact">
+          <a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener" class="bp" style="font-size:.75rem">SEE MORE via Modrinth ↗</a>
+          <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.75rem">Organization ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wdiv"><svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:80px"><path class="wb" d="M0,40 C360,10 720,90 1080,50 C1260,30 1380,60 1440,50 L1440,80 L0,80 Z" fill="var(--bg2)"/></svg></div>
+
+  <section class="ctas" style="background:var(--bg2)">
+    <div><p style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:.75rem">Get Started Today</p><h2>Ready to Go Generic?</h2><p>No fluff. No filler. Join, play SLOPE, grab the mods.</p></div>
+    <div class="ctaact">
+      <button class="bp" onclick="go('auth')">Create Account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg">Modrinth ↗</a>
+    </div>
+  </section>
+</div>
+
+<!-- FEATURES -->
+<div id="page-features" class="page"><div class="sp">
+  <div class="sh"><div class="sey">What We Offer</div><h2 class="sti">Built Different.</h2><p class="ssb">Every module optimized, tested, and maintained.</p></div>
+  <div class="fg">
+    <div class="fc sp2">
+      <div>
+        <div class="fcico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="fcn">01 — PLATFORM</div><div class="fct">Modular Architecture</div>
+        <p class="fcd">Mo'CharmsMod, SLOPE, and future releases as individual nodes in one ecosystem. Snap together, no overhead.</p>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:1.5rem;font-family:'DM Mono',monospace;font-size:.72rem;display:flex;flex-direction:column;gap:.75rem">
+        <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 6px var(--red);flex-shrink:0"></span><span style="flex:1">thegeneric.core</span><span style="color:var(--red)">ACTIVE</span></div>
+        <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:#27c47a;border-radius:50%;flex-shrink:0"></span><span style="flex:1">mocharmsmod</span><span>stable</span></div>
+        <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:#4a9eff;border-radius:50%;flex-shrink:0"></span><span style="flex:1">slope.game</span><span>live</span></div>
+        <div style="display:flex;gap:10px;align-items:center;color:var(--tm)"><span style="width:8px;height:8px;background:#f5a623;border-radius:50%;flex-shrink:0"></span><span style="flex:1">social.layer</span><span>v26.1</span></div>
+      </div>
+    </div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="fcn">02 — SECURITY</div><div class="fct">Firebase Auth</div><p class="fcd">Email/password and Google Sign-In with reCAPTCHA Enterprise. Every account protected.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="fcn">03 — PERFORMANCE</div><div class="fct">Edge-Speed</div><p class="fcd">SLOPE runs natively in-browser at 60fps. No installs, no waiting, instant access.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="fcn">04 — COMMUNITY</div><div class="fct">Social Profiles</div><p class="fcd">Follow players, add friends, and track leaderboards — connected to SLOPE.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div><div class="fcn">05 — MODS</div><div class="fct">Modrinth Published</div><p class="fcd">Mo'CharmsMod published on Modrinth. Always versioned, always available, always free.</p></div>
+    <div class="fc"><div class="fcico"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="fcn">06 — QUALITY</div><div class="fct">Survival-Grade</div><p class="fcd">Every charm balanced for survival. Strategic power — not pay-to-win, not bloat.</p></div>
+  </div>
+</div></div>
+
+<!-- CHANGELOG -->
+<div id="page-changelog" class="page"><div class="sp" style="max-width:900px;margin:0 auto">
+  <div class="sh"><div class="sey">Release History</div><h2 class="sti">Changelog.</h2><p class="ssb">What's new, fixed, and coming next.</p></div>
+  <div class="cll">
+    <div class="cli"><div><div class="clv">26.1</div><div class="cld">Mar 2026</div></div><div><span class="cltg tgl">LATEST</span><div class="clti">Platform v26.1 — Full Overhaul</div><ul class="clch"><li>Complete SPA rebuild with Firebase Auth + Realtime DB</li><li>SLOPE game integration and social profile sync</li><li>Google Sign-In and reCAPTCHA Enterprise protection</li><li>Dark/Light mode with 6 accent color options</li><li>Mo'CharmsMod live Modrinth stats fetch</li><li>Wave animations, smooth page transitions</li><li>Disabled text selection and image drag globally</li></ul></div></div>
+    <div class="cli"><div><div class="clv">2.0</div><div class="cld">Jan 2026</div></div><div><span class="cltg tgb">STABLE</span><div class="clti">Platform v2.0 — Core Rebuild</div><ul class="clch"><li>Red system theme with CSS variable architecture</li><li>Hero stats counter animations</li><li>Initial Modrinth organization setup</li><li>Modular card layout system</li></ul></div></div>
+    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Sep 2025</div></div><div><span class="cltg tgb">LEGACY</span><div class="clti">Mo'CharmsMod v1.0 — Initial Release</div><ul class="clch"><li>10 charm types with unique potion effects</li><li>Minecraft 1.6 – 1.20+ compatibility</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
+  </div>
+</div></div>
+
+<!-- DOCS -->
+<div id="page-docs" class="page"><div class="sp">
+  <div class="sh"><div class="sey">Documentation</div><h2 class="sti">Reference.</h2><p class="ssb">Everything you need to get started fast.</p></div>
+  <div class="dg">
+    <a class="dc" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><div class="dct">Mo'CharmsMod Guide</div><div class="dcd">Installation, charm types, crafting, and effect durations.</div></a>
+    <a class="dc" href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><div class="dct">SLOPE Controls</div><div class="dcd">How to play, controls reference, powerups, and scoring.</div></a>
+    <a class="dc" href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><div class="dct">Organization</div><div class="dcd">All projects under TheGeneric on Modrinth.</div></a>
+    <a class="dc" onclick="go('features')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><div class="dct">Platform Features</div><div class="dcd">Overview of all platform capabilities and modules.</div></a>
+    <a class="dc" onclick="go('changelog')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><div class="dct">Changelog</div><div class="dcd">Full version history and release notes.</div></a>
+    <a class="dc" onclick="go('contact')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg><div class="dct">Support</div><div class="dcd">Contact for help, bugs, or collaboration.</div></a>
+  </div>
+</div></div>
+
+<!-- ABOUT -->
+<div id="page-about" class="page"><div class="pgw">
+  <h1>About <span>TheGeneric</span></h1><div class="pgmt">EST. 2025 · THEGENERIC10 · V26.1</div>
+  <h2>Who We Are</h2><p>TheGeneric is an independent development organization focused on Minecraft mods, web-based games, and community-driven tools. We believe great software should be accessible, free, and well-crafted.</p>
+  <h2>What We Build</h2><p><strong style="color:var(--tx)">Mo'CharmsMod</strong> — A Minecraft Java Edition mod adding powerful charm items with strategic potion effects for survival gameplay. Available on Modrinth for versions 1.6 through 1.20+.</p><p><strong style="color:var(--tx)">SLOPE</strong> — A fast-paced HTML5 arcade runner playable in any browser on any device. No install. No cost.</p>
+  <h2>Our Philosophy</h2><p>No pay-to-win. No bloat. Every release is tested, balanced, and maintained. If we ship it, we stand behind it.</p>
+  <h2>Contact</h2><p>Business inquiries: <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a></p><p>GitHub: <a href="https://github.com/thegeneric10" target="_blank" rel="noopener">github.com/thegeneric10</a></p><p>Modrinth: <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">modrinth.com/organization/thegeneric</a></p>
+</div></div>
+
+<!-- BLOG -->
+<div id="page-blog" class="page"><div class="sp">
+  <div class="sh"><div class="sey">Updates & News</div><h2 class="sti">The Blog.</h2><p class="ssb">Dev logs, mod announcements, and game updates.</p></div>
+  <div class="blg">
+    <div class="blc" onclick="go('changelog')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blb"><div class="blcat">Platform</div><div class="blti">TheGeneric v26.1 — Major Platform Overhaul</div><div class="bldt">March 2026</div></div></div>
+    <div class="blc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blb"><div class="blcat">Minecraft Mod</div><div class="blti">Mo'CharmsMod — New Charms & 1.20 Support</div><div class="bldt">January 2026</div></div></div>
+    <div class="blc" onclick="window.open('https://thegeneric10.github.io/SLOPE/','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="blb"><div class="blcat">Game</div><div class="blti">SLOPE — Neon Arcade Runner Now Live</div><div class="bldt">December 2025</div></div></div>
+  </div>
+</div></div>
+
+<!-- CONTACT -->
+<div id="page-contact" class="page"><div class="sp">
+  <div class="sh"><div class="sey">Get In Touch</div><h2 class="sti">Contact.</h2></div>
+  <div class="ctg">
+    <div class="cti">
+      <h2>Let's Talk.</h2>
+      <p>Bug report, collab idea, or feedback? Reach us at our business email.</p>
+      <a href="mailto:toxicbusinessstudios@gmail.com" class="ceml"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg><span>toxicbusinessstudios@gmail.com</span></a>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">
+        <a href="https://github.com/thegeneric10" target="_blank" rel="noopener" class="bg" style="font-size:.72rem;padding:7px 14px">GitHub ↗</a>
+        <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.72rem;padding:7px 14px">Modrinth ↗</a>
+      </div>
+    </div>
+    <div class="ctf">
+      <div class="fg2"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name"></div>
+      <div class="fg2"><label class="fl">Email</label><input class="fi" type="email" placeholder="your@email.com"></div>
+      <div class="fg2"><label class="fl">Subject</label><input class="fi" type="text" placeholder="What's it about?"></div>
+      <div class="fg2"><label class="fl">Message</label><textarea class="fta" placeholder="Your message…"></textarea></div>
+      <button class="bp" onclick="this.textContent='✓ Opens mail client…';window.location.href='mailto:toxicbusinessstudios@gmail.com?subject=TheGeneric Contact'" style="width:100%;justify-content:center;padding:13px">Send Message</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- TERMS -->
+<div id="page-terms" class="page"><div class="pgw">
+  <h1>Terms of <span>Service</span></h1><div class="pgmt">LAST UPDATED: MARCH 2026 · V26.1</div>
+  <h2>1. Acceptance</h2><p>By accessing TheGeneric platform, SLOPE game, or related services, you agree to these Terms. If you disagree, do not use our services.</p>
+  <h2>2. Platform Use</h2><p>TheGeneric provides free access to software, games, and Minecraft mods. You may not reverse-engineer, redistribute, or claim ownership of any TheGeneric content without written permission.</p>
+  <h2>3. User Accounts</h2><p>You are responsible for your account security. We reserve the right to terminate accounts that violate these terms, engage in abuse, or attempt to circumvent security measures.</p>
+  <h2>4. SLOPE Game</h2><p>SLOPE is provided as-is for free personal entertainment. Leaderboard manipulation or exploit abuse will result in account termination. In-game data is owned by TheGeneric.</p>
+  <h2>5. Mod Usage</h2><p>Mo'CharmsMod is distributed for personal use under its Modrinth license. Commercial redistribution is not permitted without written permission.</p>
+  <h2>6. Liability</h2><p>TheGeneric is not liable for any damages arising from use of our services. All services are provided "as is" without warranty.</p>
+  <h2>7. Changes</h2><p>We may update these terms at any time. Continued use after changes constitutes acceptance.</p>
+  <h2>Contact</h2><p>Questions? Email <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a>.</p>
+</div></div>
+
+<!-- PRIVACY -->
+<div id="page-privacy" class="page"><div class="pgw">
+  <h1>Privacy <span>Policy</span></h1><div class="pgmt">LAST UPDATED: MARCH 2026 · V26.1</div>
+  <h2>1. Data We Collect</h2><p>We collect via Firebase Authentication: email address, Google display name and photo (if using Google Sign-In), and authentication timestamps.</p>
+  <h2>2. SLOPE Game Data</h2><p>SLOPE stores your username, scores, leaderboard rankings, and social connections (followers/following) in Firebase Realtime Database. Used to power your profile and social features.</p>
+  <h2>3. How We Use Data</h2><p>Your data is used exclusively to provide platform features. We do not sell data to third parties.</p>
+  <h2>4. Analytics</h2><p>We use Firebase Analytics to understand general usage patterns. This data is anonymized.</p>
+  <h2>5. reCAPTCHA</h2><p>We use Google reCAPTCHA Enterprise to protect authentication. Google's <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> applies.</p>
+  <h2>6. Retention & Rights</h2><p>Account data is retained until you request deletion. Contact <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a> to exercise your data rights.</p>
+</div></div>
+
+<!-- FEEDBACK -->
+<div id="page-feedback" class="page"><div class="sp" style="max-width:600px;margin:0 auto">
+  <div class="sh"><div class="sey">Your Voice Matters</div><h2 class="sti">Feedback.</h2><p class="ssb">Tell us what to fix, improve, or build next.</p></div>
+  <div style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2.5rem;display:flex;flex-direction:column;gap:1.25rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div class="fg2"><label class="fl">Category</label><select class="fi" style="cursor:pointer"><option>Bug Report</option><option>Feature Request</option><option>Mod Feedback</option><option>SLOPE Feedback</option><option>General</option></select></div>
+      <div class="fg2"><label class="fl">Rating</label><select class="fi" style="cursor:pointer"><option>⭐⭐⭐⭐⭐ Excellent</option><option>⭐⭐⭐⭐ Great</option><option>⭐⭐⭐ Good</option><option>⭐⭐ Needs Work</option><option>⭐ Poor</option></select></div>
+    </div>
+    <div class="fg2"><label class="fl">Your Feedback</label><textarea class="fta" placeholder="Describe in detail…" style="min-height:140px"></textarea></div>
+    <div class="fg2"><label class="fl">Email (optional)</label><input class="fi" type="email" placeholder="For follow-up"></div>
+    <button class="bp" onclick="this.textContent='✓ Thanks!';this.style.background='#27c47a';setTimeout(()=>{this.textContent='Submit Feedback';this.style.background=''},3000)" style="justify-content:center;padding:13px">Submit Feedback</button>
+  </div>
+</div></div>
+
+<!-- AUTH -->
+<div id="page-auth" class="page">
+  <div class="authpg">
+    <div class="orb" style="top:-150px;right:-100px;width:600px;height:600px"></div>
+    <div class="orb" style="bottom:-100px;left:-50px;width:400px;height:400px;animation-delay:-4s"></div>
+    <div class="authcard">
+      <div class="alo"><div class="ali">TG</div><span class="alt">The<span>Generic</span></span></div>
+      <div class="atabs">
+        <button class="atab active" id="tab-si" onclick="swTab('si')">Sign In</button>
+        <button class="atab" id="tab-su" onclick="swTab('su')">Sign Up</button>
+      </div>
+      <div id="aerr" class="aerr"></div>
+      <div id="aok" class="aok"></div>
+
+      <!-- SIGN IN -->
+      <div id="frm-si">
+        <button class="gbtn" onclick="doGoogle()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+        <div class="aor"><span>or continue with email</span></div>
+        <div class="flg"><input class="fli" id="si-e" type="email" placeholder=" " autocomplete="email"><label class="fll" for="si-e">Email Address</label></div>
+        <div class="flg"><input class="fli" id="si-p" type="password" placeholder=" " autocomplete="current-password" style="padding-right:44px"><label class="fll" for="si-p">Password</label><button class="pwt" onclick="tpw('si-p',this)" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div class="achk">
+          <label class="ckr"><input type="checkbox" id="si-rem"><span class="ckl">Remember me on this device</span></label>
+          <label class="ckr"><input type="checkbox" id="si-trm" required><span class="ckl">I agree to the <a onclick="go('terms')">Terms</a> and <a onclick="go('privacy')">Privacy Policy</a></span></label>
+          <label class="ckr"><input type="checkbox" id="si-rob" required><span class="ckl">I am not a robot</span></label>
+        </div>
+        <button class="asub" id="btn-si" onclick="doSI()">Sign In</button>
+        <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">No account? <a style="color:var(--red);cursor:pointer" onclick="swTab('su')">Sign up</a></p>
+      </div>
+
+      <!-- SIGN UP -->
+      <div id="frm-su" style="display:none">
+        <button class="gbtn" onclick="doGoogle()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Sign up with Google
+        </button>
+        <div class="aor"><span>or with email</span></div>
+        <div class="flg"><input class="fli" id="su-u" type="text" placeholder=" " autocomplete="username"><label class="fll" for="su-u">Username</label></div>
+        <div class="flg"><input class="fli" id="su-e" type="email" placeholder=" " autocomplete="email"><label class="fll" for="su-e">Email Address</label></div>
+        <div class="flg"><input class="fli" id="su-p" type="password" placeholder=" " autocomplete="new-password" style="padding-right:44px"><label class="fll" for="su-p">Password</label><button class="pwt" onclick="tpw('su-p',this)" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+        <div class="flg"><input class="fli" id="su-c" type="password" placeholder=" " autocomplete="new-password"><label class="fll" for="su-c">Confirm Password</label></div>
+        <div class="achk">
+          <label class="ckr"><input type="checkbox" id="su-rem"><span class="ckl">Remember me on this device</span></label>
+          <label class="ckr"><input type="checkbox" id="su-trm" required><span class="ckl">I agree to the <a onclick="go('terms')">Terms</a> and <a onclick="go('privacy')">Privacy Policy</a></span></label>
+          <label class="ckr"><input type="checkbox" id="su-rob" required><span class="ckl">I am not a robot</span></label>
+        </div>
+        <button class="asub" id="btn-su" onclick="doSU()">Create Account</button>
+        <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">Have an account? <a style="color:var(--red);cursor:pointer" onclick="swTab('si')">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div id="page-profile" class="page"><div class="prfpg">
+  <div class="prfhd">
+    <div class="prfav" id="pav">?</div>
+    <div>
+      <div class="prfnm" id="pnm">Loading…</div>
+      <div class="prfem" id="pem">—</div>
+      <div class="prfbds">
+        <span class="pbdg" style="color:var(--red);border-color:rgba(224,43,43,.3)">TheGeneric</span>
+        <span class="pbdg" id="slope-ubdg" style="color:#27c47a;border-color:rgba(39,196,122,.3);display:none"></span>
+      </div>
+    </div>
+  </div>
+  <div class="prfgr">
+    <div class="prfc">
+      <div class="prfct">SLOPE Social</div>
+      <div id="psl-ld" class="prfld"><span class="spin"></span>Loading SLOPE data…</div>
+      <div id="psl-dt" style="display:none;flex-direction:column;gap:.75rem">
+        <div class="ssbl">
+          <div class="ssi"><div class="ssn" id="ss-fw">0</div><div class="ssl">Followers</div></div>
+          <div class="ssi"><div class="ssn" id="ss-fg">0</div><div class="ssl">Following</div></div>
+          <div class="ssi"><div class="ssn" id="ss-fr">0</div><div class="ssl">Friends</div></div>
+        </div>
+        <a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener" class="slpln">
+          <div class="slplni"><svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+          <div><div style="font-weight:700;font-size:.85rem">Play SLOPE</div><div style="font-size:.72rem;color:var(--tm)">thegeneric10.github.io/SLOPE</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="prfc">
+      <div class="prfct">Account</div>
+      <div style="display:flex;flex-direction:column;gap:.75rem">
+        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Display Name</div><div style="font-size:.88rem" id="pa-nm">—</div></div>
+        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Email</div><div style="font-size:.88rem;font-family:'DM Mono',monospace" id="pa-em">—</div></div>
+        <div><div style="font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--tm);margin-bottom:4px;font-weight:700">Provider</div><div style="font-size:.88rem" id="pa-pv">—</div></div>
+        <div style="display:flex;gap:.5rem;margin-top:.5rem">
+          <button class="bg" style="flex:1;font-size:.72rem;padding:8px;justify-content:center" onclick="openSP()">Settings</button>
+          <button class="bg" style="flex:1;font-size:.72rem;padding:8px;justify-content:center;color:var(--red);border-color:rgba(224,43,43,.3)" onclick="doSO()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:1.75rem">
+    <div class="prfct" style="margin-bottom:1.25rem">Quick Links</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bp" style="font-size:.75rem">TheGeneric on Modrinth ↗</a>
+      <a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener" class="bg" style="font-size:.75rem">Mo'CharmsMod ↗</a>
+      <a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener" class="bg" style="font-size:.75rem">Play SLOPE ↗</a>
+    </div>
+  </div>
+</div></div>
+
+</div><!-- /mc -->
+
+<!-- FOOTER -->
+<footer id="ftmain">
+  <div class="wdiv" style="transform:scaleY(-1)"><svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px"><path d="M0,30 C360,60 720,0 1080,30 S1440,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg)" class="wa"/></svg></div>
+  <div class="ftin">
+    <div class="fttp">
+      <div>
+        <div class="fbnm">The<span>Generic</span></div>
+        <p class="fbtg">Mods, games, and community tools. Built with love.</p>
+        <div class="fbvr">v26.1 · toxicbusinessstudios@gmail.com</div>
+      </div>
+      <div class="fcls">
+        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a href="mailto:toxicbusinessstudios@gmail.com">Email Us</a></li></ul></div>
+      </div>
+    </div>
+    <div class="ftbt">
+      <span>© 2026 TheGeneric. Made with <span style="color:var(--red)">♥</span> by nebulr</span>
+      <span><a onclick="go('terms')">Terms</a> · <a onclick="go('privacy')">Privacy</a> · <a onclick="go('feedback')">Feedback</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// FIREBASE
+const fbCfg={apiKey:"AIzaSyA375t6p_Zc9Ztfi-RUniqAmjttsjPyy1k",authDomain:"thegeneric-685b0.firebaseapp.com",databaseURL:"https://thegeneric-685b0-default-rtdb.firebaseio.com",projectId:"thegeneric-685b0",storageBucket:"thegeneric-685b0.firebasestorage.app",messagingSenderId:"272113167212",appId:"1:272113167212:web:7260ebf20da857f2292149",measurementId:"G-E4620YC1HF"};
+firebase.initializeApp(fbCfg);
+const auth=firebase.auth();
+const db=firebase.database();
+firebase.analytics.isSupported().then(y=>{if(y)firebase.analytics()});
+const RK='6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b';
+
+// ROUTER
+const NO_FT=['auth'];
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(!pg)return;
+  pg.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.pushState({},'','#'+id);
+  document.getElementById('ftmain').classList.toggle('hidden',NO_FT.includes(id));
+  closeUD();
+  setTimeout(attachReveal,50);
+}
+window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
+window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';go(h)});
+
+// THEME
+function toggleTheme(){setTh(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
+function setTh(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tg-th',t)}
+(()=>{const t=localStorage.getItem('tg-th');if(t)document.documentElement.setAttribute('data-theme',t)})();
+
+// SETTINGS
+function openSP(){document.getElementById('sppn').classList.add('open');document.getElementById('spbk').classList.add('open')}
+function closeSP(){document.getElementById('sppn').classList.remove('open');document.getElementById('spbk').classList.remove('open')}
+function setAcc(el){
+  const c=el.dataset.c;
+  document.querySelectorAll('.spsl').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  const h2r=h=>{const n=parseInt(h.replace('#',''),16);return[(n>>16)&255,(n>>8)&255,n&255].join(',')};
+  let rgb;try{rgb=h2r(c)}catch(e){rgb='224,43,43'}
+  document.documentElement.style.setProperty('--red',c);
+  document.documentElement.style.setProperty('--red-b',c);
+  document.documentElement.style.setProperty('--rg',`rgba(${rgb},.35)`);
+  document.documentElement.style.setProperty('--rt',`rgba(${rgb},.08)`);
+}
+
+// USER MENU
+function toggleUD(){document.getElementById('udd-el')?.classList.toggle('open')}
+function closeUD(){document.getElementById('udd-el')?.classList.remove('open')}
+document.addEventListener('click',e=>{const dd=document.getElementById('udd-el');const t=document.querySelector('.utrig');if(dd&&!dd.contains(e.target)&&t&&!t.contains(e.target))closeUD()});
+
+// AUTH UI
+function updNav(user){
+  const a=document.getElementById('navauth');
+  if(!user){a.innerHTML=`<button class="bp" onclick="go('auth')">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;return}
+  const init=(user.displayName||user.email||'?').charAt(0).toUpperCase();
+  const dn=user.displayName||user.email.split('@')[0];
+  const avH=user.photoURL?`<div class="uav"><img src="${user.photoURL}" alt=""></div>`:`<div class="uav">${init}</div>`;
+  a.innerHTML=`<div class="umenu"><div class="utrig" onclick="toggleUD()">${avH}<span class="uname">${dn}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="udd" id="udd-el"><a class="udit" onclick="go('profile');closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a><a class="udit" onclick="openSP();closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a><div class="udhr"></div><a class="udit dng" onclick="doSO()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a></div></div>`;
+}
+
+auth.onAuthStateChanged(user=>{updNav(user);if(user)fillProfile(user)});
+
+// RECAPTCHA
+async function rcToken(action){return new Promise(r=>{if(typeof grecaptcha==='undefined'||!grecaptcha.enterprise){r(null);return}grecaptcha.enterprise.ready(async()=>{try{const t=await grecaptcha.enterprise.execute(RK,{action});r(t)}catch{r(null)}})})}
+
+// SIGN IN
+async function doSI(){
+  const btn=document.getElementById('btn-si');
+  const e=document.getElementById('si-e').value.trim();
+  const p=document.getElementById('si-p').value;
+  const rem=document.getElementById('si-rem').checked;
+  const trm=document.getElementById('si-trm').checked;
+  const rob=document.getElementById('si-rob').checked;
+  clrA();
+  if(!e||!p){shErr('Please fill in all fields.');return}
+  if(!trm){shErr('Please agree to Terms & Privacy Policy.');return}
+  if(!rob){shErr('Please confirm you are not a robot.');return}
+  ldBtn(btn,true,'signin');
+  await rcToken('LOGIN');
+  try{
+    await auth.setPersistence(rem?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
+    await auth.signInWithEmailAndPassword(e,p);
+    shOk('Signed in! Redirecting…');
+    setTimeout(()=>go('profile'),1000);
+  }catch(er){ldBtn(btn,false,'signin');shErr(fErr(er.code))}
+}
+
+// SIGN UP
+async function doSU(){
+  const btn=document.getElementById('btn-su');
+  const u=document.getElementById('su-u').value.trim();
+  const e=document.getElementById('su-e').value.trim();
+  const p=document.getElementById('su-p').value;
+  const c=document.getElementById('su-c').value;
+  const rem=document.getElementById('su-rem').checked;
+  const trm=document.getElementById('su-trm').checked;
+  const rob=document.getElementById('su-rob').checked;
+  clrA();
+  if(!u||!e||!p||!c){shErr('Please fill in all fields.');return}
+  if(p!==c){shErr('Passwords do not match.');return}
+  if(p.length<6){shErr('Password must be at least 6 characters.');return}
+  if(!trm){shErr('Please agree to Terms & Privacy Policy.');return}
+  if(!rob){shErr('Please confirm you are not a robot.');return}
+  ldBtn(btn,true,'signup');
+  await rcToken('REGISTER');
+  try{
+    await auth.setPersistence(rem?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION);
+    const cr=await auth.createUserWithEmailAndPassword(e,p);
+    await cr.user.updateProfile({displayName:u});
+    shOk('Account created! Welcome to TheGeneric!');
+    setTimeout(()=>go('profile'),1200);
+  }catch(er){ldBtn(btn,false,'signup');shErr(fErr(er.code))}
+}
+
+// GOOGLE
+async function doGoogle(){
+  clrA();
+  try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());shOk('Signed in with Google!');setTimeout(()=>go('profile'),1000)}
+  catch(e){if(e.code!=='auth/popup-closed-by-user')shErr(fErr(e.code))}
+}
+
+// SIGN OUT
+async function doSO(){await auth.signOut();closeUD();go('home')}
+
+// AUTH HELPERS
+function shErr(m){const e=document.getElementById('aerr');if(e){e.textContent=m;e.classList.add('show')}}
+function shOk(m){const e=document.getElementById('aok');if(e){e.textContent=m;e.classList.add('show')}}
+function clrA(){document.getElementById('aerr')?.classList.remove('show');document.getElementById('aok')?.classList.remove('show')}
+function ldBtn(btn,on,type){if(!btn)return;if(on){btn.disabled=true;btn.innerHTML=`<span style="display:flex;align-items:center;gap:8px;justify-content:center"><span class="spin"></span>Please wait…</span>`}else{btn.disabled=false;btn.textContent=type==='signin'?'Sign In':'Create Account'}}
+function fErr(c){const m={'auth/invalid-email':'Invalid email address.','auth/user-not-found':'No account with this email.','auth/wrong-password':'Incorrect password.','auth/email-already-in-use':'Email already in use.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts. Try again later.','auth/network-request-failed':'Network error. Check connection.','auth/popup-blocked':'Popup blocked. Allow popups for this site.','auth/invalid-credential':'Invalid credentials.'};return m[c]||'Something went wrong. Please try again.'}
+function swTab(t){document.getElementById('frm-si').style.display=t==='si'?'block':'none';document.getElementById('frm-su').style.display=t==='su'?'block':'none';document.getElementById('tab-si').classList.toggle('active',t==='si');document.getElementById('tab-su').classList.toggle('active',t==='su');clrA()}
+function tpw(id,btn){const i=document.getElementById(id);const s=i.type==='text';i.type=s?'password':'text';btn.querySelector('svg').innerHTML=s?'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>':'<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'}
+
+// PROFILE
+async function fillProfile(user){
+  const dn=user.displayName||user.email.split('@')[0];
+  setText('pnm',dn);setText('pem',user.email);setText('pa-nm',dn);setText('pa-em',user.email);
+  const pv=user.providerData[0]?.providerId||'email';
+  setText('pa-pv',pv==='google.com'?'Google':'Email / Password');
+  const pav=document.getElementById('pav');
+  if(pav){if(user.photoURL)pav.innerHTML=`<img src="${user.photoURL}" alt="${dn}">`;else pav.textContent=dn.charAt(0).toUpperCase()}
+  fetchSlope(user);
+}
+
+async function fetchSlope(user){
+  const ld=document.getElementById('psl-ld');
+  const dt=document.getElementById('psl-dt');
+  try{
+    // Try to find username from SLOPE encrypted info
+    try{
+      const snap=await db.ref('SLOPE/user/encrypted/info').once('value');
+      snap.forEach(ch=>{const d=ch.val();if(d&&(d.email===user.email||d.uid===user.uid)){const b=document.getElementById('slope-ubdg');if(b&&(d.username||d.name)){b.textContent='SLOPE: '+(d.username||d.name);b.style.display='inline-block'}}});
+    }catch{}
+    // Social stats
+    let fw=0,fg=0,fr=0;
+    try{const s=await db.ref(`SLOPE/social/${user.uid}`).once('value');if(s.exists()){const v=s.val();fw=v.followers?Object.keys(v.followers).length:0;fg=v.following?Object.keys(v.following).length:0;fr=v.friends?Object.keys(v.friends).length:0}}catch{}
+    setText('ss-fw',fw);setText('ss-fg',fg);setText('ss-fr',fr);
+    if(ld)ld.style.display='none';if(dt){dt.style.display='flex';dt.style.flexDirection='column'}
+  }catch{if(ld)ld.innerHTML='<span style="color:var(--tm);font-size:.78rem">SLOPE data unavailable</span>'}
+}
+function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
+
+// MODRINTH
+async function fetchMR(){
+  try{
+    const r=await fetch('https://api.modrinth.com/v2/project/mocharmsmod');
+    const d=await r.json();
+    const dl=(d.downloads||0).toLocaleString();
+    const fl=(d.followers||0).toLocaleString();
+    setText('hv-dl',dl);setText('mod-dl',dl);setText('mod-fl',fl);
+    const stn=document.getElementById('stn-dl');
+    if(stn){const a=stn.querySelector('a')||stn;animC(a,d.downloads||0,true)}
+  }catch{setText('hv-dl','—')}
+}
+
+// COUNTERS
+function animC(el,target,big=false){if(!el)return;const dur=1800,start=performance.now();function step(now){const t=Math.min((now-start)/dur,1),e=1-Math.pow(1-t,3),v=Math.round(e*target);el.textContent=big?v.toLocaleString():v;if(t<1)requestAnimationFrame(step)}requestAnimationFrame(step)}
+
+const cObs=new IntersectionObserver(entries=>{entries.forEach(en=>{if(!en.isIntersecting)return;document.querySelectorAll('[data-count]').forEach(el=>animC(el,parseInt(el.dataset.count)));cObs.disconnect()})},{threshold:.3});
+const cTgt=document.querySelector('.hsts');if(cTgt)cObs.observe(cTgt);
+
+// SCROLL REVEAL
+const rObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:.08});
+function attachReveal(){document.querySelectorAll('.fc,.blc,.dc,.mcard,.hvc').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv='1';el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .2s';rObs.observe(el)})}
+attachReveal();
+
+fetchMR();
+</script>
+</body>
 </html>
