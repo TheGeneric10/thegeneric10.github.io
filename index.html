@@ -2,12 +2,13 @@
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>TheGeneric · v26.1</title>
+<title>TheGeneric</title>
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b" async defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -36,6 +37,8 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
 img{-webkit-user-drag:none;pointer-events:none}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red-d);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--red)}
+.grecaptcha-badge{visibility:hidden!important;opacity:0!important;pointer-events:none!important;display:none!important}
+iframe[title*="reCAPTCHA"],iframe[src*="recaptcha"]{display:none!important}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:200;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px);background:rgba(12,12,12,.85);border-bottom:1px solid var(--bo);transition:background var(--T)}
@@ -85,16 +88,25 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 /* SETTINGS PANEL */
 .spbk{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
 .spbk.open{opacity:1;pointer-events:all}
-.sppn{position:fixed;top:0;right:-340px;width:320px;height:100vh;background:var(--bg2);border-left:1px solid var(--bo);z-index:301;transition:right .35s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+.sppn{position:fixed;top:0;right:-760px;width:min(760px,100vw);height:100vh;background:linear-gradient(180deg,var(--bg2),#0b0b0d);border-left:1px solid var(--bo);z-index:301;transition:right .4s cubic-bezier(.22,1,.36,1);overflow:hidden}
 .sppn.open{right:0}
 .sphd{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--bo);position:sticky;top:0;background:var(--bg2);z-index:1}
 .sptl{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:2px}
-.spbd{padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.spbd{height:calc(100vh - 74px);padding:1rem}
 .spst{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:var(--tm);font-weight:700;margin-bottom:.75rem}
 .spsw{display:flex;gap:10px;flex-wrap:wrap}
 .spsl{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,box-shadow .15s}
 .spsl:hover{transform:scale(1.15)}
 .spsl.active{border-color:var(--tx);box-shadow:0 0 0 3px var(--rg)}
+.spgrid{display:grid;grid-template-columns:180px 1fr;gap:1rem;height:100%}
+.spnav{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:.85rem;display:flex;flex-direction:column;gap:.45rem;overflow:auto}
+.spnavbtn{width:100%;background:transparent;border:1px solid var(--bo);color:var(--td);border-radius:10px;padding:.7rem .8rem;font-size:.72rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;text-align:left;cursor:pointer;transition:all var(--T)}
+.spnavbtn:hover{color:var(--tx);border-color:var(--bo2);background:var(--sf)}
+.spnavbtn.active{color:#fff;border-color:rgba(224,43,43,.4);background:linear-gradient(135deg,rgba(224,43,43,.22),rgba(224,43,43,.07));box-shadow:0 8px 18px rgba(224,43,43,.22)}
+.spcont{background:rgba(255,255,255,.01);border:1px solid var(--bo);border-radius:14px;padding:1rem;overflow:auto}
+.spcat{display:none}
+.spcat.active{display:block;animation:pIn .28s ease both}
+
 
 /* ROUTING */
 #mc{position:relative;z-index:1;padding-top:var(--nh)}
@@ -161,6 +173,18 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 @keyframes np{0%,100%{filter:drop-shadow(0 0 20px rgba(0,255,136,.5))}50%{filter:drop-shadow(0 0 40px rgba(0,255,136,.9))}}
 .slsub{font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(0,255,136,.6);letter-spacing:3px;text-transform:uppercase}
 .gbdg{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);border-radius:999px;padding:4px 12px;font-family:'DM Mono',monospace;font-size:.62rem;color:#00ff88;letter-spacing:1px;margin-bottom:1.25rem}
+
+
+/* SLOPE LIVE CONFIG */
+.sllv{margin:0 auto 1.2rem;max-width:1040px;background:var(--sf);border:1px solid var(--bo);border-radius:14px;padding:1rem 1.1rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;align-items:stretch}
+.sllv.hidden{display:none!important}
+.sllv .itm{background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.7rem .8rem}
+.sllv .lb{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);font-weight:700;margin-bottom:.35rem}
+.sllv .vl{font-size:.86rem;color:var(--tx);font-weight:700;line-height:1.4;word-break:break-word}
+.sllv .vl.dim{color:var(--tm)}
+.sllv .itm.sup{grid-column:span 2}
+@media(max-width:900px){.sllv{grid-template-columns:1fr 1fr}.sllv .itm.sup{grid-column:span 2}}
+@media(max-width:540px){.sllv{grid-template-columns:1fr}.sllv .itm.sup{grid-column:span 1}}
 
 /* MODS */
 .modsec{padding:6rem 5vw;background:var(--bg2);position:relative;overflow:hidden}
@@ -329,6 +353,47 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 .prfld{display:flex;align-items:center;gap:8px;color:var(--tm);font-size:.82rem;padding:1rem 0}
 .prfld .spin{border-color:rgba(224,43,43,.3);border-top-color:var(--red)}
 
+/* TOAST + REDIRECT MODAL */
+.toast-wrap{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:1200}
+.toast{min-width:260px;max-width:340px;padding:12px 14px;border-radius:10px;border:1px solid var(--bo2);background:var(--sf);color:var(--tx);box-shadow:0 20px 35px rgba(0,0,0,.35);font-size:.78rem;transform:translateY(16px);opacity:0;animation:tIn .25s ease forwards}
+.toast.err{border-color:rgba(224,43,43,.45);background:rgba(224,43,43,.08)}
+.toast.ok{border-color:rgba(39,196,122,.45);background:rgba(39,196,122,.08)}
+@keyframes tIn{to{transform:translateY(0);opacity:1}}
+.rdbk{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);z-index:1100;display:none;place-items:center;padding:1rem}
+.rdbk.open{display:grid}
+.rdmd{width:min(430px,100%);border-radius:16px;border:1px solid var(--bo2);background:var(--sf);padding:1.2rem;box-shadow:0 30px 60px rgba(0,0,0,.45);position:relative;overflow:hidden;transform:translateY(22px) scale(.95);opacity:0}
+.rdbk.open .rdmd{animation:rdIn .46s cubic-bezier(.2,1.1,.35,1) forwards}
+.rdbk.closing .rdmd{animation:rdOut .26s ease forwards}
+.rdmd.github{background:linear-gradient(160deg,#1d1d1d,#111);box-shadow:0 0 50px rgba(0,0,0,.6)}
+.rdmd.youtube{background:linear-gradient(160deg,#2b0d12,#1a0f10);box-shadow:0 0 50px rgba(255,105,180,.25)}
+.rdmd.discord{background:linear-gradient(160deg,#0f1a35,#101624);box-shadow:0 0 50px rgba(125,211,252,.3)}
+.rdi{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;margin:0 auto 10px;animation:spin 3.4s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rdtx{text-align:center;font-weight:800;letter-spacing:.5px;font-size:1.02rem;margin-bottom:5px}
+.rdsub{text-align:center;color:var(--td);font-size:.78rem;margin-bottom:14px}
+.rdact{display:flex;gap:.6rem;justify-content:center}
+.rd-particles,.cf-particles{position:absolute;inset:0;pointer-events:none}
+.rdp,.cfp{position:absolute;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(.2px);animation:prt 2.8s linear infinite}
+@keyframes prt{0%{opacity:0;transform:translateY(20px) scale(.5)}20%{opacity:.7}100%{opacity:0;transform:translateY(-120px) scale(1.1)}}
+@keyframes rdIn{0%{transform:translateY(22px) scale(.94);opacity:0}70%{transform:translateY(-4px) scale(1.02);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes rdOut{to{transform:translateY(18px) scale(.96);opacity:0}}
+
+/* CONFIRM MODAL */
+.cfbk{position:fixed;inset:0;background:rgba(0,0,0,.58);backdrop-filter:blur(2px);display:none;place-items:center;z-index:1120;padding:1rem}
+.cfbk.open{display:grid}
+.cfmd{width:min(430px,100%);border-radius:16px;border:1px solid var(--bo2);background:linear-gradient(165deg,#101113,#0d0d10);padding:1.3rem;box-shadow:0 30px 65px rgba(0,0,0,.5);position:relative;overflow:hidden;transform:translateY(20px) scale(.94);opacity:0}
+.cfbk.open .cfmd{animation:rdIn .46s cubic-bezier(.2,1.1,.35,1) forwards}
+.cfbk.closing .cfmd{animation:rdOut .26s ease forwards}
+.cftx{font-family:'Bebas Neue',sans-serif;letter-spacing:1px;font-size:1.9rem;margin-bottom:.35rem}
+.cfsub{font-size:.84rem;color:var(--td);line-height:1.6;margin-bottom:1rem}
+.cfact{display:flex;justify-content:flex-end;gap:.6rem}
+
+/* PROFILE PICTURE UPLOAD */
+.pavw{position:relative;width:90px}
+.pav-edit{position:absolute;inset:auto 0 -10px 0;margin:auto;width:max-content;padding:4px 8px;border-radius:999px;border:1px solid var(--bo2);background:var(--sf2);font-size:.58rem;letter-spacing:.8px;text-transform:uppercase;color:var(--tx);opacity:0;transform:translateY(6px);transition:all .2s}
+.pavw:hover .pav-edit{opacity:1;transform:translateY(0)}
+.pav-file{display:none}
+
 /* FOOTER */
 footer{position:relative;border-top:1px solid var(--bo);z-index:1}
 footer.hidden{display:none}
@@ -355,6 +420,9 @@ footer.hidden{display:none}
   .mcard{grid-template-columns:1fr}.dg{grid-template-columns:repeat(2,1fr)}
   .blg{grid-template-columns:repeat(2,1fr)}.ctg{grid-template-columns:1fr}
   .prfgr{grid-template-columns:1fr}.fcls{gap:2rem}
+  .spgrid{grid-template-columns:1fr}
+  .spnav{flex-direction:row;flex-wrap:wrap}
+  .spnavbtn{flex:1;min-width:120px;text-align:center}
 }
 @media(max-width:540px){
   .dg,.blg{grid-template-columns:1fr}.authcard{padding:1.75rem}
@@ -374,19 +442,19 @@ footer.hidden{display:none}
     <li><a onclick="go('features')">Features</a></li>
     <li><a onclick="go('changelog')">Changelog</a></li>
     <li><a onclick="go('docs')">Docs</a></li>
-    <li><a class="ext" href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub</a></li>
+    <li><a class="ext" onclick="openRedirect('github')">GitHub</a></li>
     <li><a onclick="go('about')">About</a></li>
     <li><a onclick="go('blog')">Blog</a></li>
   </ul>
   <div class="nr">
     <div class="nsoc">
-      <button class="ibt" title="YouTube" onclick="open('https://youtube.com','_blank')">
+      <button class="ibt" title="YouTube" onclick="openRedirect('youtube')">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>
       </button>
-      <button class="ibt" title="Discord" onclick="open('https://discord.gg','_blank')">
+      <button class="ibt" title="Discord" onclick="openRedirect('discord')">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
       </button>
-      <button class="ibt" title="GitHub" onclick="open('https://github.com/thegeneric10','_blank')">
+      <button class="ibt" title="GitHub" onclick="openRedirect('github')">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
       </button>
     </div>
@@ -406,24 +474,78 @@ footer.hidden{display:none}
 <!-- SETTINGS PANEL -->
 <div class="spbk" id="spbk" onclick="closeSP()"></div>
 <div class="sppn" id="sppn">
+  <div id="toast-wrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
   <div class="sphd"><span class="sptl">Settings</span><button class="ibt" onclick="closeSP()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
   <div class="spbd">
-    <div><div class="spst">Accent Color</div>
-    <div class="spsw">
-      <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)"></div>
-      <div class="spsl" style="background:#e07b2b" data-c="#e07b2b" onclick="setAcc(this)"></div>
-      <div class="spsl" style="background:#2b6be0" data-c="#2b6be0" onclick="setAcc(this)"></div>
-      <div class="spsl" style="background:#27c47a" data-c="#27c47a" onclick="setAcc(this)"></div>
-      <div class="spsl" style="background:#9b2be0" data-c="#9b2be0" onclick="setAcc(this)"></div>
-      <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)"></div>
-    </div></div>
-    <div><div class="spst">Theme</div>
-    <div style="display:flex;gap:.5rem">
-      <button class="bg" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
-      <button class="bg" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
-    </div></div>
-    <div><div class="spst">Version</div><div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm)">TheGeneric v26.1</div></div>
-    <div><div class="spst">Contact</div><a href="mailto:toxicbusinessstudios@gmail.com" style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);text-decoration:none">toxicbusinessstudios@gmail.com</a></div>
+    <div class="spgrid">
+      <div class="spnav">
+        <button class="spnavbtn active" type="button" data-sbtn="appearance" onclick="openSettingsCategory('appearance')">Appearance</button>
+        <button class="spnavbtn" type="button" data-sbtn="account" onclick="openSettingsCategory('account')">Account</button>
+        <button class="spnavbtn" type="button" data-sbtn="notifications" onclick="openSettingsCategory('notifications')">Notifications</button>
+        <button class="spnavbtn" type="button" data-sbtn="about" onclick="openSettingsCategory('about')">About</button>
+      </div>
+      <div id="settings-categories" class="spcont">
+        <div data-cat="appearance" class="spcat active">
+          <div><div class="spst">Accent Color</div>
+          <div class="spsw">
+            <div class="spsl active" style="background:#e02b2b" data-c="#e02b2b" onclick="setAcc(this)"></div>
+            <div class="spsl" style="background:#e07b2b" data-c="#e07b2b" onclick="setAcc(this)"></div>
+            <div class="spsl" style="background:#2b6be0" data-c="#2b6be0" onclick="setAcc(this)"></div>
+            <div class="spsl" style="background:#27c47a" data-c="#27c47a" onclick="setAcc(this)"></div>
+            <div class="spsl" style="background:#9b2be0" data-c="#9b2be0" onclick="setAcc(this)"></div>
+            <div class="spsl" style="background:#e0c02b" data-c="#e0c02b" onclick="setAcc(this)"></div>
+          </div></div>
+          <div style="margin-top:1rem"><div class="spst">Theme</div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+              <button class="bg" type="button" onclick="setTh('dark')" style="flex:1;font-size:.72rem">Dark</button>
+              <button class="bg" type="button" onclick="setTh('light')" style="flex:1;font-size:.72rem">Light</button>
+            </div>
+          </div>
+        </div>
+        <div data-cat="account" class="spcat">
+          <div><div class="spst">Session</div>
+          <div style="font-size:.78rem;color:var(--td);line-height:1.7">Manage account access, profile, and quick actions from one place.</div></div>
+          <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+            <button class="bg" type="button" onclick="go('profile');closeSP()" style="font-size:.72rem">View Profile</button>
+            <button class="bg" type="button" onclick="go('auth');closeSP()" style="font-size:.72rem">Open Account</button>
+          </div>
+        </div>
+        <div data-cat="notifications" class="spcat">
+          <div><div class="spst">Quick Notices</div>
+          <div style="font-size:.78rem;color:var(--td);line-height:1.75">Enable friendly toasts for important actions like profile updates, link redirects, and status messages.</div></div>
+          <div style="margin-top:1rem"><button class="bg" type="button" onclick="toast('Notifications are enabled.','ok')" style="font-size:.72rem">Test Notification</button></div>
+        </div>
+        <div data-cat="about" class="spcat">
+          <div><div class="spst">Version</div><div style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--tm)">TheGeneric</div></div>
+          <div style="margin-top:1rem"><div class="spst">Contact</div><a href="mailto:toxicbusinessstudios@gmail.com" style="font-family:'DM Mono',monospace;font-size:.68rem;color:var(--red);text-decoration:none">toxicbusinessstudios@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rdbk" id="rdbk" onclick="if(event.target.id==='rdbk')closeRedirect()">
+  <div class="rdmd" id="rdmd">
+    <div class="rd-particles" id="rd-particles"></div>
+    <div class="rdi" id="rdi"></div>
+    <div class="rdtx" id="rdtx">Redirecting</div>
+    <div class="rdsub" id="rdsub">Preparing destination…</div>
+    <div class="rdact">
+      <button class="bp" id="rdbtn" type="button">Redirect</button>
+      <button class="bg" type="button" onclick="closeRedirect()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="cfbk" id="cfbk" onclick="if(event.target.id==='cfbk')closeConfirm()">
+  <div class="cfmd" id="cfmd">
+    <div class="cf-particles" id="cf-particles"></div>
+    <div class="cftx" id="cftx">Confirm Action</div>
+    <div class="cfsub" id="cfsub">Please confirm to continue.</div>
+    <div class="cfact">
+      <button class="bg" type="button" onclick="closeConfirm()">Cancel</button>
+      <button class="bp" id="cfok" type="button">Continue</button>
+    </div>
   </div>
 </div>
 
@@ -439,7 +561,7 @@ footer.hidden{display:none}
       <div class="hbdg"><span class="blk"></span>v26.1 — System Ready</div>
       <div class="htgs">
         <span class="htg tg">Minecraft: Java Edition</span>
-        <span class="htg tb">1.6 – 1.20+</span>
+        <span class="htg tb">1.21.8+ NeoForge</span>
         <span class="htg tr">SLOPE Available</span>
       </div>
       <h1 class="hti">The<br><span class="ac">Generic</span><br><span class="ol">Platform.</span></h1>
@@ -466,7 +588,7 @@ footer.hidden{display:none}
       <div class="hvc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')">
         <div class="hvch">
           <div class="hvic hv-mc"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><div class="hvtl">Mo'CharmsMod</div><div class="hvsb">Minecraft Java 1.6–1.20+</div></div>
+          <div><div class="hvtl">Mo'CharmsMod</div><div class="hvsb">Minecraft Java NeoForge 1.21.8+</div></div>
         </div>
         <div class="hvds">Powerful charm items granting temporary potion effects for strategic survival gameplay. ✨🧿</div>
         <div class="hvft"><div class="hvst">Downloads: <span id="hv-dl">…</span></div><a class="hvlk" href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Modrinth <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div>
@@ -479,6 +601,12 @@ footer.hidden{display:none}
   <!-- SLOPE -->
   <section class="slsec" style="background:var(--bg2)">
     <div class="sh"><div class="sey">Featured Game</div><h2 class="sti">Play SLOPE.<br>Free. Now.</h2><p class="ssb">Browser-based. All devices. No download required.</p></div>
+    <div class="sllv hidden" id="slope-live">
+      <div class="itm"><div class="lb">Current Version</div><div class="vl" id="slope-cv">—</div></div>
+      <div class="itm"><div class="lb">Current Season</div><div class="vl" id="slope-cs">—</div></div>
+      <div class="itm"><div class="lb">Current Event</div><div class="vl" id="slope-ltm">—</div></div>
+      <div class="itm sup"><div class="lb">Supported Versions</div><div class="vl dim" id="slope-sv">—</div></div>
+    </div>
     <div class="slin">
       <div class="slL">
         <div class="gbdg"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><circle cx="12" cy="12" r="10"/></svg>LIVE · HTML5 ARCADE</div>
@@ -514,7 +642,7 @@ footer.hidden{display:none}
         <div class="msts">
           <div><div class="mstn" id="mod-dl">—</div><div class="mstl">Downloads</div></div>
           <div><div class="mstn" id="mod-fl">—</div><div class="mstl">Followers</div></div>
-          <div><div class="mstn">1.6+</div><div class="mstl">MC Version</div></div>
+          <div><div class="mstn">1.21.8+</div><div class="mstl">NeoForge</div></div>
         </div>
         <div class="mact">
           <a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener" class="bp" style="font-size:.75rem">SEE MORE via Modrinth ↗</a>
@@ -529,7 +657,7 @@ footer.hidden{display:none}
   <section class="ctas" style="background:var(--bg2)">
     <div><p style="font-family:'DM Mono',monospace;font-size:.65rem;color:var(--red);text-transform:uppercase;letter-spacing:2px;margin-bottom:.75rem">Get Started Today</p><h2>Ready to Go Generic?</h2><p>No fluff. No filler. Join, play SLOPE, grab the mods.</p></div>
     <div class="ctaact">
-      <button class="bp" onclick="go('auth')">Create Account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <button class="bp" id="cta-account-btn" onclick="go('auth')">Create Account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg">Modrinth ↗</a>
     </div>
   </section>
@@ -565,8 +693,12 @@ footer.hidden{display:none}
   <div class="sh"><div class="sey">Release History</div><h2 class="sti">Changelog.</h2><p class="ssb">What's new, fixed, and coming next.</p></div>
   <div class="cll">
     <div class="cli"><div><div class="clv">26.1</div><div class="cld">Mar 2026</div></div><div><span class="cltg tgl">LATEST</span><div class="clti">Platform v26.1 — Full Overhaul</div><ul class="clch"><li>Complete SPA rebuild with Firebase Auth + Realtime DB</li><li>SLOPE game integration and social profile sync</li><li>Google Sign-In and reCAPTCHA Enterprise protection</li><li>Dark/Light mode with 6 accent color options</li><li>Mo'CharmsMod live Modrinth stats fetch</li><li>Wave animations, smooth page transitions</li><li>Disabled text selection and image drag globally</li></ul></div></div>
-    <div class="cli"><div><div class="clv">2.0</div><div class="cld">Jan 2026</div></div><div><span class="cltg tgb">STABLE</span><div class="clti">Platform v2.0 — Core Rebuild</div><ul class="clch"><li>Red system theme with CSS variable architecture</li><li>Hero stats counter animations</li><li>Initial Modrinth organization setup</li><li>Modular card layout system</li></ul></div></div>
-    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Sep 2025</div></div><div><span class="cltg tgb">LEGACY</span><div class="clti">Mo'CharmsMod v1.0 — Initial Release</div><ul class="clch"><li>10 charm types with unique potion effects</li><li>Minecraft 1.6 – 1.20+ compatibility</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
+    <div class="cli"><div><div class="clv">26.0</div><div class="cld">Dec 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v26.0 — Preview Channel</div><ul class="clch"><li>Preview framework for upcoming major release</li></ul></div></div>
+    <div class="cli"><div><div class="clv">25.4</div><div class="cld">Sep 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v25.4</div><ul class="clch"><li>UI and module preview updates</li></ul></div></div>
+    <div class="cli"><div><div class="clv">25.3</div><div class="cld">Jun 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v25.3</div><ul class="clch"><li>Gameplay and account-flow preview changes</li></ul></div></div>
+    <div class="cli"><div><div class="clv">2.0</div><div class="cld">Apr 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v2.0</div><ul class="clch"><li>Core rebuild preview launch</li></ul></div></div>
+    <div class="cli"><div><div class="clv">1.5</div><div class="cld">Dec 2024</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.5</div><ul class="clch"><li>Early UI and authentication prototype</li></ul></div></div>
+    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Mar 5, 2026</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.0 — Mo'CharmsMod Release</div><ul class="clch"><li>Mo'CharmsMod officially released on March 5, 2026</li><li>10 charm types with unique potion effects</li><li>NeoForge compatibility path began</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
   </div>
 </div></div>
 
@@ -587,7 +719,7 @@ footer.hidden{display:none}
 <div id="page-about" class="page"><div class="pgw">
   <h1>About <span>TheGeneric</span></h1><div class="pgmt">EST. 2025 · THEGENERIC10 · V26.1</div>
   <h2>Who We Are</h2><p>TheGeneric is an independent development organization focused on Minecraft mods, web-based games, and community-driven tools. We believe great software should be accessible, free, and well-crafted.</p>
-  <h2>What We Build</h2><p><strong style="color:var(--tx)">Mo'CharmsMod</strong> — A Minecraft Java Edition mod adding powerful charm items with strategic potion effects for survival gameplay. Available on Modrinth for versions 1.6 through 1.20+.</p><p><strong style="color:var(--tx)">SLOPE</strong> — A fast-paced HTML5 arcade runner playable in any browser on any device. No install. No cost.</p>
+  <h2>What We Build</h2><p><strong style="color:var(--tx)">Mo'CharmsMod</strong> — A Minecraft Java Edition mod adding powerful charm items with strategic potion effects for survival gameplay. Available on Modrinth for NeoForge 1.21.8+.</p><p><strong style="color:var(--tx)">SLOPE</strong> — A fast-paced HTML5 arcade runner playable in any browser on any device. No install. No cost.</p>
   <h2>Our Philosophy</h2><p>No pay-to-win. No bloat. Every release is tested, balanced, and maintained. If we ship it, we stand behind it.</p>
   <h2>Contact</h2><p>Business inquiries: <a href="mailto:toxicbusinessstudios@gmail.com">toxicbusinessstudios@gmail.com</a></p><p>GitHub: <a href="https://github.com/thegeneric10" target="_blank" rel="noopener">github.com/thegeneric10</a></p><p>Modrinth: <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">modrinth.com/organization/thegeneric</a></p>
 </div></div>
@@ -597,7 +729,7 @@ footer.hidden{display:none}
   <div class="sh"><div class="sey">Updates & News</div><h2 class="sti">The Blog.</h2><p class="ssb">Dev logs, mod announcements, and game updates.</p></div>
   <div class="blg">
     <div class="blc" onclick="go('changelog')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="blb"><div class="blcat">Platform</div><div class="blti">TheGeneric v26.1 — Major Platform Overhaul</div><div class="bldt">March 2026</div></div></div>
-    <div class="blc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blb"><div class="blcat">Minecraft Mod</div><div class="blti">Mo'CharmsMod — New Charms & 1.20 Support</div><div class="bldt">January 2026</div></div></div>
+    <div class="blc" onclick="window.open('https://modrinth.com/mod/mocharmsmod','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="blb"><div class="blcat">Minecraft Mod</div><div class="blti">Mo'CharmsMod — NeoForge 1.21.8+ Support</div><div class="bldt">January 2026</div></div></div>
     <div class="blc" onclick="window.open('https://thegeneric10.github.io/SLOPE/','_blank')"><div class="blt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div><div class="blb"><div class="blcat">Game</div><div class="blti">SLOPE — Neon Arcade Runner Now Live</div><div class="bldt">December 2025</div></div></div>
   </div>
 </div></div>
@@ -615,14 +747,37 @@ footer.hidden{display:none}
         <a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener" class="bg" style="font-size:.72rem;padding:7px 14px">Modrinth ↗</a>
       </div>
     </div>
-    <div class="ctf">
+    <form class="ctf" id="contact-form">
       <div class="fg2"><label class="fl">Name</label><input class="fi" type="text" placeholder="Your name"></div>
       <div class="fg2"><label class="fl">Email</label><input class="fi" type="email" placeholder="your@email.com"></div>
       <div class="fg2"><label class="fl">Subject</label><input class="fi" type="text" placeholder="What's it about?"></div>
       <div class="fg2"><label class="fl">Message</label><textarea class="fta" placeholder="Your message…"></textarea></div>
-      <button class="bp" onclick="this.textContent='✓ Opens mail client…';window.location.href='mailto:toxicbusinessstudios@gmail.com?subject=TheGeneric Contact'" style="width:100%;justify-content:center;padding:13px">Send Message</button>
-    </div>
+      <button class="bp" type="submit" style="width:100%;justify-content:center;padding:13px">Send Message</button>
+    </form>
   </div>
+</div></div>
+
+
+<!-- EMAIL US -->
+<div id="page-email" class="page"><div class="sp" style="max-width:760px;margin:0 auto">
+  <div class="sh"><div class="sey">Direct Message</div><h2 class="sti">Email Us.</h2><p class="ssb">Connect your Google account and send directly through Gmail API.</p></div>
+  <form id="email-page-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem">
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+      <button class="bg" id="ep-connect" type="button">Connect Gmail</button>
+      <button class="bg" id="ep-disconnect" type="button">Disconnect</button>
+      <span id="ep-status" style="font-size:.75rem;color:var(--tm)">Not connected.</span>
+    </div>
+    <div class="fg2"><label class="fl">Recipient</label><input class="fi" id="ep-to" type="email" value="toxicbusinessstudios@gmail.com"></div>
+    <div class="fg2"><label class="fl">Subject</label><input class="fi" id="ep-subject" type="text" placeholder="What do you need help with?"></div>
+    <div class="fg2"><label class="fl">Reply Email</label><input class="fi" id="ep-email" type="email" placeholder="you@example.com"></div>
+    <div class="fg2"><label class="fl">Message</label><textarea class="fta" id="ep-message" placeholder="Write your message..." style="min-height:160px"></textarea></div>
+    <div id="ep-output" style="display:none;font-size:.76rem;color:var(--td);background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:.75rem"></div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="bp" type="submit">Send via Gmail API</button>
+      <button class="bg" id="ep-mailto" type="button">Open Mail Draft</button>
+      <button class="bg" type="button" onclick="go('contact')">Back to Contact</button>
+    </div>
+  </form>
 </div></div>
 
 <!-- TERMS -->
@@ -652,15 +807,15 @@ footer.hidden{display:none}
 <!-- FEEDBACK -->
 <div id="page-feedback" class="page"><div class="sp" style="max-width:600px;margin:0 auto">
   <div class="sh"><div class="sey">Your Voice Matters</div><h2 class="sti">Feedback.</h2><p class="ssb">Tell us what to fix, improve, or build next.</p></div>
-  <div style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2.5rem;display:flex;flex-direction:column;gap:1.25rem">
+  <form id="feedback-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2.5rem;display:flex;flex-direction:column;gap:1.25rem">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
       <div class="fg2"><label class="fl">Category</label><select class="fi" style="cursor:pointer"><option>Bug Report</option><option>Feature Request</option><option>Mod Feedback</option><option>SLOPE Feedback</option><option>General</option></select></div>
       <div class="fg2"><label class="fl">Rating</label><select class="fi" style="cursor:pointer"><option>⭐⭐⭐⭐⭐ Excellent</option><option>⭐⭐⭐⭐ Great</option><option>⭐⭐⭐ Good</option><option>⭐⭐ Needs Work</option><option>⭐ Poor</option></select></div>
     </div>
     <div class="fg2"><label class="fl">Your Feedback</label><textarea class="fta" placeholder="Describe in detail…" style="min-height:140px"></textarea></div>
     <div class="fg2"><label class="fl">Email (optional)</label><input class="fi" type="email" placeholder="For follow-up"></div>
-    <button class="bp" onclick="this.textContent='✓ Thanks!';this.style.background='#27c47a';setTimeout(()=>{this.textContent='Submit Feedback';this.style.background=''},3000)" style="justify-content:center;padding:13px">Submit Feedback</button>
-  </div>
+    <button class="bp" type="submit" style="justify-content:center;padding:13px">Submit Feedback</button>
+  </form>
 </div></div>
 
 <!-- AUTH -->
@@ -678,8 +833,8 @@ footer.hidden{display:none}
       <div id="aok" class="aok"></div>
 
       <!-- SIGN IN -->
-      <div id="frm-si">
-        <button class="gbtn" onclick="doGoogle()">
+      <form id="frm-si" onsubmit="event.preventDefault();doSI()">
+        <button class="gbtn" type="button" onclick="doGoogle()">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
           Continue with Google
         </button>
@@ -691,13 +846,13 @@ footer.hidden{display:none}
           <label class="ckr"><input type="checkbox" id="si-trm" required><span class="ckl">I agree to the <a onclick="go('terms')">Terms</a> and <a onclick="go('privacy')">Privacy Policy</a></span></label>
           <label class="ckr"><input type="checkbox" id="si-rob" required><span class="ckl">I am not a robot</span></label>
         </div>
-        <button class="asub" id="btn-si" onclick="doSI()">Sign In</button>
+        <button class="asub" id="btn-si" type="submit">Sign In</button>
         <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">No account? <a style="color:var(--red);cursor:pointer" onclick="swTab('su')">Sign up</a></p>
-      </div>
+      </form>
 
       <!-- SIGN UP -->
-      <div id="frm-su" style="display:none">
-        <button class="gbtn" onclick="doGoogle()">
+      <form id="frm-su" style="display:none" onsubmit="event.preventDefault();doSU()">
+        <button class="gbtn" type="button" onclick="doGoogle()">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
           Sign up with Google
         </button>
@@ -711,9 +866,9 @@ footer.hidden{display:none}
           <label class="ckr"><input type="checkbox" id="su-trm" required><span class="ckl">I agree to the <a onclick="go('terms')">Terms</a> and <a onclick="go('privacy')">Privacy Policy</a></span></label>
           <label class="ckr"><input type="checkbox" id="su-rob" required><span class="ckl">I am not a robot</span></label>
         </div>
-        <button class="asub" id="btn-su" onclick="doSU()">Create Account</button>
+        <button class="asub" id="btn-su" type="submit">Create Account</button>
         <p style="text-align:center;font-size:.74rem;color:var(--tm);margin-top:1rem">Have an account? <a style="color:var(--red);cursor:pointer" onclick="swTab('si')">Sign in</a></p>
-      </div>
+      </form>
     </div>
   </div>
 </div>
@@ -721,7 +876,7 @@ footer.hidden{display:none}
 <!-- PROFILE -->
 <div id="page-profile" class="page"><div class="prfpg">
   <div class="prfhd">
-    <div class="prfav" id="pav">?</div>
+    <div class="pavw"><div class="prfav" id="pav">?</div><button class="pav-edit" type="button" onclick="document.getElementById('pav-file').click()">Change Photo</button><input id="pav-file" class="pav-file" type="file" accept="image/*"></div>
     <div>
       <div class="prfnm" id="pnm">Loading…</div>
       <div class="prfem" id="pem">—</div>
@@ -780,16 +935,16 @@ footer.hidden{display:none}
       <div>
         <div class="fbnm">The<span>Generic</span></div>
         <p class="fbtg">Mods, games, and community tools. Built with love.</p>
-        <div class="fbvr">v26.1 · toxicbusinessstudios@gmail.com</div>
+        <div class="fbvr">TheGeneric · toxicbusinessstudios@gmail.com</div>
       </div>
       <div class="fcls">
-        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
-        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a href="mailto:toxicbusinessstudios@gmail.com">Email Us</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Product</div><ul><li><a onclick="go('features')">Features</a></li><li><a onclick="go('changelog')">Changelog</a></li><li><a href="https://modrinth.com/organization/thegeneric" target="_blank" rel="noopener">Modrinth ↗</a></li><li><a href="https://thegeneric10.github.io/SLOPE/" target="_blank" rel="noopener">SLOPE Game ↗</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Developers</div><ul><li><a onclick="go('docs')">Docs</a></li><li><a href="https://github.com/thegeneric10" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://modrinth.com/mod/mocharmsmod" target="_blank" rel="noopener">Mo'CharmsMod ↗</a></li><li><a onclick="go('changelog')">Changelog</a></li></ul></div>
+        <div class="fcl"><div class="fcltt">Company</div><ul><li><a onclick="go('about')">About</a></li><li><a onclick="go('blog')">Blog</a></li><li><a onclick="go('contact')">Contact</a></li><li><a onclick="go('email')">Email Us</a></li></ul></div>
       </div>
     </div>
     <div class="ftbt">
-      <span>© 2026 TheGeneric. Made with <span style="color:var(--red)">♥</span> by nebulr</span>
+      <span>© 2026 TheGeneric. Made with <span style="color:var(--red)">♥</span> by thegoat86 · @goat8six</span>
       <span><a onclick="go('terms')">Terms</a> · <a onclick="go('privacy')">Privacy</a> · <a onclick="go('feedback')">Feedback</a></span>
     </div>
   </div>
@@ -803,6 +958,11 @@ const auth=firebase.auth();
 const db=firebase.database();
 firebase.analytics.isSupported().then(y=>{if(y)firebase.analytics()});
 const RK='6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b';
+const GMAIL_CLIENT_ID='272113167212-2ssvab7orlgb4vofs5cnulae44scrp08.apps.googleusercontent.com';
+const GMAIL_SCOPES='https://www.googleapis.com/auth/gmail.send';
+let gmailTokenClient=null;
+let gmailAccessToken='';
+
 
 // ROUTER
 const NO_FT=['auth'];
@@ -817,8 +977,8 @@ function go(id){
   closeUD();
   setTimeout(attachReveal,50);
 }
-window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
-window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';go(h)});
+window.addEventListener('load',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
+window.addEventListener('popstate',()=>{const h=location.hash.replace('#','')||'home';const v=['home','features','changelog','docs','about','blog','contact','email','terms','privacy','feedback','auth','profile'];go(v.includes(h)?h:'home')});
 
 // THEME
 function toggleTheme(){setTh(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')}
@@ -855,10 +1015,10 @@ function updNav(user){
   a.innerHTML=`<div class="umenu"><div class="utrig" onclick="toggleUD()">${avH}<span class="uname">${dn}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div><div class="udd" id="udd-el"><a class="udit" onclick="go('profile');closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</a><a class="udit" onclick="openSP();closeUD()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</a><div class="udhr"></div><a class="udit dng" onclick="doSO()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a></div></div>`;
 }
 
-auth.onAuthStateChanged(user=>{updNav(user);if(user)fillProfile(user)});
+let lastUid=null;auth.onAuthStateChanged(user=>{updNav(user);updCTA(user);if(user){fillProfile(user);if(lastUid!==user.uid){toast('Signed in successfully.','ok');if(location.hash==='#auth')go('home')}}lastUid=user?.uid||null});
 
 // RECAPTCHA
-async function rcToken(action){return new Promise(r=>{if(typeof grecaptcha==='undefined'||!grecaptcha.enterprise){r(null);return}grecaptcha.enterprise.ready(async()=>{try{const t=await grecaptcha.enterprise.execute(RK,{action});r(t)}catch{r(null)}})})}
+async function rcToken(action){return new Promise(r=>{if(typeof grecaptcha==='undefined'||!grecaptcha.enterprise){r(null);return}let done=false;const tm=setTimeout(()=>{if(!done){done=true;r(null)}},3200);grecaptcha.enterprise.ready(async()=>{try{const t=await grecaptcha.enterprise.execute(RK,{action});if(!done){done=true;clearTimeout(tm);r(t)}}catch{if(!done){done=true;clearTimeout(tm);r(null)}}})})}
 
 // SIGN IN
 async function doSI(){
@@ -917,7 +1077,7 @@ async function doGoogle(){
 }
 
 // SIGN OUT
-async function doSO(){await auth.signOut();closeUD();go('home')}
+async function doSO(){openConfirm({title:'Sign Out',message:'Are you sure you want to sign out of this session?',okText:'Sign Out',onConfirm:async()=>{await auth.signOut();closeUD();toast('Signed out successfully.','ok');location.hash='#home';location.reload()}})}
 
 // AUTH HELPERS
 function shErr(m){const e=document.getElementById('aerr');if(e){e.textContent=m;e.classList.add('show')}}
@@ -935,7 +1095,7 @@ async function fillProfile(user){
   const pv=user.providerData[0]?.providerId||'email';
   setText('pa-pv',pv==='google.com'?'Google':'Email / Password');
   const pav=document.getElementById('pav');
-  if(pav){if(user.photoURL)pav.innerHTML=`<img src="${user.photoURL}" alt="${dn}">`;else pav.textContent=dn.charAt(0).toUpperCase()}
+  const savedPfp=localStorage.getItem('tg-pfp');if(pav){if(savedPfp)pav.innerHTML=`<img src="${savedPfp}" alt="${dn}">`;else if(user.photoURL)pav.innerHTML=`<img src="${user.photoURL}" alt="${dn}">`;else pav.textContent=dn.charAt(0).toUpperCase()}
   fetchSlope(user);
 }
 
@@ -956,6 +1116,33 @@ async function fetchSlope(user){
   }catch{if(ld)ld.innerHTML='<span style="color:var(--tm);font-size:.78rem">SLOPE data unavailable</span>'}
 }
 function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
+
+
+async function fetchSlopeLiveConfig(){
+  const card=document.getElementById('slope-live');
+  if(!card)return;
+  try{
+    const [cvSnap,csSnap,ltmSnap,svSnap]=await Promise.all([
+      db.ref('SLOPE/config/currentVersion').once('value'),
+      db.ref('SLOPE/config/currentSeason').once('value'),
+      db.ref('SLOPE/config/ltm/name').once('value'),
+      db.ref('SLOPE/config/supportedVersions').once('value')
+    ]);
+    const cv=cvSnap.val();
+    const cs=csSnap.val();
+    const ltm=ltmSnap.val();
+    const svRaw=svSnap.val();
+    let versions=[];
+    if(Array.isArray(svRaw))versions=svRaw.filter(Boolean);
+    else if(svRaw&&typeof svRaw==='object')versions=Object.keys(svRaw).sort((a,b)=>Number(a)-Number(b)).map(k=>svRaw[k]).filter(Boolean);
+    if(!cv||!cs||!ltm||!versions.length){card.classList.add('hidden');return}
+    setText('slope-cv',cv);
+    setText('slope-cs',cs);
+    setText('slope-ltm',ltm);
+    setText('slope-sv',versions.join(', '));
+    card.classList.remove('hidden');
+  }catch{card.classList.add('hidden')}
+}
 
 // MODRINTH
 async function fetchMR(){
@@ -981,7 +1168,35 @@ const rObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isInterse
 function attachReveal(){document.querySelectorAll('.fc,.blc,.dc,.mcard,.hvc').forEach(el=>{if(el.dataset.rv)return;el.dataset.rv='1';el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .5s ease,transform .5s ease,border-color .25s,box-shadow .2s';rObs.observe(el)})}
 attachReveal();
 
-fetchMR();
+function toast(msg,type='ok'){const wrap=document.getElementById('toast-wrap');if(!wrap)return;const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;wrap.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';setTimeout(()=>t.remove(),220)},2900)}
+function updCTA(user){const btn=document.getElementById('cta-account-btn');if(!btn)return;btn.innerHTML=(user?'View Account':'Create Account')+` <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;btn.onclick=()=>go(user?'profile':'auth')}
+function openSettingsCategory(cat){document.querySelectorAll('#settings-categories [data-cat]').forEach(el=>el.classList.toggle('active',el.dataset.cat===cat));document.querySelectorAll('.spnavbtn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sbtn===cat))}
+const REDIRECTS={github:{name:'GitHub',url:'https://github.com/TheGeneric10',theme:'github',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>'},youtube:{name:'YouTube',url:'https://www.youtube.com/@goat8six',theme:'youtube',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M21.58 7.19c-.24-.9-.95-1.61-1.84-1.85C18.1 5 12 5 12 5s-6.1 0-7.74.34c-.9.24-1.6.95-1.84 1.85C2.08 8.84 2 12 2 12s.08 3.16.42 4.81c.24.9.94 1.61 1.84 1.85C5.9 19 12 19 12 19s6.1 0 7.74-.34c.9-.24 1.6-.95 1.84-1.85C21.92 15.16 22 12 22 12s-.08-3.16-.42-4.81zM10 15V9l5 3-5 3z"/></svg>'},discord:{name:'Discord',url:'https://discord.gg/KjEZtRmWwc',theme:'discord',icon:'<svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>'}};
+let redirectUrl='';
+function makeParticles(containerId,cls,count=14){const host=document.getElementById(containerId);if(!host)return;host.innerHTML='';for(let i=0;i<count;i++){const p=document.createElement('span');p.className=cls;p.style.left=`${Math.random()*100}%`;p.style.bottom=`${-8-Math.random()*20}px`;p.style.animationDelay=`${Math.random()*1.6}s`;p.style.animationDuration=`${2+Math.random()*1.6}s`;host.appendChild(p)}}
+function openRedirect(key){const c=REDIRECTS[key];if(!c)return;redirectUrl=c.url;const bk=document.getElementById('rdbk');const md=document.getElementById('rdmd');document.getElementById('rdi').innerHTML=c.icon;document.getElementById('rdtx').textContent=`${c.name} link`;document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;document.getElementById('rdbtn').textContent=`Redirect to ${c.name}`;md.className=`rdmd ${c.theme}`;makeParticles('rd-particles','rdp',16);bk.classList.remove('closing');bk.classList.add('open');document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener')}
+function closeRedirect(){const bk=document.getElementById('rdbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
+function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}}
+
+function b64url(str){return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function setEmailStatus(txt,ok=false){const el=document.getElementById('ep-status');if(el){el.textContent=txt;el.style.color=ok?'#27c47a':'var(--tm)'}}
+function setEmailOutput(txt,isErr=false){const o=document.getElementById('ep-output');if(!o)return;o.style.display='block';o.textContent=txt;o.style.color=isErr?'#ff6b6b':'var(--td)'}
+function initGmailTokenClient(){if(gmailTokenClient||!window.google?.accounts?.oauth2)return;gmailTokenClient=google.accounts.oauth2.initTokenClient({client_id:GMAIL_CLIENT_ID,scope:GMAIL_SCOPES,callback:(resp)=>{if(resp?.access_token){gmailAccessToken=resp.access_token;setEmailStatus('Connected to Gmail.',true);toast('Gmail connected.','ok')}else{setEmailStatus('Gmail connection failed.');toast('Unable to connect Gmail.','err')}}})}
+async function sendViaGmail(){const to=document.getElementById('ep-to')?.value.trim();const subject=document.getElementById('ep-subject')?.value.trim();const reply=document.getElementById('ep-email')?.value.trim();const msg=document.getElementById('ep-message')?.value.trim();if(!to||!subject||!reply||!msg){toast('Please fill all Email Us fields.','err');return}if(!gmailAccessToken){toast('Connect Gmail first.','err');return}const mime=`To: ${to}\r\nSubject: ${subject}\r\nReply-To: ${reply}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nFrom: ${reply}\n\n${msg}`;const raw=b64url(mime);const res=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',headers:{'Authorization':`Bearer ${gmailAccessToken}`,'Content-Type':'application/json'},body:JSON.stringify({raw})});const data=await res.json();if(!res.ok)throw new Error(data?.error?.message||'Gmail send failed');setEmailOutput(`Sent successfully. Message ID: ${data.id||'n/a'}`);toast('Message sent via Gmail API.','ok')}
+function openMailtoDraft(){const to=document.getElementById('ep-to')?.value.trim()||'toxicbusinessstudios@gmail.com';const subject=document.getElementById('ep-subject')?.value.trim()||'TheGeneric Email';const reply=document.getElementById('ep-email')?.value.trim()||'not provided';const msg=document.getElementById('ep-message')?.value.trim()||'';window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${reply}\n\n${msg}`)}`}
+function initEmailPage(){const form=document.getElementById('email-page-form');if(!form)return;const connect=document.getElementById('ep-connect');const disconnect=document.getElementById('ep-disconnect');const mailto=document.getElementById('ep-mailto');initGmailTokenClient();connect?.addEventListener('click',()=>{initGmailTokenClient();if(!gmailTokenClient){toast('Google Identity failed to load.','err');return}gmailTokenClient.requestAccessToken({prompt:gmailAccessToken?'':'consent'})});disconnect?.addEventListener('click',()=>{gmailAccessToken='';setEmailStatus('Not connected.');toast('Gmail disconnected.','ok')});mailto?.addEventListener('click',openMailtoDraft);form.addEventListener('submit',async e=>{e.preventDefault();try{await sendViaGmail()}catch(err){setEmailOutput(`Send failed: ${err.message}`,true);toast('Failed to send via Gmail API.','err')}})}
+
+let confirmHandler=null;function openConfirm({title='Confirm Action',message='Please confirm.',okText='Continue',onConfirm=()=>{}}={}){const bk=document.getElementById('cfbk');document.getElementById('cftx').textContent=title;document.getElementById('cfsub').textContent=message;const ok=document.getElementById('cfok');ok.textContent=okText;confirmHandler=onConfirm;makeParticles('cf-particles','cfp',15);bk.classList.remove('closing');bk.classList.add('open')}
+function closeConfirm(){const bk=document.getElementById('cfbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
+document.getElementById('cfok')?.addEventListener('click',async()=>{try{if(confirmHandler)await confirmHandler()}finally{closeConfirm();confirmHandler=null}})
+function initPfpUpload(){const fi=document.getElementById('pav-file');if(!fi)return;fi.addEventListener('change',ev=>{const f=ev.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Only image files are supported.','err');return}if(f.size>4*1024*1024){toast('Image is too large (max 4MB).','err');return}const r=new FileReader();r.onload=()=>{const url=r.result;localStorage.setItem('tg-pfp',url);const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${url}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${url}" alt="Profile photo">`);toast('Profile photo updated.','ok')};r.readAsDataURL(f)})}
+function applySavedPfp(){const p=localStorage.getItem('tg-pfp');if(!p)return;const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${p}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${p}" alt="Profile photo">`)}
+initForms();initEmailPage();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
+
+
+function hideCaptchaBadge(){document.querySelectorAll('.grecaptcha-badge, iframe[title*="reCAPTCHA"], iframe[src*="recaptcha"]').forEach(el=>{el.style.display='none';el.style.visibility='hidden';el.style.opacity='0'})}
+setInterval(hideCaptchaBadge,1200);hideCaptchaBadge();
+fetchMR();fetchSlopeLiveConfig();setInterval(fetchMR,60*60*1000);setInterval(fetchSlopeLiveConfig,5*60*1000);
 </script>
 </body>
 </html>
