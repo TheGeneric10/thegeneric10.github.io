@@ -8,6 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -36,6 +37,8 @@ input,textarea,select{-webkit-user-select:text!important;user-select:text!import
 img{-webkit-user-drag:none;pointer-events:none}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--red-d);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--red)}
+.grecaptcha-badge{visibility:hidden!important;opacity:0!important;pointer-events:none!important;display:none!important}
+iframe[title*="reCAPTCHA"],iframe[src*="recaptcha"]{display:none!important}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:200;backdrop-filter:blur(24px) saturate(1.8);-webkit-backdrop-filter:blur(24px);background:rgba(12,12,12,.85);border-bottom:1px solid var(--bo);transition:background var(--T)}
@@ -170,6 +173,18 @@ nav{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-item
 @keyframes np{0%,100%{filter:drop-shadow(0 0 20px rgba(0,255,136,.5))}50%{filter:drop-shadow(0 0 40px rgba(0,255,136,.9))}}
 .slsub{font-family:'DM Mono',monospace;font-size:.7rem;color:rgba(0,255,136,.6);letter-spacing:3px;text-transform:uppercase}
 .gbdg{display:inline-flex;align-items:center;gap:6px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);border-radius:999px;padding:4px 12px;font-family:'DM Mono',monospace;font-size:.62rem;color:#00ff88;letter-spacing:1px;margin-bottom:1.25rem}
+
+
+/* SLOPE LIVE CONFIG */
+.sllv{margin:0 auto 1.2rem;max-width:1040px;background:var(--sf);border:1px solid var(--bo);border-radius:14px;padding:1rem 1.1rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;align-items:stretch}
+.sllv.hidden{display:none!important}
+.sllv .itm{background:var(--bg3);border:1px solid var(--bo);border-radius:10px;padding:.7rem .8rem}
+.sllv .lb{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--tm);font-weight:700;margin-bottom:.35rem}
+.sllv .vl{font-size:.86rem;color:var(--tx);font-weight:700;line-height:1.4;word-break:break-word}
+.sllv .vl.dim{color:var(--tm)}
+.sllv .itm.sup{grid-column:span 2}
+@media(max-width:900px){.sllv{grid-template-columns:1fr 1fr}.sllv .itm.sup{grid-column:span 2}}
+@media(max-width:540px){.sllv{grid-template-columns:1fr}.sllv .itm.sup{grid-column:span 1}}
 
 /* MODS */
 .modsec{padding:6rem 5vw;background:var(--bg2);position:relative;overflow:hidden}
@@ -586,6 +601,12 @@ footer.hidden{display:none}
   <!-- SLOPE -->
   <section class="slsec" style="background:var(--bg2)">
     <div class="sh"><div class="sey">Featured Game</div><h2 class="sti">Play SLOPE.<br>Free. Now.</h2><p class="ssb">Browser-based. All devices. No download required.</p></div>
+    <div class="sllv hidden" id="slope-live">
+      <div class="itm"><div class="lb">Current Version</div><div class="vl" id="slope-cv">—</div></div>
+      <div class="itm"><div class="lb">Current Season</div><div class="vl" id="slope-cs">—</div></div>
+      <div class="itm"><div class="lb">Current Event</div><div class="vl" id="slope-ltm">—</div></div>
+      <div class="itm sup"><div class="lb">Supported Versions</div><div class="vl dim" id="slope-sv">—</div></div>
+    </div>
     <div class="slin">
       <div class="slL">
         <div class="gbdg"><svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><circle cx="12" cy="12" r="10"/></svg>LIVE · HTML5 ARCADE</div>
@@ -677,7 +698,7 @@ footer.hidden{display:none}
     <div class="cli"><div><div class="clv">25.3</div><div class="cld">Jun 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v25.3</div><ul class="clch"><li>Gameplay and account-flow preview changes</li></ul></div></div>
     <div class="cli"><div><div class="clv">2.0</div><div class="cld">Apr 2025</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v2.0</div><ul class="clch"><li>Core rebuild preview launch</li></ul></div></div>
     <div class="cli"><div><div class="clv">1.5</div><div class="cld">Dec 2024</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.5</div><ul class="clch"><li>Early UI and authentication prototype</li></ul></div></div>
-    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Oct 2024</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Mo'CharmsMod v1.0 — Initial Release</div><ul class="clch"><li>10 charm types with unique potion effects</li><li>NeoForge compatibility path began</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
+    <div class="cli"><div><div class="clv">1.0</div><div class="cld">Mar 5, 2026</div></div><div><span class="cltg" style="background:rgba(245,166,35,.2);color:#f5a623;border:1px solid rgba(245,166,35,.35)">PREVIEW</span><div class="clti">Platform v1.0 — Mo'CharmsMod Release</div><ul class="clch"><li>Mo'CharmsMod officially released on March 5, 2026</li><li>10 charm types with unique potion effects</li><li>NeoForge compatibility path began</li><li>Published to Modrinth organization</li><li>Survival-balanced progression system</li></ul></div></div>
   </div>
 </div></div>
 
@@ -739,13 +760,21 @@ footer.hidden{display:none}
 
 <!-- EMAIL US -->
 <div id="page-email" class="page"><div class="sp" style="max-width:760px;margin:0 auto">
-  <div class="sh"><div class="sey">Direct Message</div><h2 class="sti">Email Us.</h2><p class="ssb">Send a focused message directly from this page.</p></div>
+  <div class="sh"><div class="sey">Direct Message</div><h2 class="sti">Email Us.</h2><p class="ssb">Connect your Google account and send directly through Gmail API.</p></div>
   <form id="email-page-form" style="background:var(--sf);border:1px solid var(--bo);border-radius:var(--rl);padding:2rem;display:flex;flex-direction:column;gap:1rem">
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+      <button class="bg" id="ep-connect" type="button">Connect Gmail</button>
+      <button class="bg" id="ep-disconnect" type="button">Disconnect</button>
+      <span id="ep-status" style="font-size:.75rem;color:var(--tm)">Not connected.</span>
+    </div>
+    <div class="fg2"><label class="fl">Recipient</label><input class="fi" id="ep-to" type="email" value="toxicbusinessstudios@gmail.com"></div>
     <div class="fg2"><label class="fl">Subject</label><input class="fi" id="ep-subject" type="text" placeholder="What do you need help with?"></div>
-    <div class="fg2"><label class="fl">Your Email</label><input class="fi" id="ep-email" type="email" placeholder="you@example.com"></div>
+    <div class="fg2"><label class="fl">Reply Email</label><input class="fi" id="ep-email" type="email" placeholder="you@example.com"></div>
     <div class="fg2"><label class="fl">Message</label><textarea class="fta" id="ep-message" placeholder="Write your message..." style="min-height:160px"></textarea></div>
+    <div id="ep-output" style="display:none;font-size:.76rem;color:var(--td);background:var(--bg3);border:1px solid var(--bo);border-radius:8px;padding:.75rem"></div>
     <div style="display:flex;gap:.6rem;flex-wrap:wrap">
-      <button class="bp" type="submit">Open Email Draft</button>
+      <button class="bp" type="submit">Send via Gmail API</button>
+      <button class="bg" id="ep-mailto" type="button">Open Mail Draft</button>
       <button class="bg" type="button" onclick="go('contact')">Back to Contact</button>
     </div>
   </form>
@@ -929,6 +958,11 @@ const auth=firebase.auth();
 const db=firebase.database();
 firebase.analytics.isSupported().then(y=>{if(y)firebase.analytics()});
 const RK='6Ld2QYIsAAAAAKwoe5E-ndKRZmZp7eAxIdriie_b';
+const GMAIL_CLIENT_ID='272113167212-2ssvab7orlgb4vofs5cnulae44scrp08.apps.googleusercontent.com';
+const GMAIL_SCOPES='https://www.googleapis.com/auth/gmail.send';
+let gmailTokenClient=null;
+let gmailAccessToken='';
+
 
 // ROUTER
 const NO_FT=['auth'];
@@ -1083,6 +1117,33 @@ async function fetchSlope(user){
 }
 function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=v}
 
+
+async function fetchSlopeLiveConfig(){
+  const card=document.getElementById('slope-live');
+  if(!card)return;
+  try{
+    const [cvSnap,csSnap,ltmSnap,svSnap]=await Promise.all([
+      db.ref('SLOPE/config/currentVersion').once('value'),
+      db.ref('SLOPE/config/currentSeason').once('value'),
+      db.ref('SLOPE/config/ltm/name').once('value'),
+      db.ref('SLOPE/config/supportedVersions').once('value')
+    ]);
+    const cv=cvSnap.val();
+    const cs=csSnap.val();
+    const ltm=ltmSnap.val();
+    const svRaw=svSnap.val();
+    let versions=[];
+    if(Array.isArray(svRaw))versions=svRaw.filter(Boolean);
+    else if(svRaw&&typeof svRaw==='object')versions=Object.keys(svRaw).sort((a,b)=>Number(a)-Number(b)).map(k=>svRaw[k]).filter(Boolean);
+    if(!cv||!cs||!ltm||!versions.length){card.classList.add('hidden');return}
+    setText('slope-cv',cv);
+    setText('slope-cs',cs);
+    setText('slope-ltm',ltm);
+    setText('slope-sv',versions.join(', '));
+    card.classList.remove('hidden');
+  }catch{card.classList.add('hidden')}
+}
+
 // MODRINTH
 async function fetchMR(){
   try{
@@ -1115,15 +1176,27 @@ let redirectUrl='';
 function makeParticles(containerId,cls,count=14){const host=document.getElementById(containerId);if(!host)return;host.innerHTML='';for(let i=0;i<count;i++){const p=document.createElement('span');p.className=cls;p.style.left=`${Math.random()*100}%`;p.style.bottom=`${-8-Math.random()*20}px`;p.style.animationDelay=`${Math.random()*1.6}s`;p.style.animationDuration=`${2+Math.random()*1.6}s`;host.appendChild(p)}}
 function openRedirect(key){const c=REDIRECTS[key];if(!c)return;redirectUrl=c.url;const bk=document.getElementById('rdbk');const md=document.getElementById('rdmd');document.getElementById('rdi').innerHTML=c.icon;document.getElementById('rdtx').textContent=`${c.name} link`;document.getElementById('rdsub').textContent=`You are about to leave TheGeneric for ${c.name}.`;document.getElementById('rdbtn').textContent=`Redirect to ${c.name}`;md.className=`rdmd ${c.theme}`;makeParticles('rd-particles','rdp',16);bk.classList.remove('closing');bk.classList.add('open');document.getElementById('rdbtn').onclick=()=>window.open(redirectUrl,'_blank','noopener')}
 function closeRedirect(){const bk=document.getElementById('rdbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
-function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}const ep=document.getElementById('email-page-form');if(ep){ep.addEventListener('submit',e=>{e.preventDefault();const sub=document.getElementById('ep-subject')?.value.trim();const em=document.getElementById('ep-email')?.value.trim();const msg=document.getElementById('ep-message')?.value.trim();if(!sub||!em||!msg){toast('Please fill all Email Us fields.','err');return}window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(`From: ${em}\n\n${msg}`)}`;toast('Opening your email draft.','ok')})}}
+function initForms(){const cf=document.getElementById('contact-form');if(cf){cf.addEventListener('submit',e=>{e.preventDefault();const name=cf.querySelector('input[type="text"]')?.value?.trim();const email=cf.querySelector('input[type="email"]')?.value?.trim();const msg=cf.querySelector('textarea')?.value?.trim();if(!name||!email||!msg){toast('Please complete contact form fields.','err');return}const sbj=encodeURIComponent(`TheGeneric Contact · ${name}`);const body=encodeURIComponent(`From: ${name} <${email}>\n\n${msg}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Opening your email client.','ok')})}const ff=document.getElementById('feedback-form');if(ff){ff.addEventListener('submit',e=>{e.preventDefault();const cat=ff.querySelector('select')?.value||'General';const txt=ff.querySelector('textarea')?.value?.trim();const em=ff.querySelector('input[type="email"]')?.value?.trim()||'not provided';if(!txt){toast('Please add feedback before submitting.','err');return}const sbj=encodeURIComponent(`Feedback · ${cat}`);const body=encodeURIComponent(`Category: ${cat}\nReply: ${em}\n\n${txt}`);window.location.href=`mailto:toxicbusinessstudios@gmail.com?subject=${sbj}&body=${body}`;toast('Thanks! Opening your email client.','ok')})}}
+
+function b64url(str){return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function setEmailStatus(txt,ok=false){const el=document.getElementById('ep-status');if(el){el.textContent=txt;el.style.color=ok?'#27c47a':'var(--tm)'}}
+function setEmailOutput(txt,isErr=false){const o=document.getElementById('ep-output');if(!o)return;o.style.display='block';o.textContent=txt;o.style.color=isErr?'#ff6b6b':'var(--td)'}
+function initGmailTokenClient(){if(gmailTokenClient||!window.google?.accounts?.oauth2)return;gmailTokenClient=google.accounts.oauth2.initTokenClient({client_id:GMAIL_CLIENT_ID,scope:GMAIL_SCOPES,callback:(resp)=>{if(resp?.access_token){gmailAccessToken=resp.access_token;setEmailStatus('Connected to Gmail.',true);toast('Gmail connected.','ok')}else{setEmailStatus('Gmail connection failed.');toast('Unable to connect Gmail.','err')}}})}
+async function sendViaGmail(){const to=document.getElementById('ep-to')?.value.trim();const subject=document.getElementById('ep-subject')?.value.trim();const reply=document.getElementById('ep-email')?.value.trim();const msg=document.getElementById('ep-message')?.value.trim();if(!to||!subject||!reply||!msg){toast('Please fill all Email Us fields.','err');return}if(!gmailAccessToken){toast('Connect Gmail first.','err');return}const mime=`To: ${to}\r\nSubject: ${subject}\r\nReply-To: ${reply}\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\nFrom: ${reply}\n\n${msg}`;const raw=b64url(mime);const res=await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send',{method:'POST',headers:{'Authorization':`Bearer ${gmailAccessToken}`,'Content-Type':'application/json'},body:JSON.stringify({raw})});const data=await res.json();if(!res.ok)throw new Error(data?.error?.message||'Gmail send failed');setEmailOutput(`Sent successfully. Message ID: ${data.id||'n/a'}`);toast('Message sent via Gmail API.','ok')}
+function openMailtoDraft(){const to=document.getElementById('ep-to')?.value.trim()||'toxicbusinessstudios@gmail.com';const subject=document.getElementById('ep-subject')?.value.trim()||'TheGeneric Email';const reply=document.getElementById('ep-email')?.value.trim()||'not provided';const msg=document.getElementById('ep-message')?.value.trim()||'';window.location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${reply}\n\n${msg}`)}`}
+function initEmailPage(){const form=document.getElementById('email-page-form');if(!form)return;const connect=document.getElementById('ep-connect');const disconnect=document.getElementById('ep-disconnect');const mailto=document.getElementById('ep-mailto');initGmailTokenClient();connect?.addEventListener('click',()=>{initGmailTokenClient();if(!gmailTokenClient){toast('Google Identity failed to load.','err');return}gmailTokenClient.requestAccessToken({prompt:gmailAccessToken?'':'consent'})});disconnect?.addEventListener('click',()=>{gmailAccessToken='';setEmailStatus('Not connected.');toast('Gmail disconnected.','ok')});mailto?.addEventListener('click',openMailtoDraft);form.addEventListener('submit',async e=>{e.preventDefault();try{await sendViaGmail()}catch(err){setEmailOutput(`Send failed: ${err.message}`,true);toast('Failed to send via Gmail API.','err')}})}
+
 let confirmHandler=null;function openConfirm({title='Confirm Action',message='Please confirm.',okText='Continue',onConfirm=()=>{}}={}){const bk=document.getElementById('cfbk');document.getElementById('cftx').textContent=title;document.getElementById('cfsub').textContent=message;const ok=document.getElementById('cfok');ok.textContent=okText;confirmHandler=onConfirm;makeParticles('cf-particles','cfp',15);bk.classList.remove('closing');bk.classList.add('open')}
 function closeConfirm(){const bk=document.getElementById('cfbk');if(!bk?.classList.contains('open'))return;bk.classList.add('closing');setTimeout(()=>{bk.classList.remove('open','closing')},240)}
 document.getElementById('cfok')?.addEventListener('click',async()=>{try{if(confirmHandler)await confirmHandler()}finally{closeConfirm();confirmHandler=null}})
 function initPfpUpload(){const fi=document.getElementById('pav-file');if(!fi)return;fi.addEventListener('change',ev=>{const f=ev.target.files?.[0];if(!f)return;if(!f.type.startsWith('image/')){toast('Only image files are supported.','err');return}if(f.size>4*1024*1024){toast('Image is too large (max 4MB).','err');return}const r=new FileReader();r.onload=()=>{const url=r.result;localStorage.setItem('tg-pfp',url);const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${url}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${url}" alt="Profile photo">`);toast('Profile photo updated.','ok')};r.readAsDataURL(f)})}
 function applySavedPfp(){const p=localStorage.getItem('tg-pfp');if(!p)return;const pav=document.getElementById('pav');if(pav)pav.innerHTML=`<img src="${p}" alt="Profile photo">`;document.querySelectorAll('.uav').forEach(el=>el.innerHTML=`<img src="${p}" alt="Profile photo">`)}
-initForms();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
+initForms();initEmailPage();initPfpUpload();applySavedPfp();openSettingsCategory('appearance');
 
-fetchMR();setInterval(fetchMR,60*60*1000);
+
+function hideCaptchaBadge(){document.querySelectorAll('.grecaptcha-badge, iframe[title*="reCAPTCHA"], iframe[src*="recaptcha"]').forEach(el=>{el.style.display='none';el.style.visibility='hidden';el.style.opacity='0'})}
+setInterval(hideCaptchaBadge,1200);hideCaptchaBadge();
+fetchMR();fetchSlopeLiveConfig();setInterval(fetchMR,60*60*1000);setInterval(fetchSlopeLiveConfig,5*60*1000);
 </script>
 </body>
 </html>
